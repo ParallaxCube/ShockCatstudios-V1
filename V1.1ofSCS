@@ -1,6 +1,6 @@
 --[[-- thy script loader!
 
-loadstring(game:HttpGet('https://onecompiler.com/lua/4422em4yc'))()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/ParallaxCube/ShockCatstudios-V1/refs/heads/main/V1ofSCS'))()
 
 --]]--
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
@@ -57,11 +57,11 @@ local MainWindow = Rayfield:CreateWindow({
 
    KeySystem = true, -- Set this to true to use our key system
    KeySettings = {
-      Title = "Welcome, " .. localPlayer.DisplayName .. "! :D",
+      Title = "Welcome, " .. localPlayer.DisplayName .. "! It's so great to see you!! (≧∇≦)/",
       Subtitle = "Your Key for ".. localPlayer.DisplayName .." is 1234",
-      Note = "No method of obtaining the key is provided at this moment :D but once i make a KeySystem thy shall have one! btw the key system will be optional!", -- Use this to tell the user how to get a key
+      Note = "No linkkey system for ".. localPlayer.DisplayName .." Since Still in v1", -- Use this to tell the user how to get a key
       FileName = "IamSkittenskeyfilenameishere", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
-      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      SaveKey = false, -- The user's key will be saved, but if you change the key, they will be unable to use your script
       GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
       Key = {"1234"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
    }
@@ -70,17 +70,19 @@ local MainWindow = Rayfield:CreateWindow({
 ---------------------------------------------------------------------------------------------------------------
 --Window maker /\
 ---------------------------------------------------------------------------------------------------------------
-local MainTab           =             MainWindow:CreateTab         ("Center"              ,              "paw-print") -- Title, Image
-local EspTab            =             MainWindow:CreateTab         ("Esp"                 ,       "map-pin-x-inside")
-local StunTab           =             MainWindow:CreateTab         ("Stun"                ,                    "cog")
-local AimTab            =             MainWindow:CreateTab         ("Scope"               ,              "crosshair")
-local GenTab            =             MainWindow:CreateTab         ("Generators"          ,              "brain-cog")
-local UITab             =             MainWindow:CreateTab         ("UI"                  ,                     "tv")
-local SettingsTab       =             MainWindow:CreateTab         ("ConFig"              ,                    "cog")
-local DevTab            =             MainWindow:CreateTab         ("UIfig&Status(s)"     ,              "container")
+--  local Tab           =   MainWindow:CreateTab   ("Center"              ,   "paw-print") -- Title, Imagelocal EspTab                                        =             MainWindow:CreateTab         ("Esp"                 ,       "map-pin-x-inside")
+local StunTab           =   MainWindow:CreateTab   ("Stun"                ,         "cog")
+local AimTab            =   MainWindow:CreateTab   ("Scope"               ,   "crosshair")
+local GenTab            =   MainWindow:CreateTab   ("Generators"          ,   "brain-cog")
+local UITab             =   MainWindow:CreateTab   ("UI"                  ,          "tv")
+local SettingsTab       =   MainWindow:CreateTab   ("ConFig"              ,         "cog")
+local DevTab            =   MainWindow:CreateTab   ("UIfig&Status(s)"     ,   "container")
+local NonCatchedTabs    =   MainWindow:CreateTab   ("NonCatchedTabs"      ,   "container")
+local Tab               =                           NonCatchedTabs
+
 
 --[[--
-local MainTab                     =   nil    
+local Tab                     =   nil    
 local EspTab                      =   nil
 local StunTab                     =   nil
 local AimTab                      =   nil
@@ -94,9 +96,9 @@ local DevTab                      =   nil
 ---------------------------------------------------------------------------------------------------------------
 --Tabs /\
 ---------------------------------------------------------------------------------------------------------------
-local Section = MainTab:CreateSection("Quick msg")
+local Section = Tab:CreateSection("Quick msg")
 
-local Button = MainTab:CreateButton({
+local Button = Tab:CreateButton({
    Name = "DevInfo",
    Callback = function()
   Rayfield:Notify({
@@ -118,9 +120,9 @@ DESERVING OF LOVE! ✩♡⸜(｡˃ ᵕ ˂ )⸝♡
 --ArtistShedletsky 
 --\/
 ---------------------------------------------------------------------------------------------------------------
-local Section = MainTab:CreateSection("ArtistShedletsky")
+local Section = Tab:CreateSection("ArtistShedletsky")
 
-local Toggle = MainTab:CreateToggle({
+local Toggle = Tab:CreateToggle({
    Name = "ArtistShedletsky",
    CurrentValue = false,
    Flag = "ShedletskyToggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
@@ -283,9 +285,9 @@ print("beep")
 --     \/
 ---------------------------------------------------------------------------------------------------------------
 
-local Section = MainTab:CreateSection("KickSelf")
+local Section = Tab:CreateSection("KickSelf")
 
-local Button = MainTab:CreateButton({
+local Button = Tab:CreateButton({
    Name = "KickThySelf",
    Callback = function()
    -- The function that takes place when the button is pressed
@@ -324,9 +326,9 @@ local Button = MainTab:CreateButton({
 ---------------------------------------------------------------------------------------------------------------
 --Lagmachine \/
 ---------------------------------------------------------------------------------------------------------------
-local Section = MainTab:CreateSection("Lag Challange!")
+local Section = Tab:CreateSection("Lag Challange!")
 
-local Button = MainTab:CreateButton({
+local Button = Tab:CreateButton({
    Name = "Button Example",
    Callback = function()
    -- The function that takes place when the button is pressed
