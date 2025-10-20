@@ -70,6 +70,476 @@ local MainWindow = Rayfield:CreateWindow({
 ---------------------------------------------------------------------------------------------------------------
 --Window maker /\
 ---------------------------------------------------------------------------------------------------------------
+local MTab               =   MainWindow:CreateTab   ("Center"              ,   "paw-print") -- Title, Imagelocal EspTab                                        =             MainWindow:CreateTab         ("Esp"                 ,       "map-pin-x-inside")
+local StunTab           =   MainWindow:CreateTab   ("Stun"                ,         "cog")
+local AimTab            =   MainWindow:CreateTab   ("Scope"               ,   "crosshair")
+local GenTab            =   MainWindow:CreateTab   ("Generators"          ,   "brain-cog")
+local UITab             =   MainWindow:CreateTab   ("UI"                  ,          "tv")
+local SettingsTab       =   MainWindow:CreateTab   ("ConFig"              ,         "cog")
+local DevTab            =   MainWindow:CreateTab   ("UIfig&Status(s)"     ,   "container")
+local NonCatchedTabs    =   MainWindow:CreateTab   ("NonCatchedTabs"      ,   "container")
+local Tab               =                           NonCatchedTabs
+
+
+--[[--
+local Tab                     =   nil    
+local EspTab                      =   nil
+local StunTab                     =   nil
+local AimTab                      =   nil
+local GenTab                      =   nil
+local UITab                       =   nil
+local SettingsTab                 =   nil
+local DevTab                      =   nil
+--]]--
+
+
+---------------------------------------------------------------------------------------------------------------
+--Tabs /\
+---------------------------------------------------------------------------------------------------------------
+local Section = Tab:CreateSection("Quick msg")
+
+local Button = Tab:CreateButton({
+   Name = "Devnote",
+   Callback = function()
+  Rayfield:Notify({
+   Title = "A note?",
+   Content = ([[
+Hello! i have something for you...
+no matter what you are going 
+through,it will pass.
+hold on tight! show 
+the world what you’re worth. 
+never give up! and remember,
+no one is perfect,
+not even you, but 
+you know what you are?
+DESERVING OF LOVE
+
+
+! ✩♡⸜(｡˃ ᵕ ˂ )⸝♡
+              ]]),
+   Duration = 6.5,
+   Image = "heart-crack",
+})
+   end,
+})
+---------------------------------------------------------------------------------------------------------------
+--ArtistShedletsky 
+--\/
+---------------------------------------------------------------------------------------------------------------
+local Section = Tab:CreateSection("ArtistShedletsky")
+
+local Toggle = Tab:CreateToggle({
+   Name = "ArtistShedletsky BUTTON",
+   CurrentValue = false,
+   Flag = "ShedletskyToggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+     -- The function that takes place when the toggle is pressed
+local plrs=game:GetService("Players")
+local lp=plrs.LocalPlayer
+local rs=game:GetService("RunService")
+local db=game:GetService("Debris")
+local tws=game:GetService("TweenService")
+local gui=game:GetService("StarterGui")
+local function notif(t)
+	gui:SetCore("SendNotification",{Title=t[1],Text=t[2],Duration=t[3]})
+end
+local spec=workspace.Players:FindFirstChild("Spectating")
+if spec and spec:FindFirstChild(lp.Name) then
+	notif({"yeahh no","ur not default Shedletsky buuuuddy",5})
+	return
+end
+local ab=lp:WaitForChild("PlayerGui"):WaitForChild("MainUI"):WaitForChild("AbilityContainer")
+if not ab:FindFirstChild("Slash") then
+	notif({"yeahh no","ur not default Shedletsky buuuuddy",5})
+	return
+end
+local skin=lp:WaitForChild("PlayerData"):WaitForChild("Equipped"):WaitForChild("Skins"):FindFirstChild("Shedletsky")
+if skin and skin.Value~="" then
+	notif({"yeahh no","ur not default Shedletsky buuuuddy",5})
+	return
+end
+notif({"script firedd yay","Made by Artbilli on Discord",5})
+local buy=lp:WaitForChild("PlayerData"):WaitForChild("Purchased"):WaitForChild("Skins")
+local temp=Instance.new("IntValue")
+temp.Name="ArtistShedletsky"
+temp.Value=0
+temp.Parent=buy
+delay(.1,function()if temp.Parent then temp:Destroy()end end)
+local ch=lp.Character or lp.CharacterAdded:Wait()
+local s=ch:FindFirstChildOfClass("Shirt")
+if s then s:Destroy()end
+s=Instance.new("Shirt")
+s.ShirtTemplate="rbxassetid://118042344317053"
+s.Parent=ch
+local p=ch:FindFirstChildOfClass("Pants")
+if p then p:Destroy()end
+p=Instance.new("Pants")
+p.PantsTemplate="rbxassetid://100561495134250"
+p.Parent=ch
+local head=ch:FindFirstChild("Head")
+if not head then return end
+local hatoff=Vector3.new(.47,.97,0)
+local hatrot=Vector3.new(0,-90,0)
+local hat=Instance.new("Accessory")
+hat.Name="CustomHat"
+hat.Parent=ch
+local handle=Instance.new("Part")
+handle.Name="Handle"
+handle.Size=Vector3.new(1,1,1)
+handle.CanCollide=false
+handle.Anchored=false
+handle.Parent=hat
+local mesh=Instance.new("SpecialMesh")
+mesh.MeshId="rbxassetid://102770853506860"
+mesh.TextureId="rbxassetid://117341189541689"
+mesh.Parent=handle
+handle.CFrame=head.CFrame*CFrame.new(hatoff)*CFrame.Angles(math.rad(hatrot.X),math.rad(hatrot.Y),math.rad(hatrot.Z))
+local weld=Instance.new("WeldConstraint")
+weld.Part0=head
+weld.Part1=handle
+weld.Parent=handle
+local torso=ch:FindFirstChild("Torso")or ch:FindFirstChild("UpperTorso")
+if not torso then return end
+local toff=Vector3.new(0,-.34,0)
+local trot=Vector3.new(0,-90,0)
+local tacc=Instance.new("Accessory")
+tacc.Name="CustomTorso"
+tacc.Parent=ch
+local th=Instance.new("Part")
+th.Name="Handle"
+th.Size=Vector3.new(2,2,1)
+th.CanCollide=false
+th.Anchored=false
+th.Parent=tacc
+local tmesh=Instance.new("SpecialMesh")
+tmesh.MeshId="rbxassetid://122893327645752"
+tmesh.TextureId="rbxassetid://104104537744071"
+tmesh.Parent=th
+th.CFrame=torso.CFrame*CFrame.new(toff)*CFrame.Angles(math.rad(trot.X),math.rad(trot.Y),math.rad(trot.Z))
+local tw=Instance.new("WeldConstraint")
+tw.Part0=torso
+tw.Part1=th
+tw.Parent=th
+local decs={
+	"http://www.roblox.com/asset/?id=17364186013",
+	"http://www.roblox.com/asset/?id=17364186013"
+}
+local cols={
+	Color3.fromRGB(255,0,255),
+	Color3.fromRGB(56,56,255),
+	Color3.fromRGB(255,30,30),
+	Color3.fromRGB(255,255,40),
+	Color3.fromRGB(30,255,30)
+}
+local function pick(a)return a[math.random(1,#a)]end
+local t=0
+local waitt=4
+rs.Heartbeat:Connect(function(dt)
+	if not ch.Parent then return end
+	t=t+dt
+	if t<waitt then return end
+	t=0
+	local lf=ch:FindFirstChild("LeftFoot")or ch:FindFirstChild("Left Leg")
+	local rf=ch:FindFirstChild("RightFoot")or ch:FindFirstChild("Right Leg")
+	if not lf or not rf then return end
+	local foot=math.random()<.5 and lf or rf
+	local pos=foot.Position-Vector3.new(0,foot.Size.Y/2+.05,0)
+	local spl=Instance.new("Part")
+	spl.Size=Vector3.new(6,.05,6)
+	spl.Anchored=true
+	spl.CanCollide=false
+	spl.Position=pos
+	spl.Parent=workspace
+	spl.Transparency=1
+	local d=Instance.new("Decal")
+	d.Face=Enum.NormalId.Top
+	d.Texture=pick(decs)
+	d.Color3=pick(cols)
+	d.Parent=spl
+	local goal={Transparency=1,Size=Vector3.new(.2,.05,.2)}
+	local info=TweenInfo.new(1,Enum.EasingStyle.Linear)
+	local tw=tws:Create(spl,info,goal)
+	tw:Play()
+	db:AddItem(spl,1.1)
+end)
+local stopid=116618003477002
+local playid=77448521277146
+ch.Humanoid.AnimationPlayed:Connect(function(a)
+	if a.Animation.AnimationId=="rbxassetid://"..stopid then
+		a:Stop()
+		local newa=Instance.new("Animation")
+		newa.AnimationId="rbxassetid://"..playid
+		local play=ch.Humanoid:LoadAnimation(newa)
+		play:Play()
+	end
+end)
+local icon=lp.PlayerGui:WaitForChild("TemporaryUI"):WaitForChild("PlayerInfo"):WaitForChild("CurrentSurvivors"):WaitForChild("Shedletsky")
+if icon and icon:FindFirstChild("Icon")and icon:FindFirstChild("Username")then
+	local txt=icon.Username.Text
+	if txt==lp.Name.." (You)"then
+		icon.Icon.Image="rbxassetid://110965459998666"
+	end
+end
+
+print("beep")
+print("beep")
+   --The variable (Value) is a boolean on whether the toggle is true or false
+   end,
+})
+---------------------------------------------------------------------------------------------------------------
+-- KickThySelf 
+--     \/
+---------------------------------------------------------------------------------------------------------------
+
+local Section = Tab:CreateSection("KickSelf")
+
+local Button = Tab:CreateButton({
+   Name = "KickThySelf",
+   Callback = function()
+   -- The function that takes place when the button is pressed
+   game.Players.LocalPlayer:Kick("Kicked. . . (it was in the name yk)")
+   end,
+})
+    ---------------------------------------------------------------------------------------------------------------
+    --Spoof
+    --\/
+    ---------------------------------------------------------------------------------------------------------------
+
+    local currentSpoofedDevice = "Unknown" -- Variable to track the currently selected device
+
+    -- Function that runs when the dropdown is changed
+    local function applyDeviceSpoof(deviceType)
+        currentSpoofedDevice = deviceType
+        print("[Device Spoofing] Selected: " .. deviceType)
+        
+        -- ⚠️ PLACEHOLDER ALERT ⚠️
+        -- To make this actually work in the game, you need to replace the print line above
+        -- with the game's specific remote function call to tell the server your device type.
+    end
+
+    -- NO DUPLICATE WINDOW CREATION! We use DevTab instead.
+    DevTab:CreateDropdown({ 
+        Name = "Device Type Spoof",
+        Options = {"PC", "Mobile", "Console", "Unknown"},
+        CurrentOption = {"Unknown"},
+        MultipleOptions = false,
+        Flag = "DeviceSpoofDropdown",
+        Callback = function(Options)
+            -- The first item in the Options table is the selected device name (e.g., "Console")
+            applyDeviceSpoof(Options[1])
+        end,
+    })
+---------------------------------------------------------------------------------------------------------------
+--Lagmachine \/
+---------------------------------------------------------------------------------------------------------------
+local Section = Tab:CreateSection("Lag Challange!")
+
+local Button = Tab:CreateButton({
+   Name = "Button Example",
+   Callback = function()
+   -- The function that takes place when the button is pressed
+-- FRVR LOOP IF THIS THEN THAT
+while true do
+print("So~ curious? Well thats what killed the cat!")
+    -- Wait for 0.2 seconds between each print to prevent instant thread crash
+    task.wait(0.7)
+end
+
+   end,
+})
+---------------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------------------
+-- TEAM ESP LOGIC AND FUNCTIONS
+---------------------------------------------------------------------------------------------------------------
+local enemyEspConnection = nil
+local isEnemyEspActive = false
+
+-- Function to set the outline property on a player's character
+local function setOutline(character, color, enabled)
+    local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        -- This uses the built-in Highlight feature for ESP (visible through walls)
+        local highlight = character:FindFirstChild("EnemyHighlight")
+        if not highlight then
+            highlight = Instance.new("Highlight")
+            highlight.Name = "EnemyHighlight"
+            highlight.DepthMode = Enum.DepthMode.AlwaysOnTop 
+            highlight.Parent = character
+        end
+        
+        highlight.FillColor = color or Color3.fromRGB(255, 0, 0) -- Default red for enemy
+        highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+        highlight.Enabled = enabled
+    end
+end
+
+-- Main loop function to check all players
+local function runEnemyEsp()
+    -- Loop through all players currently in the game
+    for _, player in ipairs(Players:GetPlayers()) do
+        -- Skip the local player running the script
+        if player ~= localPlayer then
+            -- Wait for the character if it's not loaded yet, but don't hang the loop
+            local character = player.Character 
+            
+            if character then
+                local isEnemy = player.Team ~= localPlayer.Team -- Check if their team is different
+                
+                if isEnemy and isEnemyEspActive then
+                    -- If they are an enemy and the feature is on, enable the highlight
+                    setOutline(character, Color3.fromRGB(255, 50, 50), true) -- Bright red for enemy
+                else
+                    -- If they are on our team or the feature is off, disable the highlight
+                    setOutline(character, nil, false)
+                end
+            end
+        end
+    end
+end
+
+-- Function to handle the toggle
+local function toggleEnemyEsp(state)
+    isEnemyEspActive = state
+    if state then
+        -- Start the continuous checking loop when toggled ON
+        enemyEspConnection = game:GetService("RunService").Heartbeat:Connect(runEnemyEsp)
+        Rayfield:Notify({
+            Title = "Team ESP",
+            Content = "Enemy highlighting enabled! Look out for the red glow.",
+            Duration = 3,
+            Image = "map-pin-x-inside",
+        })
+    else
+        -- Disconnect the loop when toggled OFF
+        if enemyEspConnection then
+            enemyEspConnection:Disconnect()
+            enemyEspConnection = nil
+        end
+        -- Clean up all highlights when the feature is turned off
+        for _, player in ipairs(Players:GetPlayers()) do
+            local character = player.Character
+            if character then
+                setOutline(character, nil, false)
+            end
+        end
+        Rayfield:Notify({
+            Title = "Team ESP",
+            Content = "Enemy highlighting disabled.",
+            Duration = 3,
+            Image = "map-pin",
+        })
+    end
+end
+
+---------------------------------------------------------------------------------------------------------------
+-- TEAM ESP UI (Added to the general 'Tab')
+---------------------------------------------------------------------------------------------------------------
+local TeamEspSection = Tab:CreateSection("Team/Visuals Utility")
+
+Tab:CreateToggle({
+    Name = "Highlight Enemies (X-Ray)",
+    CurrentValue = false,
+    Callback = toggleEnemyEsp, -- This calls the new function we created
+})
+
+-- Function to handle the toggle
+local function toggleEnemyEsp(state)
+    isEnemyEspActive = state
+    if state then
+        -- Start the continuous checking loop when toggled ON
+        enemyEspConnection = game:GetService("RunService").Heartbeat:Connect(runEnemyEsp)
+        Rayfield:Notify({
+            Title = "Team ESP",
+            Content = "Enemy highlighting enabled! Look out for the red glow.",
+            Duration = 3,
+            Image = "map-pin-x-inside",
+        })
+    else
+        -- Disconnect the loop when toggled OFF
+        if enemyEspConnection then
+            enemyEspConnection:Disconnect()
+            enemyEspConnection = nil
+        end
+        -- Clean up all highlights when the feature is turned off
+        for _, player in ipairs(Players:GetPlayers()) do
+            local character = player.Character
+            if character then
+                setOutline(character, nil, false)
+            end
+        end
+        Rayfield:Notify({
+            Title = "Team ESP",
+            Content = "Enemy highlighting disabled.",
+            Duration = 3,
+            Image = "map-pin",
+        })
+    end
+end
+
+---------------------------------------------------------------------------------------------------------------
+-- TEAM ESP UI (Added to the general 'Tab')
+---------------------------------------------------------------------------------------------------------------
+local TeamEspSection = Tab:CreateSection("Team/Visuals Utility")
+
+Tab:CreateToggle({
+    Name = "Highlight Enemies (X-Ray)",
+    CurrentValue = false,
+    Callback = toggleEnemyEsp, -- This calls the new function we created
+})
+
+
+
+
+
+
+
+
+
+
+--thy not pass
+
+
+
+Rayfield:LoadConfiguration()   LoadingSubtitle = "by IamSkitten",
+   ShowText = " ".. localPlayer.DisplayName .."'s UI!", -- for mobile users to unhide rayfield, change if you'd like
+   Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
+
+   ToggleUIKeybind = "K", -- The keybind to toggle the UI visibility (string like "K" or Enum.KeyCode)
+
+   DisableRayfieldPrompts = false,
+   DisableBuildWarnings = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
+
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = "ShockCatStudiosIamSkittenFolderFile", -- Create a custom folder for your hub/game
+      FileName = "ShockCatStudiosIamSkittenFolder"
+   },
+
+   Discord = {
+      Enabled = false, -- Prompt the user to join your Discord server if their executor supports it
+      Invite = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ ABCD would be ABCD
+      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+   },
+
+   KeySystem = true, -- Set this to true to use our key system
+   KeySettings = {
+      Title = "Welcome, " .. localPlayer.DisplayName .. "! It's so great to see you!! (≧∇≦)/",
+      Subtitle = "Your Key for ".. localPlayer.DisplayName .." is 1234",
+      Note = "No linkkey system for ".. localPlayer.DisplayName .." Since Still in v1", -- Use this to tell the user how to get a key
+      FileName = "IamSkittenskeyfilenameishere", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+      SaveKey = false, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key = {"1234"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+   }
+})
+
+---------------------------------------------------------------------------------------------------------------
+--Window maker /\
+---------------------------------------------------------------------------------------------------------------
 --  local Tab           =   MainWindow:CreateTab   ("Center"              ,   "paw-print") -- Title, Imagelocal EspTab                                        =             MainWindow:CreateTab         ("Esp"                 ,       "map-pin-x-inside")
 local StunTab           =   MainWindow:CreateTab   ("Stun"                ,         "cog")
 local AimTab            =   MainWindow:CreateTab   ("Scope"               ,   "crosshair")
