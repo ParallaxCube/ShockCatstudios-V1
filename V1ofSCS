@@ -43,42 +43,42 @@ end)
 ---------------------------------------------------------------------------------------------------------------
 --Player greeter /\
 ---------------------------------------------------------------------------------------------------------------
-local MainWindow = Rayfield:CreateWindow({
-   Name = "ShockCatStudio",
-   Icon = "paw-print", -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Welcome, " .. localPlayer.DisplayName .. "!",
-   LoadingSubtitle = "by IamSkitten",
-   ShowText = " ".. localPlayer.DisplayName .."'s UI!", -- for mobile users to unhide rayfield, change if you'd like
-   Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
-   ToggleUIKeybind = "K", -- The keybind to toggle the UI visibility (string like "K" or Enum.KeyCode)
-   DisableRayfieldPrompts = false,
-   DisableBuildWarnings = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
-   ConfigurationSaving = {
-      Enabled = true,
-      FolderName = "ShockCatStudiosIamSkittenFolderFile", -- Create a custom folder for your hub/game
-      FileName = "ShockCatStudiosIamSkittenFolder"
+local MainWindow            = Rayfield:CreateWindow({
+   Name                     = "ShockCatStudio",
+   Icon                     = "paw-print", -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
+   LoadingTitle             = "Welcome, " .. localPlayer.DisplayName .. "!",
+   LoadingSubtitle          = "by IamSkitten",
+   ShowText                 = " ".. localPlayer.DisplayName .."'s UI!", -- for mobile users to unhide rayfield, change if you'd like
+   Theme                    = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
+   ToggleUIKeybind          = "K", -- The keybind to toggle the UI visibility (string like "K" or Enum.KeyCode)
+   DisableRayfieldPrompts   = false,
+   DisableBuildWarnings     = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
+   ConfigurationSaving      = {
+      Enabled               = true,
+      FolderName            = "ShockCatStudiosIamSkittenFolderFile", -- Create a custom folder for your hub/game
+      FileName              = "ShockCatStudiosIamSkittenFolder"
    },
-   Discord = {
-      Enabled = false, -- Prompt the user to join your Discord server if their executor supports it
-      Invite = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ ABCD would be ABCD
-      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
-   },
-   KeySystem = true, -- Set this to true to use our key system
-   KeySettings = {
-      Title = "Welcome, " .. localPlayer.DisplayName .. "! It's so great to see you!! (≧∇≦)/",
-      Subtitle = "Your Key for ".. localPlayer.DisplayName .." is 1234",
-      Note = "No linkkey system for ".. localPlayer.DisplayName .." Since Still in v1", -- Use this to tell the user how to get a key
-      FileName = "IamSkittenskeyfilenameishere", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
-      SaveKey = false, -- The user's key will be saved, but if you change the key, they will be unable to use your script
-      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
-      Key = {"1234"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+   Discord                  = {
+      Enabled               = false, -- Prompt the user to join your Discord server if their executor supports it
+      Invite                = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ ABCD would be ABCD
+      RememberJoins         = true -- Set this to false to make them join the discord every time they load it up
+   }, 
+   KeySystem                = true, -- Set this to true to use our key system
+   KeySettings              = {
+      Title                 = "Welcome, " .. localPlayer.DisplayName .. "! It's so great to see you!! (≧∇≦)/",
+      Subtitle              = "Your Key for ".. localPlayer.DisplayName .." is 1234",
+      Note                  = "No linkkey system for ".. localPlayer.DisplayName .." Since Still in v1", -- Use this to tell the user how to get a key
+      FileName              = "IamSkittenskeyfilenameishere", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+      SaveKey               = false, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      GrabKeyFromSite       = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key                   = {"1234"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
    }
 })
 
 ---------------------------------------------------------------------------------------------------------------
 --Window maker /\
 ---------------------------------------------------------------------------------------------------------------
-local MTab              =   MainWindow:CreateTab   ("Center"              ,   "paw-print") -- Title, Imagelocal EspTab                                        =             MainWindow:CreateTab         ("Esp"                 ,       "map-pin-x-inside")
+local MTab              =   MainWindow:CreateTab   ("Center"              ,   "paw-print") -- Title, Image)
 local StunTab           =   MainWindow:CreateTab   ("Stun"                ,         "cog")
 local AimTab            =   MainWindow:CreateTab   ("Scope"               ,   "crosshair")
 local GenTab            =   MainWindow:CreateTab   ("Generators"          ,   "brain-cog")
@@ -131,290 +131,113 @@ DESERVING OF LOVE
 })
    end,
 })
--- Global State for Artist Shedletsky Auto-Activation
-local _ARTIST_AUTO_ENABLED = false
-local _ARTIST_COOLDOWN_VALUE = 30 -- Default delay is 30 seconds
-
--- Define the Window and Tab
-local MainWindow = Rayfield:CreateWindow({
-    Name = "Shedletsky Auto-Activator",
-    Icon = "paint-roller",
-    ConfigurationSaving = { Enabled = false },
-})
-
-local Tab = MainWindow:CreateTab("Custom Features", "palette")
-
-
--- -----------------------------------------------------------------------------
--- CORE FUNCTION: ArtistShedletsky (User's original button logic)
--- -----------------------------------------------------------------------------
-local function ArtistShedletskyFunc()
-    -- The function that takes place when the button is pressed
-
-    local plrs = game:GetService("Players")
-    local lp = plrs.LocalPlayer
-    local rs = game:GetService("RunService")
-    local db = game:GetService("Debris")
-    local tws = game:GetService("TweenService")
-    local gui = game:GetService("StarterGui")
-    local function notif(t)
-        gui:SetCore("SendNotification", { Title = t[1], Text = t[2], Duration = t[3] })
-    end
-    local spec = workspace.Players:FindFirstChild("Spectating")
-    if spec and spec:FindFirstChild(lp.Name) then
-        notif({ "Please become Default Shedletsky", "Error", 5 })
-        return
-    end
-    local ab = lp:WaitForChild("PlayerGui"):WaitForChild("MainUI"):WaitForChild("AbilityContainer")
-    if not ab:FindFirstChild("Slash") then
-        notif({ "Please be Default Shedletsky", "Error", 5 })
-        return
-    end
-    local skin = lp:WaitForChild("PlayerData"):WaitForChild("Equipped"):WaitForChild("Skins"):FindFirstChild("Shedletsky")
-    if skin and skin.Value ~= "" then
-        notif({ "Please be Default Shedletsky", "Error", 5 })
-        return
-    end
-    notif({ "Script Has been fired up!", "Success", 5 })
-    local buy = lp:WaitForChild("PlayerData"):WaitForChild("Purchased"):WaitForChild("Skins")
-    local temp = Instance.new("IntValue")
-    temp.Name = "ArtistShedletsky"
-    temp.Value = 0
-    temp.Parent = buy
-    delay(.1, function()
-        if temp.Parent then temp:Destroy() end
-    end)
-    local ch = lp.Character or lp.CharacterAdded:Wait()
-    local s = ch:FindFirstChildOfClass("Shirt")
-    if s then s:Destroy() end
-    s = Instance.new("Shirt")
-    s.ShirtTemplate = "rbxassetid://118042344317053"
-    s.Parent = ch
-    local p = ch:FindFirstChildOfClass("Pants")
-    if p then p:Destroy() end
-    p = Instance.new("Pants")
-    p.PantsTemplate = "rbxassetid://100561495134250"
-    p.Parent = ch
-    local head = ch:FindFirstChild("Head")
-    if not head then return end
-    local hatoff = Vector3.new(.47, .97, 0)
-    local hatrot = Vector3.new(0, -90, 0)
-    local hat = Instance.new("Accessory")
-    hat.Name = "CustomHat"
-    hat.Parent = ch
-    local handle = Instance.new("Part")
-    handle.Name = "Handle"
-    handle.Size = Vector3.new(1, 1, 1)
-    handle.CanCollide = false
-    handle.Anchored = false
-    handle.Parent = hat
-    local mesh = Instance.new("SpecialMesh")
-    mesh.MeshId = "rbxassetid://102770853506860"
-    mesh.TextureId = "rbxassetid://117341189541689"
-    mesh.Parent = handle
-    handle.CFrame = head.CFrame * CFrame.new(hatoff) * CFrame.Angles(math.rad(hatrot.X), math.rad(hatrot.Y), math.rad(hatrot.Z))
-    local weld = Instance.new("WeldConstraint")
-    weld.Part0 = head
-    weld.Part1 = handle
-    weld.Parent = handle
-    local torso = ch:FindFirstChild("Torso") or ch:FindFirstChild("UpperTorso")
-    if not torso then return end
-    local toff = Vector3.new(0, -.34, 0)
-    local trot = Vector3.new(0, -90, 0)
-    local tacc = Instance.new("Accessory")
-    tacc.Name = "CustomTorso"
-    tacc.Parent = ch
-    local th = Instance.new("Part")
-    th.Name = "Handle"
-    th.Size = Vector3.new(2, 2, 1)
-    th.CanCollide = false
-    th.Anchored = false
-    th.Parent = tacc
-    local tmesh = Instance.new("SpecialMesh")
-    tmesh.MeshId = "rbxassetid://122893327645752"
-    tmesh.TextureId = "rbxassetid://104104537744071"
-    tmesh.Parent = th
-    th.CFrame = torso.CFrame * CFrame.new(toff) * CFrame.Angles(math.rad(trot.X), math.rad(trot.Y), math.rad(trot.Z))
-    local tw = Instance.new("WeldConstraint")
-    tw.Part0 = torso
-    tw.Part1 = th
-    tw.Parent = th
-    local decs = {
-        "http://www.roblox.com/asset/?id=17364186013",
-        "http://www.roblox.com/asset/?id=17364186013"
-    }
-    local cols = {
-        Color3.fromRGB(255, 0, 255),
-        Color3.fromRGB(56, 56, 255),
-        Color3.fromRGB(255, 30, 30),
-        Color3.fromRGB(255, 255, 40),
-        Color3.fromRGB(30, 255, 30)
-    }
-    local function pick(a) return a[math.random(1, #a)] end
-    local t = 0
-    local waitt = 4
-    rs.Heartbeat:Connect(function(dt)
-        if not ch.Parent then return end
-        t = t + dt
-        if t < waitt then return end
-        t = 0
-        local lf = ch:FindFirstChild("LeftFoot") or ch:FindFirstChild("Left Leg")
-        local rf = ch:FindFirstChild("RightFoot") or ch:FindFirstChild("Right Leg")
-        if not lf or not rf then return end
-        local foot = math.random() < .5 and lf or rf
-        local pos = foot.Position - Vector3.new(0, foot.Size.Y / 2 + .05, 0)
-        local spl = Instance.new("Part")
-        spl.Size = Vector3.new(6, .05, 6)
-        spl.Anchored = true
-        spl.CanCollide = false
-        spl.Position = pos
-        spl.Parent = workspace
-        spl.Transparency = 1
-        local d = Instance.new("Decal")
-        d.Face = Enum.NormalId.Top
-        d.Texture = pick(decs)
-        d.Color3 = pick(cols)
-        d.Parent = spl
-        local goal = { Transparency = 1, Size = Vector3.new(.2, .05, .2) }
-        local info = TweenInfo.new(1, Enum.EasingStyle.Linear)
-        local tw = tws:Create(spl, info, goal)
-        tw:Play()
-        db:AddItem(spl, 1.1)
-    end)
-    local stopid = 116618003477002
-    local playid = 77448521277146
-    ch.Humanoid.AnimationPlayed:Connect(function(a)
-        if a.Animation.AnimationId == "rbxassetid://" .. stopid then
-            a:Stop()
-            local newa = Instance.new("Animation")
-            newa.AnimationId = "rbxassetid://" .. playid
-            local play = ch.Humanoid:LoadAnimation(newa)
-            play:Play()
-        end
-    end)
-    local icon = lp.PlayerGui:WaitForChild("TemporaryUI"):WaitForChild("PlayerInfo"):WaitForChild("CurrentSurvivors"):WaitForChild("Shedletsky")
-    if icon and icon:FindFirstChild("Icon") and icon:FindFirstChild("Username") then
-        local txt = icon.Username.Text
-        if txt == lp.Name .. " (You)" then
-            icon.Icon.Image = "rbxassetid://110965459998666"
-        end
-    end
-end
-
-
--- -----------------------------------------------------------------------------
--- AUTO-ACTIVATOR LOGIC
--- -----------------------------------------------------------------------------
-
--- Function to handle the delay slider value
-local function setArtistCooldown(value)
-    _ARTIST_COOLDOWN_VALUE = value
-    print("Artist Auto-Activator Cooldown Set to: " .. tostring(value) .. " seconds")
-end
-
--- Function to handle the auto-activator toggle state
-local function toggleArtistAuto(state)
-    _ARTIST_AUTO_ENABLED = state
-    print("Artist Auto-Activator Toggled: " .. tostring(state))
-end
-
--- The continuous loop that checks the toggle and executes the function
-local function startArtistAutoLoop()
-    -- task.spawn runs the loop in the background without freezing the game
-    task.spawn(function()
-        while true do
-            if _ARTIST_AUTO_ENABLED then
-                print("Auto-Artist Activator Firing!")
-                
-                -- Execute the main button function
-                ArtistShedletskyFunc() 
-                
-                -- Wait for the set delay before the next activation
-                task.wait(_ARTIST_COOLDOWN_VALUE)
-            else
-                -- If disabled, wait a short time to poll the toggle state
-                task.wait(1) 
-            end
-        end
-    end)
-end
-
--- Start the loop running (it waits for the toggle to be enabled before acting)
-startArtistAutoLoop()
-
--- -----------------------------------------------------------------------------
--- UI CREATION
--- -----------------------------------------------------------------------------
-
-Tab:CreateSection("Artist Shedletsky")
-
--- 1. The original button
-Tab:CreateButton({
-    Name = "ArtistShedletsky",
-    Callback = ArtistShedletskyFunc, -- Connects to the wrapped function
-})
-
-Tab:CreateSection("Auto On Settings")
-
--- 2. The Auto-Activator Toggle
-Tab:CreateToggle({
-    Name = "Auto-Activator ON/OFF",
-    CurrentValue = false,
-    Callback = toggleArtistAuto,
-})
-
--- 3. The Delay Slider (30 seconds to 430 seconds)
-Tab:CreateSlider({
-    Name = "Auto Fire Delay",
-    Range = { 30, 430 },
-    Increment = 1,
-    Suffix = "s",
-    CurrentValue = 30,
-    Callback = setArtistCooldown,
-})
 ---------------------------------------------------------------------------------------------------------------
 -- KickThySelf 
 --     \/
 ---------------------------------------------------------------------------------------------------------------
 
-local Section = Tab:CreateSection("KickSelf")
+local Section = Tab:CreateSection("Kick yourself?")
 
 local Button = Tab:CreateButton({
-   Name = "KickThySelf",
+   Name = "Kick?",
    Callback = function()
    -- The function that takes place when the button is pressed
-   game.Players.LocalPlayer:Kick("Kicked. . . (it was in the name yk)")
+   game.Players.LocalPlayer:Kick("You have been banned from this Experience.")
    end,
 })
-    ---------------------------------------------------------------------------------------------------------------
-    --Spoof
-    --\/
-    ---------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
+-- SPOOFING LOGIC
+---------------------------------------------------------------------------------------------------------------
 
-    local currentSpoofedDevice = "Unknown" -- Variable to track the currently selected device
+local SpoofDeviceSelection = "PC" -- Default selection
+local SpoofEnabled = false -- Controls the persistent loop
 
-    -- Function that runs when the dropdown is changed
-    local function applyDeviceSpoof(deviceType)
-        currentSpoofedDevice = deviceType
-        print("[Device Spoofing] Selected: " .. deviceType)
-        
-        -- ⚠️ PLACEHOLDER ALERT ⚠️
-        -- To make this actually work in the game, you need to replace the print line above
-        -- with the game's specific remote function call to tell the server your device type.
+-- Function to fire the remote event with the selected device
+local function ApplySpoof(device)
+    -- The device must be one of the expected types.
+    if device and (device == "Console" or device == "PC" or device == "Mobile") then
+        -- Safely attempt to fire the remote event
+        pcall(function() 
+            -- Assuming Network:FireServerConnection(MethodName, Type, Argument) is the correct API
+            Network:FireServerConnection("SetDevice", "REMOTE_EVENT", device)
+        end)
     end
+end
 
-    -- NO DUPLICATE WINDOW CREATION! We use DevTab instead.
-    DevTab:CreateDropdown({ 
-        Name = "Device Type Spoof",
-        Options = {"PC", "Mobile", "Console", "Unknown"},
-        CurrentOption = {"Unknown"},
-        MultipleOptions = false,
-        Flag = "DeviceSpoofDropdown",
-        Callback = function(Options)
-            -- The first item in the Options table is the selected device name (e.g., "Console")
-            applyDeviceSpoof(Options[1])
-        end,
-    })
+-- The persistent spoofing loop runs in the background
+task.spawn(function()
+    while task.wait(1) do -- Fires every 1 second to persistently force the device
+        -- Only apply the spoof if the feature is enabled AND a valid device is selected
+        if SpoofEnabled and SpoofDeviceSelection ~= "Pick one!" then
+            ApplySpoof(SpoofDeviceSelection)
+        end
+    end
+end)
+
+---------------------------------------------------------------------------------------------------------------
+-- SPOOFING UI
+---------------------------------------------------------------------------------------------------------------
+
+local SpoofSection = Tab:CreateSection("Device Spoofing (Spoof)")
+
+-- 1. Spoof Enable Toggle (recommended for better control)
+SpoofSection:CreateToggle({
+    Name = "Enable Device Spoofing",
+    CurrentValue = false,
+    Flag = "DeviceSpoofToggleFlag",
+    Callback = function(state)
+        SpoofEnabled = state
+        if state then
+             Rayfield:Notify({
+                Title = "Spoofing Active",
+                Content = "Spoofing enabled for: " .. SpoofDeviceSelection,
+                Duration = 0.4,
+                Image = "map-pin",
+            })
+        else
+            Rayfield:Notify({
+                Title = "Spoofing Disabled",
+                Content = "Spoofing loop stopped.",
+                Duration = 0.4,
+                Image = "map-pin",
+            })
+        end
+    end,
+})
+
+-- 2. Spoof Device Dropdown
+SpoofSection:CreateDropdown({
+    Name = "Spoofed Device Selection",
+    Options = {
+      "Console",
+      "PC",
+      "Mobile",
+      "Pick one!"
+    },
+    
+    
+    CurrentOption = {"Pick one!"}, -- Set a non-functional default option
+    MultipleOptions = false,
+    Flag = "Dropdown1forspoofing-ofthydevice",
+    Callback = function(Options)
+        local newSelection = Options[1] -- Get the single selected option
+        
+        -- Update the global selection variable used by the persistent loop
+        SpoofDeviceSelection = newSelection
+        
+        if SpoofEnabled and newSelection ~= "Pick one!" then
+            -- If spoofing is enabled, apply the change immediately
+            ApplySpoof(newSelection)
+            Rayfield:Notify({
+                Title = "Device Spoof Updated",
+                Content = "Spoofing device set to: " .. newSelection,
+                Duration = 0.5,
+                Image = "map-pin",
+            })
+        end
+    end,
+})
+
 ---------------------------------------------------------------------------------------------------------------
 --Lagmachine \/
 ---------------------------------------------------------------------------------------------------------------
@@ -426,126 +249,12 @@ local Button = Tab:CreateButton({
    -- The function that takes place when the button is pressed
 -- FRVR LOOP IF THIS THEN THAT
 while true do
-print("So~ curious? Well thats what killed the cat!")
+print("curious? Well thats what killed the cat!")
     -- Wait for 0.2 seconds between each print to prevent instant thread crash
-    task.wait(0.1)
+    task.wait(0.005)
 end
 
    end,
-})
----------------------------------------------------------------------------------------------------------------
-
----------------------------------------------------------------------------------------------------------------
-
----------------------------------------------------------------------------------------------------------------
--- PERSISTENT ALL PLAYERS ESP LOGIC
----------------------------------------------------------------------------------------------------------------
-local allPlayersEspConnection = nil
-local isAllPlayersEspActive = false
-local espColor = Color3.fromRGB(255, 255, 0) -- Default color (Yellow)
-
--- Function to set the outline property on a player's character
-local function setOutline(character, color, enabled)
-    local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-    if humanoid then
-        local highlight = character:FindFirstChild("PlayerHighlight")
-        if not highlight then
-            highlight = Instance.new("Highlight")
-            highlight.Name = "PlayerHighlight"
-            highlight.DepthMode = Enum.DepthMode.AlwaysOnTop -- Always visible through walls
-            highlight.Parent = character
-        end
-        
-        -- Use the dynamic color set by the color picker
-        highlight.FillColor = color or Color3.fromRGB(255, 255, 255)
-        highlight.OutlineColor = Color3.fromRGB(0, 0, 0) -- Dark outline for visibility
-        highlight.Enabled = enabled
-    end
-end
-
--- Main loop function to check all players (excluding local player)
-local function runAllPlayersEsp()
-    -- Loop through all players currently in the game
-    for _, player in ipairs(Players:GetPlayers()) do
-        -- Skip the local player running the script
-        if player ~= localPlayer then
-            local character = player.Character
-            
-            if character then
-                if isAllPlayersEspActive then
-                    -- Highlight ALL players with the selected color
-                    setOutline(character, espColor, true) 
-                else
-                    -- Disable the highlight if the toggle is off
-                    setOutline(character, nil, false)
-                end
-            end
-        end
-    end
-end
-
--- Function to handle the toggle
-local function toggleAllPlayersEsp(state)
-    isAllPlayersEspActive = state
-    if state then
-        -- Start the continuous checking loop when toggled ON
-        allPlayersEspConnection = game:GetService("RunService").Heartbeat:Connect(runAllPlayersEsp)
-        Rayfield:Notify({
-            Title = "Player ESP",
-            Content = "All-player highlighting enabled with current color.",
-            Duration = 3,
-            Image = "map-pin-x-inside",
-        })
-    else
-        -- Disconnect the loop when toggled OFF
-        if allPlayersEspConnection then
-            allPlayersEspConnection:Disconnect()
-            allPlayersEspConnection = nil
-        end
-        
-        -- Clean up all highlights when the feature is turned off
-        for _, player in ipairs(Players:GetPlayers()) do
-            local character = player.Character
-            if character then
-                setOutline(character, nil, false)
-            end
-        end
-        Rayfield:Notify({
-            Title = "Player ESP",
-            Content = "Highlighting disabled.",
-            Duration = 3,
-            Image = "map-pin",
-        })
-    end
-end
-
----------------------------------------------------------------------------------------------------------------
--- ALL PLAYERS ESP UI
----------------------------------------------------------------------------------------------------------------
-local AllPlayerEspSection = Tab:CreateSection("Persistent Player Visuals")
-
--- 1. Color Picker (Persists via Rayfield Configuration)
-Tab:CreateColorPicker({
-    Name = "Player Highlight Color (Saved)",
-    Color = espColor, -- Initial default color
-    Flag = "AllPlayerEspColor", -- Unique flag for saving the color
-    Callback = function(color)
-        espColor = color -- Update the global variable with the selected color
-        
-        -- Apply change immediately if the ESP is currently active
-        if isAllPlayersEspActive then
-            runAllPlayersEsp() 
-        end
-    end,
-})
-
-
--- 2. Toggle to activate/deactivate
-Tab:CreateToggle({
-    Name = "Highlight All Players (X-Ray)",
-    CurrentValue = false,
-    Flag = "HighlightAllPlayersToggle", -- Unique flag for saving the toggle state
-    Callback = toggleAllPlayersEsp, -- Calls the function we defined above
 })
 ---------------------------------------------------------------------------------------------------------------
 --THEMES CHOOSER \/
@@ -553,40 +262,44 @@ Tab:CreateToggle({
 -- Create the LONG space by adding several empty sections
 Tab:CreateSection(" ")
 Tab:CreateSection(" ")
-Tab:CreateSection(" ")
-Tab:CreateSection(" ")
-Tab:CreateSection(" ")
-Tab:CreateSection(" ")
+
 
 
 
 -- THEME CHANGER DROPDOWN
 local ThemeSection = Tab:CreateSection("Interface Settings")
 
--- NOTE: The keys (names) of the Rayfield.Themes table become the options
-local ThemeOptions = {}
-for themeName, _ in pairs(Rayfield.Themes) do
-    table.insert(ThemeOptions, themeName)
-end
+local Dropdown = Tab:CreateDropdown({
+    Name = "Themes ^w^",
+    -- Options must be the exact theme identifier strings.
+    Options = {
+        "Default",
+        "FIRE",
+        "AshLand",
+        "TOXIC",
+        "STONE",
+        "RED",
+        "BLUE",
+        "WHITE",
+        "DARK_BLUE_WHITE",
+        "BLACK",
+        "PINK",
+        "OldFilm",
+        "AntiPhotosensitivity",
+        "GLITCHED",
+    },
+    CurrentOption = {"Default"},
+    MultipleOptions = false,
+    Flag = "Dropdowntheme1Ashland",
 
-ThemeSection:CreateDropdown({
-    Name = "Select UI Theme",
-    Options = ThemeOptions,
-    CurrentValue = "Dark", -- Default to Dark theme
-    Flag = "UIThemeSelector",
-    Callback = function(selectedTheme)
-        -- Set the new theme based on the user's selection
-        Rayfield.Theme = Rayfield.Themes[selectedTheme]
+    Callback = function(Options)
+        local selectedTheme = Options[1]
+        -- Apply the selected theme
+        Rayfield:ApplyTheme(selectedTheme)
         
-        -- Reload the configuration to instantly apply the new theme to all elements
-        Rayfield:ReloadConfiguration()
-        
-        Rayfield:Notify({
-            Title = "Theme Changed",
-            Content = "UI theme updated to: " .. selectedTheme,
-            Duration = 2,
-            Image = "palette",
-        })
+        -- Set the status for the continuous glitch loop
+        -- The loop will only call updateGlitchedTheme() if the current theme is GLITCHED
+        is_glitch_active = (selectedTheme == "GLITCHED")
     end,
 })
 ---------------------------------------------------------------------------------------------------------------
