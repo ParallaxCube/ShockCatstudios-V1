@@ -214,7 +214,7 @@ SpoofSection:CreateToggle({
 local Section                     = Tab:CreateSection("Lag Challange! (EXTREME)")
 
 local Button                      = Tab:CreateButton({
-   Name                           = "Button Example",
+   Name                           = "Lag Challange",
    Callback                       = function()
    -- The function that takes place when the button is pressed
 -- FRVR LOOP IF THIS THEN THAT
@@ -232,81 +232,92 @@ end
 ---------------------------------------------------------------------------------------------------------------
 -- THEME CHOOSER \/
 ---------------------------------------------------------------------------------------------------------------
-local Section = Tab:CreateSection("Interface Settings")
+local Section = Tab:CreateSection("Themes")
 
 local Dropdown = Tab:CreateDropdown({
-    Name = "Themes ^w^",
-    Options = {
-        -- All custom & Rayfield themes, alphabetically sorted
+   Name = "THEME",
+   Options = {
+       "Default",     
        "AntiPhotosensitivity",
-                                 "AshLand",
-                                "BLACK",
-                               "BLUE",
-                              "DARK_BLUE_WHITE",
-                             "Default",
-                            "FIRE",
-                           "GLITCHED",
-                          "OldFilm",
-                         "PINK",
-                        "RED",
-                       "STONE",
-                      "TOXIC",
-                     "WHITE",
-                    "CRIMSON",
-                   "Amethyst",
-                  "AmberGlow",
-                 "Ashlands",
-                "Ashlands_Desaturated",
-               "BlueDark",
-              "BlueDark_Desaturated",
-             "Green",
-            "GreenDark",
-           "GreenDark_Desaturated",
-          "Light",
-         "Matrix",
-        "NeonBlue",
-         "NeonBlue_Desaturated",
-          "Ocean",
-           "Photosensitivity",
-            "Photosensitivity_Desaturated",
-             "Purple",
-              "Purple_Desaturated",
-               "Purpur",
-                "Purpur_Desaturated",
-                 "RedDark",
-                  "RedDark_Desaturated",
-                   "Toxic",
-                    "Toxic_Desaturated",
-                     "USA",
-                      "USA_Desaturated",
-                       "FIRE",
-                      "STONE",
-                    "RED",
-                    "BLUE",
-                  "WHITE",
-                  "DARK_BLUE_WHITE",
-                "BLACK",
-                "PINK",
-              "OldFilm",
-              "AntiPhotosensitivity",
-            "GLITCHED",
-            "TOXIC",
-          "AshLand",
-          "CRIMSON_Desaturated"
-    },
-    CurrentOption = {"Default"},
-    MultipleOptions = false,
-    Flag = "Dropdowntheme1Ashland",
+       "AshLand",
+       "BLACK",
+       "BLUE",
+       "DARK_BLUE_WHITE",
+       "Default",
+       "FIRE",
+       "GLITCHED",
+       "OldFilm",
+       "PINK",
+       "RED",
+       "STONE",
+       "TOXIC",
+       "WHITE",
+       "CRIMSON",
+       "Amethyst",
+       "AmberGlow",
+       "Ashlands",
+       "Ashlands_Desaturated",
+       "BlueDark",
+       "BlueDark_Desaturated",
+       "Green",
+       "GreenDark",
+       "GreenDark_Desaturated",
+       "Light",
+       "Matrix",
+       "NeonBlue",
+       "NeonBlue_Desaturated",
+       "Ocean",
+       "Photosensitivity",
+       "Photosensitivity_Desaturated",
+       "Purple",
+       "Purple_Desaturated",
+       "Purpur",
+       "Purpur_Desaturated",
+       "RedDark",
+       "RedDark_Desaturated",
+       "Toxic",
+       "Toxic_Desaturated",
+       "USA",
+       "USA_Desaturated",
+       "FIRE",
+       "STONE",
+       "RED",
+       "BLUE",
+       "WHITE",
+       "DARK_BLUE_WHITE",
+       "BLACK",
+       "PINK",
+       "OldFilm",
+       "AntiPhotosensitivity",
+       "GLITCHED",
+       "TOXIC",
+       "AshLand",
+       "CRIMSON_Desaturated"
+   },
+   CurrentOption = {"Default"},  -- Set the default theme (can be any of the theme names)
+   MultipleOptions = false,
+   Flag = "Dropdown1issocoolandamazinglikeskiiten",
+   Callback = function(Options)
+       -- Get the selected theme name
+       local selectedTheme = Options[1]
+       
+       -- Apply the selected theme to Rayfield
+       Rayfield:ApplyTheme(selectedTheme)
 
-    Callback = function(Options)
-        local selectedTheme = Options[1]
-        -- Apply the selected theme
-        Rayfield:ApplyTheme(selectedTheme)
-    end
-      })
+       -- Optional: Notify the user that the theme has been applied
+       Rayfield:Notify({
+           Title = "Theme Applied",
+           Content = "You have selected the " .. selectedTheme .. " theme!",
+           Duration = 2,  -- Show the notification for 2 seconds
+           Image = "map-pin",
+       })
+   end,
+})
+
 ---------------------------------------------------------------------------------------------------------------
 --Gen
 ---------------------------------------------------------------------------------------------------------------
+local Section = Tab:CreateSection("Generator")
 
 local Button = Tab:CreateButton({
    Name = "gen",
