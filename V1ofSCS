@@ -16,7 +16,7 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/ParallaxCube/ShockCat
 --]]--
 
 
-local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/ParallaxCube/v1scs/refs/heads/main/v1scs'))()
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 ---------------------------------------------------------------------------------------------------------------
 --Rayfield top /\
 ---------------------------------------------------------------------------------------------------------------
