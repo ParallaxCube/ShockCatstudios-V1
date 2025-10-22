@@ -16,21 +16,28 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/ParallaxCube/ShockCat
 --]]--
 
 
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/ParallaxCube/v1scs/refs/heads/main/v1scs'))()
 ---------------------------------------------------------------------------------------------------------------
 --Rayfield top /\
 ---------------------------------------------------------------------------------------------------------------
+--ALL THE LOCALS
+---------------------------------------------------------------------------------------------------------------
+local SpoofDeviceSelection              = "PC" -- Default selection
+local SpoofEnabled                      = false -- Controls the persistent loop
 local Players = game:GetService("Players")
 local TextChatService = game:GetService("TextChatService")
 -- Define the LocalPlayer right away so we can use their name
 local localPlayer = Players.LocalPlayer 
 local RBXGeneral = TextChatService:WaitForChild("TextChannels"):WaitForChild("RBXGeneral")
+
 -- 1. Greet the local player who is running the script
 if localPlayer then
-    RBXGeneral:DisplaySystemMessage(string.format("Heyyy!!, %s! Your ShockCat UI is Ready!! ^^ and im so glad your here!! :D", localPlayer.DisplayName))
+    RBXGeneral:DisplaySystemMessage(string.format("Heyyy!!, %s! Your UI For ShockCatStudio's is Ready and fired up for your enjoyment if you have any bugs please visit my horrible discord server!!", localPlayer.DisplayName))
 end
 
---dis-disabled until i can make it useful GAHHHH (greets other playerrs)
+---------------------------------------------------------------------------------------------------------------
+
+--[[dis-disabled until i can make it useful GAHHHH (greets other playerrs)
 
 
 Players.PlayerAdded:Connect(function(player)
@@ -109,121 +116,36 @@ local DevTab                      =   nil
 --     \/
 ---------------------------------------------------------------------------------------------------------------
 
-local Section            = Tab:CreateSection("Kick?")
-local Button             = Tab:CreateButton({
+local Section            = MTab:CreateSection("Kick?")
+local Button             = MTab:CreateButton({
    Name                  = "Kick?",
    Callback              = function()
    -- The function that takes place when the button is pressed
-   game.Players.LocalPlayer:Kick( " " ..player.DisplayName.. "has been banned from this Experience.")
+   game.Players.LocalPlayer:Kick("you have been banned from this Experience.")
    end,
 })
 ---------------------------------------------------------------------------------------------------------------
 -- SPOOFING LOGIC
 ---------------------------------------------------------------------------------------------------------------
-
-local SpoofDeviceSelection              = "PC" -- Default selection
-local SpoofEnabled                      = false -- Controls the persistent loop
-
--- Function to fire the remote event with the selected device
-local function ApplySpoof(device)
-    -- The device must be one of the expected types.
-    if device and (device               == "Console" or device == "PC" or device == "Mobile") then
-        -- Safely attempt to fire the remote event
-        pcall(function() 
-            -- Assuming Network:FireServerConnection(MethodName, Type, Argument) is the correct API
-            Network:FireServerConnection("SetDevice", "REMOTE_EVENT", device)
-        end)
-    end
-end
-
--- The persistent spoofing loop runs in the background
-task.spawn(function()
-    while task.wait(1) do -- Fires every 1 second to persistently force the device
-        -- Only apply the spoof if the feature is enabled AND a valid device is selected
-        if SpoofEnabled and SpoofDeviceSelection ~= "Pick one!" then
-            ApplySpoof(SpoofDeviceSelection)
-        end
-    end
-end)
-
----------------------------------------------------------------------------------------------------------------
--- SPOOFING UI
----------------------------------------------------------------------------------------------------------------
-
-local Section = Tab:CreateSection("Device Spoofing (Spoof)")
-
--- 1. Spoof Enable Toggle (recommended for better control)
-SpoofSection:CreateToggle({
-    Name                               = "Enable Device Spoofing",
-    CurrentValue                       = false,
-    Flag                               = "DeviceSpoofToggleFlag",
-    Callback                           = function(state)
-    SpoofEnabled                       = state
-    if state then
-    Rayfield:Notify({
-    Title                              = "Spoofing Active",
-    Content                            = "Spoofing enabled for: " .. SpoofDeviceSelection .. "! ^.^",
-    Duration                           = 0.4,
-    Image                              = "map-pin",
-            })
-        else
-            Rayfield:Notify({
-                Title                  = "Spoofing Disabled",
-                Content                = "Spoofing loop stopped for" .. SpoofDeviceSelection .. "! >.<",
-                Duration               = 0.4,
-                Image                  = "map-pin",
-            })
-        end
-    end,
-})
-
--- 2. Spoof Device Dropdown
-    Section:CreateDropdown({
-    Name = "Spoofed Device Selection",
-    Options = {
-      "Console",
-      "PC",
-      "Mobile",
-      "Pick one!"
-    },
-    CurrentOption = {"Pick one!"}, -- Set a non-functional default option
-    MultipleOptions = false,
-    Flag = "Dropdown1forspoofing-ofthydevice",
-    Callback = function(Options)
-        local newSelection = Options[1] -- Get the single selected option
-        
-        -- Update the global selection variable used by the persistent loop
-        SpoofDeviceSelection = newSelection
-        
-        if SpoofEnabled and newSelection ~= "Pick one!" then
-            -- If spoofing is enabled, apply the change immediately
-            ApplySpoof(newSelection)
-            Rayfield:Notify({
-                Title = "Device Spoof Updated",
-                Content = "Spoofing device set to: " .. newSelection,
-                Duration = 0.5,
-                Image = "map-pin",
-            })
-        end
-    end,
-})
+local Section = DevTab:CreateSection("Spoofer v1")
 
 ---------------------------------------------------------------------------------------------------------------
 --Lagmachine \/
 ---------------------------------------------------------------------------------------------------------------
-local Section                     = Tab:CreateSection("Lag Challange! (EXTREME)")
-
-local Button                      = Tab:CreateButton({
+local Section                     = DevTab:CreateSection("Lag Challange! (EXTREME)")
+local Button                      = DevTab:CreateButton({
    Name                           = "Lag Challange",
    Callback                       = function()
    -- The function that takes place when the button is pressed
--- FRVR LOOP IF THIS THEN THAT
-while true do
-print("curious? Well thats what killed the cat!")
-    -- Wait for 0.2 seconds between each print to prevent instant thread crash
-    task.wait(0.0005)
-end
+   -- FRVR LOOP IF THIS THEN THAT
+   local count = 0  -- Initialize a counter variable
 
+   while true do
+       count = count + 1  -- Increment the counter by 1
+       print("Count: " .. count .. " - curious? Well that's what killed the cat!")
+       -- Wait for 0.02 seconds between each print to prevent instant thread crash
+       task.wait(0.02)
+   end
    end,
 })
 
@@ -232,10 +154,9 @@ end
 ---------------------------------------------------------------------------------------------------------------
 -- THEME CHOOSER \/
 ---------------------------------------------------------------------------------------------------------------
-local Section = Tab:CreateSection("Themes")
-
-local Dropdown = Tab:CreateDropdown({
-   Name = "THEME",
+local Section = MTab:CreateSection("Themes")
+local Dropdown = MTab:CreateDropdown({
+   Name = "THEMEz",
    Options = {
        "Default",     
        "AntiPhotosensitivity",
@@ -308,7 +229,7 @@ local Dropdown = Tab:CreateDropdown({
        Rayfield:Notify({
            Title = "Theme Applied",
            Content = "You have selected the " .. selectedTheme .. " theme!",
-           Duration = 2,  -- Show the notification for 2 seconds
+           Duration = 1,  -- Show the notification for 2 seconds
            Image = "map-pin",
        })
    end,
@@ -317,16 +238,20 @@ local Dropdown = Tab:CreateDropdown({
 ---------------------------------------------------------------------------------------------------------------
 --Gen
 ---------------------------------------------------------------------------------------------------------------
-local Section = Tab:CreateSection("Generator")
+local Section = UITab:CreateSection("Generator")
 
-local Button = Tab:CreateButton({
-   Name = "gen",
-   Callback = function()
-   -- The function that takes place when the button is pressed
-
-local p = game.Players.LocalPlayer
+local Toggle = UITab:CreateToggle({
+   Name = "Gen GuiSpawn",
+   CurrentValue = false,
+   Flag = "Toggle1011011gen", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+   -- The function that takes place when the toggle is pressed
+   
+   
+   
+   local p = game.Players.LocalPlayer
 local cd = false
-local cdT = 2.5
+local cdT = 1.1
 
 
 local CLICK_ID = "rbxassetid://0"
@@ -357,7 +282,7 @@ local function activateGenerator(b, o)
 
 
     b.Image = CLICK_ID
-    o.Color = Color3.new(1, 5, 9)
+    o.Color = Color3.new(1, 0, 0)
 end
 
 local function make()
@@ -419,15 +344,85 @@ if p.Character then
     task.wait(1)
     make()
 end
+---------------------------------------------------------------------------------------------------------------
    
    
-   ---------------------------------------------------------------------------------------------------------------
+   
+   -- The variable (Value) is a boolean on whether the toggle is true or false
    end,
 })
 
 
 
+
+
+---------------------------------------------------------------------------------------------------------------
+
+
+
+
+--[[
+---------------------------------------------------------------------------------------------------------------
+--Window maker /\
+---------------------------------------------------------------------------------------------------------------
+local MTab                  =   MainWindow:CreateTab   ("Center"              ,   "paw-print") -- Title, Image)
+local StunTab               =   MainWindow:CreateTab   ("Stun"                ,         "cog")
+local AimTab                =   MainWindow:CreateTab   ("Scope"               ,   "crosshair")
+local GenTab                =   MainWindow:CreateTab   ("Generators"          ,   "brain-cog")
+local UITab                 =   MainWindow:CreateTab   ("UI"                  ,          "tv")
+local SettingsTab           =   MainWindow:CreateTab   ("ConFig"              ,         "cog")
+local DevTab                =   MainWindow:CreateTab   ("UIfig&Status(s)"     ,   "container")
+local NonCatchedTabs        =   MainWindow:CreateTab   ("NonCatchedTabs"      ,   "container")
+local Tab                   =   NonCatchedTabs
+]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 --thy not pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
