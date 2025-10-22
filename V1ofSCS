@@ -30,7 +30,7 @@ if localPlayer then
     RBXGeneral:DisplaySystemMessage(string.format("Heyyy!!, %s! Your ShockCat UI is Ready!! ^^ and im so glad your here!! :D", localPlayer.DisplayName))
 end
 
---[[disabled until i can make it useful GAHHHH (greets other playerrs)
+--dis-disabled until i can make it useful GAHHHH (greets other playerrs)
 
 
 Players.PlayerAdded:Connect(function(player)
@@ -38,7 +38,7 @@ Players.PlayerAdded:Connect(function(player)
 RBXGeneral:DisplaySystemMessage(string.format("Welcome, %s, to the game!", player.DisplayName))
 end)
 
-]]--
+--]]--
 
 ---------------------------------------------------------------------------------------------------------------
 --Player greeter /\
@@ -67,7 +67,7 @@ local MainWindow            = Rayfield:CreateWindow({
    KeySettings              = {
       Title                 = "Welcome, " .. localPlayer.DisplayName .. "! It's so great to see you!! (≧∇≦)/",
       Subtitle              = "Your Key for ".. localPlayer.DisplayName .." is 1234",
-      Note                  = "No linkkey system for ".. localPlayer.DisplayName .." Since Still in v1", -- Use this to tell the user how to get a key
+      Note                  = "No linkkey/SaveKey system for ".. localPlayer.DisplayName .." Since Still in v1", -- Use this to tell the user how to get a key
       FileName              = "IamSkittenskeyfilenameishere", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
       SaveKey               = false, -- The user's key will be saved, but if you change the key, they will be unable to use your script
       GrabKeyFromSite       = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
@@ -78,15 +78,15 @@ local MainWindow            = Rayfield:CreateWindow({
 ---------------------------------------------------------------------------------------------------------------
 --Window maker /\
 ---------------------------------------------------------------------------------------------------------------
-local MTab              =   MainWindow:CreateTab   ("Center"              ,   "paw-print") -- Title, Image)
-local StunTab           =   MainWindow:CreateTab   ("Stun"                ,         "cog")
-local AimTab            =   MainWindow:CreateTab   ("Scope"               ,   "crosshair")
-local GenTab            =   MainWindow:CreateTab   ("Generators"          ,   "brain-cog")
-local UITab             =   MainWindow:CreateTab   ("UI"                  ,          "tv")
-local SettingsTab       =   MainWindow:CreateTab   ("ConFig"              ,         "cog")
-local DevTab            =   MainWindow:CreateTab   ("UIfig&Status(s)"     ,   "container")
-local NonCatchedTabs    =   MainWindow:CreateTab   ("NonCatchedTabs"      ,   "container")
-local Tab               =   NonCatchedTabs
+local MTab                  =   MainWindow:CreateTab   ("Center"              ,   "paw-print") -- Title, Image)
+local StunTab               =   MainWindow:CreateTab   ("Stun"                ,         "cog")
+local AimTab                =   MainWindow:CreateTab   ("Scope"               ,   "crosshair")
+local GenTab                =   MainWindow:CreateTab   ("Generators"          ,   "brain-cog")
+local UITab                 =   MainWindow:CreateTab   ("UI"                  ,          "tv")
+local SettingsTab           =   MainWindow:CreateTab   ("ConFig"              ,         "cog")
+local DevTab                =   MainWindow:CreateTab   ("UIfig&Status(s)"     ,   "container")
+local NonCatchedTabs        =   MainWindow:CreateTab   ("NonCatchedTabs"      ,   "container")
+local Tab                   =   NonCatchedTabs
 
 
 --[[--
@@ -104,58 +104,30 @@ local DevTab                      =   nil
 ---------------------------------------------------------------------------------------------------------------
 --Tabs /\
 ---------------------------------------------------------------------------------------------------------------
-local Section = Tab:CreateSection("Quick msg")
-
-local Button = Tab:CreateButton({
-   Name = "Devnote",
-   Callback = function()
-  Rayfield:Notify({
-   Title = "A note?",
-   Content = ([[
-Hello! i have something for you...
-no matter what you are going 
-through,it will pass.
-hold on tight! show 
-the world what you’re worth. 
-never give up! and remember,
-no one is perfect,
-not even you, but 
-you know what you are?
-DESERVING OF LOVE
-
-
-! ✩♡⸜(｡˃ ᵕ ˂ )⸝♡
-              ]]),
-   Duration = 6.5,
-   Image = "heart-crack",
-})
-   end,
-})
 ---------------------------------------------------------------------------------------------------------------
 -- KickThySelf 
 --     \/
 ---------------------------------------------------------------------------------------------------------------
 
-local Section = Tab:CreateSection("Kick yourself?")
-
-local Button = Tab:CreateButton({
-   Name = "Kick?",
-   Callback = function()
+local Section            = Tab:CreateSection("Kick?")
+local Button             = Tab:CreateButton({
+   Name                  = "Kick?",
+   Callback              = function()
    -- The function that takes place when the button is pressed
-   game.Players.LocalPlayer:Kick("You have been banned from this Experience.")
+   game.Players.LocalPlayer:Kick( " " ..player.DisplayName.. "has been banned from this Experience.")
    end,
 })
 ---------------------------------------------------------------------------------------------------------------
 -- SPOOFING LOGIC
 ---------------------------------------------------------------------------------------------------------------
 
-local SpoofDeviceSelection = "PC" -- Default selection
-local SpoofEnabled = false -- Controls the persistent loop
+local SpoofDeviceSelection              = "PC" -- Default selection
+local SpoofEnabled                      = false -- Controls the persistent loop
 
 -- Function to fire the remote event with the selected device
 local function ApplySpoof(device)
     -- The device must be one of the expected types.
-    if device and (device == "Console" or device == "PC" or device == "Mobile") then
+    if device and (device               == "Console" or device == "PC" or device == "Mobile") then
         -- Safely attempt to fire the remote event
         pcall(function() 
             -- Assuming Network:FireServerConnection(MethodName, Type, Argument) is the correct API
@@ -178,35 +150,35 @@ end)
 -- SPOOFING UI
 ---------------------------------------------------------------------------------------------------------------
 
-local SpoofSection = Tab:CreateSection("Device Spoofing (Spoof)")
+local Section = Tab:CreateSection("Device Spoofing (Spoof)")
 
 -- 1. Spoof Enable Toggle (recommended for better control)
 SpoofSection:CreateToggle({
-    Name = "Enable Device Spoofing",
-    CurrentValue = false,
-    Flag = "DeviceSpoofToggleFlag",
-    Callback = function(state)
-        SpoofEnabled = state
-        if state then
-             Rayfield:Notify({
-                Title = "Spoofing Active",
-                Content = "Spoofing enabled for: " .. SpoofDeviceSelection,
-                Duration = 0.4,
-                Image = "map-pin",
+    Name                               = "Enable Device Spoofing",
+    CurrentValue                       = false,
+    Flag                               = "DeviceSpoofToggleFlag",
+    Callback                           = function(state)
+    SpoofEnabled                       = state
+    if state then
+    Rayfield:Notify({
+    Title                              = "Spoofing Active",
+    Content                            = "Spoofing enabled for: " .. SpoofDeviceSelection .. "! ^.^",
+    Duration                           = 0.4,
+    Image                              = "map-pin",
             })
         else
             Rayfield:Notify({
-                Title = "Spoofing Disabled",
-                Content = "Spoofing loop stopped.",
-                Duration = 0.4,
-                Image = "map-pin",
+                Title                  = "Spoofing Disabled",
+                Content                = "Spoofing loop stopped for" .. SpoofDeviceSelection .. "! >.<",
+                Duration               = 0.4,
+                Image                  = "map-pin",
             })
         end
     end,
 })
 
 -- 2. Spoof Device Dropdown
-SpoofSection:CreateDropdown({
+    Section:CreateDropdown({
     Name = "Spoofed Device Selection",
     Options = {
       "Console",
@@ -214,8 +186,6 @@ SpoofSection:CreateDropdown({
       "Mobile",
       "Pick one!"
     },
-    
-    
     CurrentOption = {"Pick one!"}, -- Set a non-functional default option
     MultipleOptions = false,
     Flag = "Dropdown1forspoofing-ofthydevice",
@@ -241,52 +211,88 @@ SpoofSection:CreateDropdown({
 ---------------------------------------------------------------------------------------------------------------
 --Lagmachine \/
 ---------------------------------------------------------------------------------------------------------------
-local Section = Tab:CreateSection("Lag Challange!")
+local Section                     = Tab:CreateSection("Lag Challange! (EXTREME)")
 
-local Button = Tab:CreateButton({
-   Name = "Button Example",
-   Callback = function()
+local Button                      = Tab:CreateButton({
+   Name                           = "Button Example",
+   Callback                       = function()
    -- The function that takes place when the button is pressed
 -- FRVR LOOP IF THIS THEN THAT
 while true do
 print("curious? Well thats what killed the cat!")
     -- Wait for 0.2 seconds between each print to prevent instant thread crash
-    task.wait(0.005)
+    task.wait(0.0005)
 end
 
    end,
 })
+
+
+
 ---------------------------------------------------------------------------------------------------------------
---THEMES CHOOSER \/
+-- THEME CHOOSER \/
 ---------------------------------------------------------------------------------------------------------------
--- Create the LONG space by adding several empty sections
-Tab:CreateSection(" ")
-Tab:CreateSection(" ")
-
-
-
-
--- THEME CHANGER DROPDOWN
-local ThemeSection = Tab:CreateSection("Interface Settings")
+local Section = Tab:CreateSection("Interface Settings")
 
 local Dropdown = Tab:CreateDropdown({
     Name = "Themes ^w^",
-    -- Options must be the exact theme identifier strings.
     Options = {
-        "Default",
-        "FIRE",
-        "AshLand",
-        "TOXIC",
-        "STONE",
-        "RED",
-        "BLUE",
-        "WHITE",
-        "DARK_BLUE_WHITE",
-        "BLACK",
-        "PINK",
-        "OldFilm",
-        "AntiPhotosensitivity",
-        "GLITCHED",
+        -- All custom & Rayfield themes, alphabetically sorted
+       "AntiPhotosensitivity",
+                                 "AshLand",
+                                "BLACK",
+                               "BLUE",
+                              "DARK_BLUE_WHITE",
+                             "Default",
+                            "FIRE",
+                           "GLITCHED",
+                          "OldFilm",
+                         "PINK",
+                        "RED",
+                       "STONE",
+                      "TOXIC",
+                     "WHITE",
+                    "CRIMSON",
+                   "Amethyst",
+                  "AmberGlow",
+                 "Ashlands",
+                "Ashlands_Desaturated",
+               "BlueDark",
+              "BlueDark_Desaturated",
+             "Green",
+            "GreenDark",
+           "GreenDark_Desaturated",
+          "Light",
+         "Matrix",
+        "NeonBlue",
+         "NeonBlue_Desaturated",
+          "Ocean",
+           "Photosensitivity",
+            "Photosensitivity_Desaturated",
+             "Purple",
+              "Purple_Desaturated",
+               "Purpur",
+                "Purpur_Desaturated",
+                 "RedDark",
+                  "RedDark_Desaturated",
+                   "Toxic",
+                    "Toxic_Desaturated",
+                     "USA",
+                      "USA_Desaturated",
+                       "FIRE",
+                      "STONE",
+                    "RED",
+                    "BLUE",
+                  "WHITE",
+                  "DARK_BLUE_WHITE",
+                "BLACK",
+                "PINK",
+              "OldFilm",
+              "AntiPhotosensitivity",
+            "GLITCHED",
+            "TOXIC",
+          "AshLand",
+          "CRIMSON_Desaturated"
     },
     CurrentOption = {"Default"},
     MultipleOptions = false,
@@ -296,12 +302,8 @@ local Dropdown = Tab:CreateDropdown({
         local selectedTheme = Options[1]
         -- Apply the selected theme
         Rayfield:ApplyTheme(selectedTheme)
-        
-        -- Set the status for the continuous glitch loop
-        -- The loop will only call updateGlitchedTheme() if the current theme is GLITCHED
-        is_glitch_active = (selectedTheme == "GLITCHED")
-    end,
-})
+    end
+      })
 ---------------------------------------------------------------------------------------------------------------
 --Gen
 ---------------------------------------------------------------------------------------------------------------
@@ -344,7 +346,7 @@ local function activateGenerator(b, o)
 
 
     b.Image = CLICK_ID
-    o.Color = Color3.new(1, 0, 0)
+    o.Color = Color3.new(1, 5, 9)
 end
 
 local function make()
