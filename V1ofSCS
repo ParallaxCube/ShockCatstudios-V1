@@ -17,31 +17,8 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/ParallaxCube/ShockCat
 
 
 local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/ParallaxCube/v1scs/refs/heads/main/v1scs'))()
-
-Rayfield:Notify({
-   Title = "v1.17",
-   Content = "So many bugs and hours",
-   Duration = 3,
-   Image = 4483362458,
-})
 ---------------------------------------------------------------------------------------------------------------
 --Rayfield top /\
----------------------------------------------------------------------------------------------------------------
---ALL THE LOCALS
----------------------------------------------------------------------------------------------------------------
-local SpoofDeviceSelection              = "PC" -- Default selection
-local SpoofEnabled                      = false -- Controls the persistent loop
-local Players = game:GetService("Players")
-local TextChatService = game:GetService("TextChatService")
--- Define the LocalPlayer right away so we can use their name
-local localPlayer = Players.LocalPlayer 
-local RBXGeneral = TextChatService:WaitForChild("TextChannels"):WaitForChild("RBXGeneral")
-
--- 1. Greet the local player who is running the script
-if localPlayer then
-    RBXGeneral:DisplaySystemMessage(string.format("Heyyy!!, %s! Your UI For ShockCatStudio's is Ready and fired up for your enjoyment if you have any bugs please visit my horrible discord server!!", localPlayer.DisplayName))
-end
-
 ---------------------------------------------------------------------------------------------------------------
 
 --[[dis-disabled until i can make it useful GAHHHH (greets other playerrs)
@@ -118,6 +95,29 @@ local DevTab                      =   nil
 ---------------------------------------------------------------------------------------------------------------
 --Tabs /\
 ---------------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------------------
+--ALL THE LOCALS
+---------------------------------------------------------------------------------------------------------------
+local SpoofDeviceSelection              = "PC" -- Default selection
+local SpoofEnabled                      = false -- Controls the persistent loop
+local Players = game:GetService("Players")
+local TextChatService = game:GetService("TextChatService")
+-- Define the LocalPlayer right away so we can use their name
+local localPlayer = Players.LocalPlayer 
+local RBXGeneral = TextChatService:WaitForChild("TextChannels"):WaitForChild("RBXGeneral")
+
+-- 1. Greet the local player who is running the script
+if localPlayer then
+    RBXGeneral:DisplaySystemMessage(string.format("Heyyy!!, %s! Your UI For ShockCatStudio's is Ready and fired up for your enjoyment if you have any bugs please visit my horrible discord server!!", localPlayer.DisplayName))
+end
+
+---------------------------------------------------------------------------------------------------------------
+
+
+-- nothing in here lol
+
+
 ---------------------------------------------------------------------------------------------------------------
 -- KickThySelf 
 --     \/
