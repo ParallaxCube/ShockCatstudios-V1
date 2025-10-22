@@ -17,6 +17,13 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/ParallaxCube/ShockCat
 
 
 local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/ParallaxCube/v1scs/refs/heads/main/v1scs'))()
+
+Rayfield:Notify({
+   Title = "v1.17",
+   Content = "So many bugs and hours",
+   Duration = 3,
+   Image = 4483362458,
+})
 ---------------------------------------------------------------------------------------------------------------
 --Rayfield top /\
 ---------------------------------------------------------------------------------------------------------------
