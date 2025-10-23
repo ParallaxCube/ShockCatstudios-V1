@@ -14,58 +14,45 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/ParallaxCube/ShockCat
 
 
 --]]--
-
-
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+---------------------------------------------------------------------------------------------------------------
+--loadstring above
+---------------------------------------------------------------------------------------------------------------
+local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/ParallaxCube/v1scs/0c4a0701ed8b045aee48b7103fbb9d7fcabba4a8/v1scs'))()
 ---------------------------------------------------------------------------------------------------------------
 --Rayfield top /\
 ---------------------------------------------------------------------------------------------------------------
-
---[[dis-disabled until i can make it useful GAHHHH (greets other playerrs)
-
-
-Players.PlayerAdded:Connect(function(player)
--- Display a system message in the general chat channel
-RBXGeneral:DisplaySystemMessage(string.format("Welcome, %s, to the game!", player.DisplayName))
-end)
-
---]]--
-
+  local Players = game:GetService("Players")
+local TextChatService = game:GetService("TextChatService")
+-- Define the LocalPlayer right away so we can use their name
+local localPlayer = Players.LocalPlayer 
+local RBXGeneral = TextChatService:WaitForChild("TextChannels"):WaitForChild("RBXGeneral")
+-- 1. Greet the local player who is running the script
+if localPlayer then
+    RBXGeneral:DisplaySystemMessage(string.format("Heyyy!!, %s! Your 'ShockCatStudio v1' UI is Ready!! ^^", localPlayer.DisplayName))
+end
 ---------------------------------------------------------------------------------------------------------------
---Player greeter /\
+--Player greeter /\ start ref
 ---------------------------------------------------------------------------------------------------------------
 local MainWindow            = Rayfield:CreateWindow({
-  
    Name                     = "ShockCatStudio",
-   
    Icon                     = "paw-print", -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   
    LoadingTitle             = "Welcome, " .. localPlayer.DisplayName .. "!",
-   
    LoadingSubtitle          = "by IamSkitten",
-   
    ShowText                 = " ".. localPlayer.DisplayName .."'s UI!", -- for mobile users to unhide rayfield, change if you'd like
-   
    Theme                    = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
-   
    ToggleUIKeybind          = "K", -- The keybind to toggle the UI visibility (string like "K" or Enum.KeyCode)
-   
    DisableRayfieldPrompts   = true,
-   
    DisableBuildWarnings     = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
-   
    ConfigurationSaving      = {
       Enabled               = true,
       FolderName            = "ShockCatStudiosIamSkittenFolderFile", -- Create a custom folder for your hub/game
       FileName              = "ShockCatStudiosIamSkittenFolder"
    },
- 
    Discord                  = {
       Enabled               = false, -- Prompt the user to join your Discord server if their executor supports it
       Invite                = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ ABCD would be ABCD
       RememberJoins         = true -- Set this to false to make them join the discord every time they load it up
    }, 
- 
    KeySystem                = true, -- Set this to true to use our key system
    
    KeySettings              = {
@@ -78,19 +65,18 @@ local MainWindow            = Rayfield:CreateWindow({
       Key                   = {"1234"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
    }
 })
-
----------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------https://raw.githubusercontent.com/ParallaxCube/v1scs/0c4a0701ed8b045aee48b7103fbb9d7fcabba4a8/v1scs---------------------
 --Window maker /\
 ---------------------------------------------------------------------------------------------------------------
-local MTab                  =   MainWindow:CreateTab   ("Center"              ,   "paw-print") -- Title, Image)
+local CenterTab             =   MainWindow:CreateTab   ("Center"              ,   "paw-print") -- Title, Image)
 local StunTab               =   MainWindow:CreateTab   ("Stun"                ,         "cog")
-local AimTab                =   MainWindow:CreateTab   ("Scope"               ,   "crosshair")
+local AimbotTab             =   MainWindow:CreateTab   ("Scope"               ,   "crosshair")
 local GenTab                =   MainWindow:CreateTab   ("Generators"          ,   "brain-cog")
-local UITab                 =   MainWindow:CreateTab   ("UI"                  ,          "tv")
-local SettingsTab           =   MainWindow:CreateTab   ("ConFig"              ,         "cog")
-local DevTab                =   MainWindow:CreateTab   ("UIfig&Status(s)"     ,   "container")
-local NonCatchedTabs        =   MainWindow:CreateTab   ("NonCatchedTabs"      ,   "container")
-local Tab                   =   NonCatchedTabs
+local uiTab                 =   MainWindow:CreateTab   ("UI"                  ,          "tv")
+local cogTab                =   MainWindow:CreateTab   ("ConFig"              ,         "cog")
+local devTab                =   MainWindow:CreateTab   ("UIfig&Status(s)"     ,   "container")
+local ncTabs                =   MainWindow:CreateTab   ("NonCatchedTabs"      ,   "container")
+local Tab                   =   ncTabs
 
 
 --[[--
@@ -109,83 +95,16 @@ local DevTab                      =   nil
 --Tabs /\
 ---------------------------------------------------------------------------------------------------------------
 
----------------------------------------------------------------------------------------------------------------
---ALL THE LOCALS
----------------------------------------------------------------------------------------------------------------
-local Players = game:GetService("Players")
-local TextChatService = game:GetService("TextChatService")
--- Define the LocalPlayer right away so we can use their name
-local localPlayer = Players.LocalPlayer 
-local RBXGeneral = TextChatService:WaitForChild("TextChannels"):WaitForChild("RBXGeneral")
+-- BOO!
 
--- 1. Greet the local player who is running the script
-if localPlayer then
-    RBXGeneral:DisplaySystemMessage(string.format("Heyyy!!, %s! Your UI For ShockCatStudio's is Ready and fired up for your enjoyment if you have any bugs please visit my horrible discord server!!", localPlayer.DisplayName))
-end
-
----------------------------------------------------------------------------------------------------------------
-
-
--- nothing in here lol
-
-
----------------------------------------------------------------------------------------------------------------
--- KickThySelf 
---     \/
----------------------------------------------------------------------------------------------------------------
-
-local Section            = MTab:CreateSection("Kick?")
-local Button             = MTab:CreateButton({
-   Name                  = "Kick?",
-   Callback              = function()
-   -- The function that takes place when the button is pressed
-   game.Players.LocalPlayer:Kick("you have been banned from this Experience.")
-   end,
-})
----------------------------------------------------------------------------------------------------------------
--- SPOOFING LOGIC
----------------------------------------------------------------------------------------------------------------
-local Section = DevTab:CreateSection("Spoofer v1")
-
----------------------------------------------------------------------------------------------------------------
---Lagmachine \/
----------------------------------------------------------------------------------------------------------------
-local Section = DevTab:CreateSection("Lag Challange! (EXTREME)")
-local lagEnabled = false -- New control variable
-local lagThread = nil   -- New thread reference
-
-local Toggle = DevTab:CreateToggle({
-    Name = "Lag Challange (Toggle to Stop)",
-    CurrentValue = false,
-    Flag = "LagChallengeToggle", -- Unique flag
-    Callback = function(Value)
-        lagEnabled = Value -- Update the control variable based on the toggle state
-
-        if lagEnabled then
-            -- START the loop in a new thread
-            lagThread = task.spawn(function()
-                local count = 0
-                while lagEnabled do -- The loop now checks the control variable
-                    count = count + 1
-                    print("Count: " .. count .. " - curious? Well that's what killed the cat!")
-                    task.wait(0.02)
-                end
-            end)
-        elseif lagThread then
-            -- STOP the loop by cancelling the running thread
-            task.cancel(lagThread)
-            lagThread = nil -- Clear the thread reference
-            print("Lag Challange Stopped.")
-        end
-    end,
-})
 ---------------------------------------------------------------------------------------------------------------
 -- THEME CHOOSER \/
 ---------------------------------------------------------------------------------------------------------------
-local Section = MTab:CreateSection("Themes")
-local Dropdown = MTab:CreateDropdown({
+local Section = DevTab:CreateSection("theme")
+local Dropdown = DevTab:CreateDropdown({
     Name = "THEMEz",
     Options = {
+        "Default",
         "BLUE",
         "RED",
         "USA",
@@ -240,158 +159,6 @@ local Dropdown = MTab:CreateDropdown({
 ---------------------------------------------------------------------------------------------------------------
 --Gen
 ---------------------------------------------------------------------------------------------------------------
-local Section = UITab:CreateSection("Generator")
-
-local Toggle = UITab:CreateToggle({
-   Name = "Gen GuiSpawn",
-   CurrentValue = false,
-   Flag = "Toggle1011011gen", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Value)
-   -- The function that takes place when the toggle is pressed
-   
-   
-   
-   local p = game.Players.LocalPlayer
-local cd = false
-local cdT = 1.1
-
-
-local CLICK_ID = "rbxassetid://0"
-local WAIT_ID = "rbxassetid://10620016085"
-
-local function activateGenerator(b, o)
-    if cd then return end
-    cd = true
-
-
-    b.Image = WAIT_ID
-    o.Color = Color3.fromRGB(150, 0, 0)
-
-    task.spawn(function()
-        local m = workspace:FindFirstChild("Map")
-        if m and m:FindFirstChild("Ingame") and m.Ingame:FindFirstChild("Map") then
-            for _, v in pairs(m.Ingame.Map:GetChildren()) do
-                if v:IsA("Model") and v.Name == "Generator" then
-                    local r = v:FindFirstChild("Remotes") and v.Remotes:FindFirstChild("RE")
-                    if r then r:FireServer() end
-                end
-            end
-        end
-    end)
-
-    task.wait(cdT)
-    cd = false
-
-
-    b.Image = CLICK_ID
-    o.Color = Color3.new(1, 0, 0)
-end
-
-local function make()
-    if p.PlayerGui:FindFirstChild("GeneratorGUI") then return end
-    local g = Instance.new("ScreenGui", p:WaitForChild("PlayerGui"))
-    g.Name = "GeneratorGUI"
-    g.ResetOnSpawn = false
-
-    local b = Instance.new("ImageButton", g)
-    b.Image = CLICK_ID
-    b.Size = UDim2.new(0, 40, 0, 40)
-    b.BackgroundColor3 = Color3.new(0, 0, 0)
-    b.Active = true
-    b.Draggable = true
-
-    local corner = Instance.new("UICorner", b)
-    corner.CornerRadius = UDim.new(0, 20)
-
-    local o = Instance.new("UIStroke", b)
-    o.Color = Color3.new(1, 0, 0)
-    o.Thickness = 3
-
-    local pos = p.PlayerGui:GetAttribute("ButtonPos")
-    if pos then
-        b.Position = UDim2.new(pos.XScale, pos.XOffset, pos.YScale, pos.YOffset)
-    else
-        b.Position = UDim2.new(0, 100, 0, 100)
-    end
-
-    b:GetPropertyChangedSignal("Position"):Connect(function()
-        p.PlayerGui:SetAttribute("ButtonPos", {
-            XScale = b.Position.X.Scale,
-            XOffset = b.Position.X.Offset,
-            YScale = b.Position.Y.Scale,
-            YOffset = b.Position.Y.Offset
-        })
-    end)
-
-
-    b.MouseButton1Click:Connect(function()
-        activateGenerator(b, o)
-    end)
-
-
-    game:GetService("UserInputService").InputBegan:Connect(function(input, processed)
-        if processed then return end
-        if input.KeyCode == Enum.KeyCode.Z then
-            activateGenerator(b, o)
-        end
-    end)
-end
-
-p.CharacterAdded:Connect(function()
-    task.wait(1)
-    make()
-end)
-
-if p.Character then
-    task.wait(1)
-    make()
-end
----------------------------------------------------------------------------------------------------------------
-   
-   
-   
-   -- The variable (Value) is a boolean on whether the toggle is true or false
-   end,
-})
-
-
-
-
-
----------------------------------------------------------------------------------------------------------------
-
-
-
-
---[[
----------------------------------------------------------------------------------------------------------------
---Window maker /\
----------------------------------------------------------------------------------------------------------------
-local MTab                  =   MainWindow:CreateTab   ("Center"              ,   "paw-print") -- Title, Image)
-local StunTab               =   MainWindow:CreateTab   ("Stun"                ,         "cog")
-local AimTab                =   MainWindow:CreateTab   ("Scope"               ,   "crosshair")
-local GenTab                =   MainWindow:CreateTab   ("Generators"          ,   "brain-cog")
-local UITab                 =   MainWindow:CreateTab   ("UI"                  ,          "tv")
-local SettingsTab           =   MainWindow:CreateTab   ("ConFig"              ,         "cog")
-local DevTab                =   MainWindow:CreateTab   ("UIfig&Status(s)"     ,   "container")
-local NonCatchedTabs        =   MainWindow:CreateTab   ("NonCatchedTabs"      ,   "container")
-local Tab                   =   NonCatchedTabs
-]]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
