@@ -26,7 +26,111 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 
 
--- // 🟩 THEME PACK SECTION 🟩
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------------------------
+--Theme theme above 
+
+
+
+
+---------------------------------------------------------------------------------------------------------------
+  local Players = game:GetService("Players")
+local TextChatService = game:GetService("TextChatService")
+-- Define the LocalPlayer right away so we can use their name
+local localPlayer = Players.LocalPlayer 
+local RBXGeneral = TextChatService:WaitForChild("TextChannels"):WaitForChild("RBXGeneral")
+-- 1. Greet the local player who is running the script
+if localPlayer then
+    RBXGeneral:DisplaySystemMessage(string.format("Heyyy!!, %s! Your 'ShockCatStudio v1' UI is Ready!! ^^", localPlayer.DisplayName))
+end
+---------------------------------------------------------------------------------------------------------------
+--Player greeter /\ start ref
+---------------------------------------------------------------------------------------------------------------
+local MainWindow            = Rayfield:CreateWindow({
+   Name                     = "ShockCatStudio",
+   Icon                     = "paw-print", -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
+   LoadingTitle             = "Welcome, " .. localPlayer.DisplayName .. "!",
+   LoadingSubtitle          = "by IamSkitten",
+   ShowText                 = " ".. localPlayer.DisplayName .."'s UI!", -- for mobile users to unhide rayfield, change if you'd like
+   Theme                    = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
+   ToggleUIKeybind          = "K", -- The keybind to toggle the UI visibility (string like "K" or Enum.KeyCode)
+   DisableRayfieldPrompts   = true,
+   DisableBuildWarnings     = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
+   ConfigurationSaving      = {
+      Enabled               = true,
+      FolderName            = "ShockCatStudiosIamSkittenFolderFile", -- Create a custom folder for your hub/game
+      FileName              = "ShockCatStudiosIamSkittenFolder"
+   },
+   Discord                  = {
+      Enabled               = false, -- Prompt the user to join your Discord server if their executor supports it
+      Invite                = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ ABCD would be ABCD
+      RememberJoins         = true -- Set this to false to make them join the discord every time they load it up
+   }, 
+   KeySystem                = true, -- Set this to true to use our key system
+   
+   KeySettings              = {
+      Title                 = "Welcome, " .. localPlayer.DisplayName .. "! It's so great to see you!! (≧∇≦)/",
+      Subtitle              = "Your Key for ".. localPlayer.DisplayName .." is 1234",
+      Note                  = "No linkkey/SaveKey system for ".. localPlayer.DisplayName .." Since Still in v1", -- Use this to tell the user how to get a key
+      FileName              = "IamSkittenskeyfilenameishere", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+      SaveKey               = false, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      GrabKeyFromSite       = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key                   = {"1234"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+   }
+})
+------------------------------------------------------------------------------------------https://raw.githubusercontent.com/ParallaxCube/v1scs/0c4a0701ed8b045aee48b7103fbb9d7fcabba4a8/v1scs---------------------
+--Window maker /\
+---------------------------------------------------------------------------------------------------------------
+local CenterTab             =   MainWindow:CreateTab   ("Center"              ,   "paw-print") -- Title, Image)
+local StunTab               =   MainWindow:CreateTab   ("Stun"                ,         "cog")
+local AimbotTab             =   MainWindow:CreateTab   ("Scope"               ,   "crosshair")
+local GenTab                =   MainWindow:CreateTab   ("Generators"          ,   "brain-cog")
+local uiTab                 =   MainWindow:CreateTab   ("UI"                  ,          "tv")
+local cogTab                =   MainWindow:CreateTab   ("ConFig"              ,         "cog")
+local devTab                =   MainWindow:CreateTab   ("UIfig&Status(s)"     ,   "container")
+local ncTabs                =   MainWindow:CreateTab   ("NonCatchedTabs"      ,   "container")
+local Tab                   =   ncTabs
+
+
+--[[--
+local Tab                         =   nil    
+local EspTab                      =   nil
+local StunTab                     =   nil
+local AimTab                      =   nil
+local GenTab                      =   nil
+local UITab                       =   nil
+local SettingsTab                 =   nil
+local DevTab                      =   nil
+--]]--
+
+
+---------------------------------------------------------------------------------------------------------------
+--Tabs /\
+---------------------------------------------------------------------------------------------------------------
+
+-- BOO!
+
+---------------------------------------------------------------------------------------------------------------
+-- THEME CHOOSER \/
+---------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
+-- Theme Loader Setup
+---------------------------------------------------------------------------------------------------------------
+
+-- Create section + dropdown
+local Section = DevTab:CreateSection("theme")
+
+local Dropdown = DevTab:CreateDropdown({
+    Name = "THEMEz",
+    Options = {
+        -- // 🟩 THEME PACK SECTION 🟩
 -- Paste your huge theme pack table right below this line ↓
 -- Example:
 -- Themes = {
@@ -1065,145 +1169,6 @@ Amethyst = {
 
 }
 
-
-
-
-
-
-
-
----------------------------------------------------------------------------------------------------------------
---Theme theme above 
-
-
-
-
----------------------------------------------------------------------------------------------------------------
-  local Players = game:GetService("Players")
-local TextChatService = game:GetService("TextChatService")
--- Define the LocalPlayer right away so we can use their name
-local localPlayer = Players.LocalPlayer 
-local RBXGeneral = TextChatService:WaitForChild("TextChannels"):WaitForChild("RBXGeneral")
--- 1. Greet the local player who is running the script
-if localPlayer then
-    RBXGeneral:DisplaySystemMessage(string.format("Heyyy!!, %s! Your 'ShockCatStudio v1' UI is Ready!! ^^", localPlayer.DisplayName))
-end
----------------------------------------------------------------------------------------------------------------
---Player greeter /\ start ref
----------------------------------------------------------------------------------------------------------------
-local MainWindow            = Rayfield:CreateWindow({
-   Name                     = "ShockCatStudio",
-   Icon                     = "paw-print", -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle             = "Welcome, " .. localPlayer.DisplayName .. "!",
-   LoadingSubtitle          = "by IamSkitten",
-   ShowText                 = " ".. localPlayer.DisplayName .."'s UI!", -- for mobile users to unhide rayfield, change if you'd like
-   Theme                    = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
-   ToggleUIKeybind          = "K", -- The keybind to toggle the UI visibility (string like "K" or Enum.KeyCode)
-   DisableRayfieldPrompts   = true,
-   DisableBuildWarnings     = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
-   ConfigurationSaving      = {
-      Enabled               = true,
-      FolderName            = "ShockCatStudiosIamSkittenFolderFile", -- Create a custom folder for your hub/game
-      FileName              = "ShockCatStudiosIamSkittenFolder"
-   },
-   Discord                  = {
-      Enabled               = false, -- Prompt the user to join your Discord server if their executor supports it
-      Invite                = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ ABCD would be ABCD
-      RememberJoins         = true -- Set this to false to make them join the discord every time they load it up
-   }, 
-   KeySystem                = true, -- Set this to true to use our key system
-   
-   KeySettings              = {
-      Title                 = "Welcome, " .. localPlayer.DisplayName .. "! It's so great to see you!! (≧∇≦)/",
-      Subtitle              = "Your Key for ".. localPlayer.DisplayName .." is 1234",
-      Note                  = "No linkkey/SaveKey system for ".. localPlayer.DisplayName .." Since Still in v1", -- Use this to tell the user how to get a key
-      FileName              = "IamSkittenskeyfilenameishere", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
-      SaveKey               = false, -- The user's key will be saved, but if you change the key, they will be unable to use your script
-      GrabKeyFromSite       = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
-      Key                   = {"1234"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
-   }
-})
-------------------------------------------------------------------------------------------https://raw.githubusercontent.com/ParallaxCube/v1scs/0c4a0701ed8b045aee48b7103fbb9d7fcabba4a8/v1scs---------------------
---Window maker /\
----------------------------------------------------------------------------------------------------------------
-local CenterTab             =   MainWindow:CreateTab   ("Center"              ,   "paw-print") -- Title, Image)
-local StunTab               =   MainWindow:CreateTab   ("Stun"                ,         "cog")
-local AimbotTab             =   MainWindow:CreateTab   ("Scope"               ,   "crosshair")
-local GenTab                =   MainWindow:CreateTab   ("Generators"          ,   "brain-cog")
-local uiTab                 =   MainWindow:CreateTab   ("UI"                  ,          "tv")
-local cogTab                =   MainWindow:CreateTab   ("ConFig"              ,         "cog")
-local devTab                =   MainWindow:CreateTab   ("UIfig&Status(s)"     ,   "container")
-local ncTabs                =   MainWindow:CreateTab   ("NonCatchedTabs"      ,   "container")
-local Tab                   =   ncTabs
-
-
---[[--
-local Tab                         =   nil    
-local EspTab                      =   nil
-local StunTab                     =   nil
-local AimTab                      =   nil
-local GenTab                      =   nil
-local UITab                       =   nil
-local SettingsTab                 =   nil
-local DevTab                      =   nil
---]]--
-
-
----------------------------------------------------------------------------------------------------------------
---Tabs /\
----------------------------------------------------------------------------------------------------------------
-
--- BOO!
-
----------------------------------------------------------------------------------------------------------------
--- THEME CHOOSER \/
----------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------
--- Theme Loader Setup
----------------------------------------------------------------------------------------------------------------
-
--- Create section + dropdown
-local Section = DevTab:CreateSection("theme")
-
-local Dropdown = DevTab:CreateDropdown({
-    Name = "THEMEz",
-    Options = {
-        "Default",
-        "BLUE",
-        "RED",
-        "USA",
-        "PINK",
-        "FIRE",
-        "BLACK",
-        "STONE",
-        "WHITE",
-        "Light",
-        "Ocean",
-        "Matrix",
-        "OldFilm",
-        "Purple",
-        "Purpur",
-        "Toxic",
-        "Green",
-        "RedDark",
-        "NeonBlue",
-        "AshLand",
-        "CRIMSON",
-        "GreenDark",
-        "Ashlands",
-        "Purpur_Desaturated",
-        "RedDark_Desaturated",
-        "BlueDark",
-        "NeonBlue_Desaturated",
-        "GreenDark_Desaturated",
-        "CRIMSON_Desaturated",
-        "AntiPhotosensitivity",
-        "Photosensitivity",
-        "Photosensitivity_Desaturated",
-        "DARK_BLUE_WHITE",
-        "AmberGlow",
-        "GLITCHED",
-        "Amethyst"
     },
     CurrentOption = {"Default"},
     MultipleOptions = false,
