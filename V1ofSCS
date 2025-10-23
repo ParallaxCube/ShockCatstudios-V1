@@ -2,23 +2,44 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 ----------------------------------------------------------------------------
 --rayfield /\
 ----------------------------------------------------------------------------
+local Players = game:GetService("Players")
+local TextChatService = game:GetService("TextChatService")
+-- Define the LocalPlayer right away so we can use their name
+local localPlayer = Players.LocalPlayer 
+local RBXGeneral = TextChatService:WaitForChild("TextChannels"):WaitForChild("RBXGeneral")
+-- 1. Greet the local player who is running the script
+if localPlayer then
+    RBXGeneral:DisplaySystemMessage(string.format("Heyyy!!, %s! Your ShockCatStudio UI is Ready ", localPlayer.DisplayName "!"))
+end
+
+--[[disabled until i can make it useful 
+-- Existing logic to greet other players when they join
+Players.PlayerAdded:Connect(function(player)
+-- Display a system message in the general chat channel
+RBXGeneral:DisplaySystemMessage(string.format("Welcome, %s, to the game!", player.DisplayName))
+end)
+
+]]--
+---------------------------------------------------------------------------------------------------------------
+--Player greeter /\
+---------------------------------------------------------------------------------------------------------------
 local MainWindow = Rayfield:CreateWindow({
-   Name = "ShockCatStudio v1",
-   Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "load",
-   LoadingSubtitle = "by Sirius",
-   ShowText = "Rayfield", -- for mobile users to unhide rayfield, change if you'd like
+   Name = "ShockCatStudio v1 Welcomes "..  localPlayer.DisplayName .. "!",
+   Icon = "paw-print", -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
+   LoadingTitle = "Welcome "..  localPlayer.DisplayName .. "!",
+   LoadingSubtitle = "by IamSkitten",
+   ShowText = " "..  localPlayer.DisplayName .."'s Ui", -- for mobile users to unhide rayfield, change if you'd like
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
    ToggleUIKeybind = "K", -- The keybind to toggle the UI visibility (string like "K" or Enum.KeyCode)
 
-   DisableRayfieldPrompts = false,
+   DisableRayfieldPrompts = true,
    DisableBuildWarnings = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
 
    ConfigurationSaving = {
       Enabled = true,
-      FolderName = nil, -- Create a custom folder for your hub/game
-      FileName = "Big Hub"
+      FolderName = "Iamskittenconfigfilenameforfile"..  localPlayer.DisplayName .. "!", -- Create a custom folder for your hub/game
+      FileName = "Iamskittenconfigfilename"..  localPlayer.DisplayName .. "!"
    },
 
    Discord = {
@@ -27,145 +48,496 @@ local MainWindow = Rayfield:CreateWindow({
       RememberJoins = true -- Set this to false to make them join the discord every time they load it up
    },
 
-   KeySystem = false, -- Set this to true to use our key system
+   KeySystem = true, -- Set this to true to use our key system
    KeySettings = {
       Title = "Untitled",
-      Subtitle = "Key System",
-      Note = "No method of obtaining the key is provided", -- Use this to tell the user how to get a key
-      FileName = "Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+      Subtitle = "Key System for "..  localPlayer.DisplayName .. "!",
+      Note = "No method of obtaining the key is provided for "..  localPlayer.DisplayName .. "!", -- Use this to tell the user how to get a key
+      FileName = "Key41For"..  localPlayer.DisplayName .. "!", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
       SaveKey = false, -- The user's key will be saved, but if you change the key, they will be unable to use your script
       GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
-      Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+      Key = {"1234"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
    }
 })
 ----------------------------------------------------------------------------
 --Window Maker 
 ----------------------------------------------------------------------------
-local LTab = MainWindow:CreateTab("f", 4483362458) -- Title, Image
-
+local LTab     = MainWindow:CreateTab("f"                                  , "app-window-mac") -- Title, Image
+local PTab     = MainWindow:CreateTab(" "..  localPlayer.DisplayName .. "!",        "annoyed") -- Title, Image
 ----------------------------------------------------------------------------
 --Tabs /\ 1
 ----------------------------------------------------------------------------
-local Section = LTab:CreateSection("meow")
-local Divider = LTab:CreateDivider()
-
-local Button = LTab:CreateButton({
+local Section                 = LTab:CreateSection("meow")
+local Divider                 = LTab:CreateDivider()
+local Button                  = LTab:CreateButton({
    Name = "Gen Toggle",
    Callback = function()
      ----------------------------------------------------------------------------
-     print ("Auto Gen Executed")
-local p = game.Players.LocalPlayer
-local cd = false
-local cdT = 2.5
+print("Auto Gen Executed")
+local p=game.Players.LocalPlayer
+local cd=false
+local cdT=0.5
+local CLICK_ID="rbxassetid://0"
+local WAIT_ID="rbxassetid://10620016085"
 
-
-local CLICK_ID = "rbxassetid://0"
-local WAIT_ID = "rbxassetid://10620016085"
-
-local function activateGenerator(b, o)
-    if cd then return end
-    cd = true
-
-
-    b.Image = WAIT_ID
-    o.Color = Color3.fromRGB(150, 0, 0)
-
-    task.spawn(function()
-        local m = workspace:FindFirstChild("Map")
-        if m and m:FindFirstChild("Ingame") and m.Ingame:FindFirstChild("Map") then
-            for _, v in pairs(m.Ingame.Map:GetChildren()) do
-                if v:IsA("Model") and v.Name == "Generator" then
-                    local r = v:FindFirstChild("Remotes") and v.Remotes:FindFirstChild("RE")
-                    if r then r:FireServer() end
-                end
-            end
-        end
-    end)
-
-    task.wait(cdT)
-    cd = false
-
-
-    b.Image = CLICK_ID
-    o.Color = Color3.new(1, 0, 0)
+local function activateGenerator(b,o)
+if cd then return end
+cd=true
+b.Image=WAIT_ID
+o.Color=Color3.fromRGB(0,0,150)
+task.spawn(function()
+local m=workspace:FindFirstChild("Map")
+if m and m:FindFirstChild("Ingame") and m.Ingame:FindFirstChild("Map") then
+for _,v in pairs(m.Ingame.Map:GetChildren()) do
+if v:IsA("Model") and v.Name=="Generator" then
+local r=v:FindFirstChild("Remotes") and v.Remotes:FindFirstChild("RE")
+if r then r:FireServer() end
+end
+end
+end
+end)
+task.wait(cdT)
+cd=false
+b.Image=CLICK_ID
+o.Color=Color3.new(1,0,0)
 end
 
 local function make()
-    if p.PlayerGui:FindFirstChild("GeneratorGUI") then return end
-    local g = Instance.new("ScreenGui", p:WaitForChild("PlayerGui"))
-    g.Name = "GeneratorGUI"
-    g.ResetOnSpawn = false
-
-    local b = Instance.new("ImageButton", g)
-    b.Image = CLICK_ID
-    b.Size = UDim2.new(0, 40, 0, 40)
-    b.BackgroundColor3 = Color3.new(0, 0, 0)
-    b.Active = true
-    b.Draggable = true
-
-    local corner = Instance.new("UICorner", b)
-    corner.CornerRadius = UDim.new(0, 20)
-
-    local o = Instance.new("UIStroke", b)
-    o.Color = Color3.new(1, 0, 0)
-    o.Thickness = 3
-
-    local pos = p.PlayerGui:GetAttribute("ButtonPos")
-    if pos then
-        b.Position = UDim2.new(pos.XScale, pos.XOffset, pos.YScale, pos.YOffset)
-    else
-        b.Position = UDim2.new(0, 100, 0, 100)
-    end
-
-    b:GetPropertyChangedSignal("Position"):Connect(function()
-        p.PlayerGui:SetAttribute("ButtonPos", {
-            XScale = b.Position.X.Scale,
-            XOffset = b.Position.X.Offset,
-            YScale = b.Position.Y.Scale,
-            YOffset = b.Position.Y.Offset
-        })
-    end)
-
-
-    b.MouseButton1Click:Connect(function()
-        activateGenerator(b, o)
-    end)
-
-
-    game:GetService("UserInputService").InputBegan:Connect(function(input, processed)
-        if processed then return end
-        if input.KeyCode == Enum.KeyCode.Z then
-            activateGenerator(b, o)
-        end
-    end)
+if p.PlayerGui:FindFirstChild("GeneratorGUI") then return end
+local g=Instance.new("ScreenGui",p:WaitForChild("PlayerGui"))
+g.Name="GeneratorGUI"
+g.ResetOnSpawn=false
+local b=Instance.new("ImageButton",g)
+b.Image=CLICK_ID
+b.Size=UDim2.new(0,40,0,40)
+b.BackgroundColor3=Color3.new(0,0,0)
+b.Active=true
+b.Draggable=true
+local corner=Instance.new("UICorner",b)
+corner.CornerRadius=UDim.new(0,20)
+local o=Instance.new("UIStroke",b)
+o.Color=Color3.new(1,0,0)
+o.Thickness=3
+local pos=p.PlayerGui:GetAttribute("ButtonPos")
+if pos then
+b.Position=UDim2.new(pos.XScale,pos.XOffset,pos.YScale,pos.YOffset)
+else
+b.Position=UDim2.new(0,100,0,100)
+end
+b:GetPropertyChangedSignal("Position"):Connect(function()
+p.PlayerGui:SetAttribute("ButtonPos",{
+XScale=b.Position.X.Scale,
+XOffset=b.Position.X.Offset,
+YScale=b.Position.Y.Scale,
+YOffset=b.Position.Y.Offset
+})
+end)
+b.MouseButton1Click:Connect(function()
+activateGenerator(b,o)
+end)
+game:GetService("UserInputService").InputBegan:Connect(function(input,processed)
+if processed then return end
+if input.KeyCode==Enum.KeyCode.Z then
+activateGenerator(b,o)
+end
+end)
 end
 
 p.CharacterAdded:Connect(function()
-    task.wait(1)
-    make()
+task.wait(1)
+make()
 end)
 
 if p.Character then
-    task.wait(1)
-    make()
+task.wait(1)
+make()
 end
 ----------------------------------------------------------------------------
-     
-   -- The function that takes place when the button is pressed
-   end,
+-- The function that takes place when the button is pressed
+end,
 })
 ----------------------------------------------------------------------------
 --Auto Gen Btn /\
 ----------------------------------------------------------------------------
+local Button = PTab:CreateButton({
+   Name = "ArtistShedletsky",
+   Callback = function()
+     
+     
+     
+     
+     
+     
+     local plrs=game:GetService("Players")
+local lp=plrs.LocalPlayer
+local rs=game:GetService("RunService")
+local db=game:GetService("Debris")
+local tws=game:GetService("TweenService")
+local gui=game:GetService("StarterGui")
 
+local function notif(t)
+	gui:SetCore("SendNotification",{Title=t[1],Text=t[2],Duration=t[3]})
+end
 
+local spec=workspace.Players:FindFirstChild("Spectating")
+if spec and spec:FindFirstChild(lp.Name) then
+	notif({"yeahh no","ur not default Shedletsky buuuuddy",5})
+	return
+end
 
+local ab=lp:WaitForChild("PlayerGui"):WaitForChild("MainUI"):WaitForChild("AbilityContainer")
+if not ab:FindFirstChild("Slash") then
+	notif({"yeahh no","ur not default Shedletsky buuuuddy",5})
+	return
+end
 
+local skin=lp:WaitForChild("PlayerData"):WaitForChild("Equipped"):WaitForChild("Skins"):FindFirstChild("Shedletsky")
+if skin and skin.Value~="" then
+	notif({"yeahh no","ur not default Shedletsky buuuuddy",5})
+	return
+end
 
+notif({"script firedd yay","Made by Artbilli on Discord",5})
 
+local buy=lp:WaitForChild("PlayerData"):WaitForChild("Purchased"):WaitForChild("Skins")
+local temp=Instance.new("IntValue")
+temp.Name="ArtistShedletsky"
+temp.Value=0
+temp.Parent=buy
+delay(.1,function()if temp.Parent then temp:Destroy()end end)
 
+local ch=lp.Character or lp.CharacterAdded:Wait()
+local s=ch:FindFirstChildOfClass("Shirt")
+if s then s:Destroy()end
+s=Instance.new("Shirt")
+s.ShirtTemplate="rbxassetid://118042344317053"
+s.Parent=ch
 
+local p=ch:FindFirstChildOfClass("Pants")
+if p then p:Destroy()end
+p=Instance.new("Pants")
+p.PantsTemplate="rbxassetid://100561495134250"
+p.Parent=ch
 
+local head=ch:FindFirstChild("Head")
+if not head then return end
 
+local hatoff=Vector3.new(.47,.97,0)
+local hatrot=Vector3.new(0,-90,0)
+local hat=Instance.new("Accessory")
+hat.Name="CustomHat"
+hat.Parent=ch
 
+local handle=Instance.new("Part")
+handle.Name="Handle"
+handle.Size=Vector3.new(1,1,1)
+handle.CanCollide=false
+handle.Anchored=false
+handle.Parent=hat
 
+local mesh=Instance.new("SpecialMesh")
+mesh.MeshId="rbxassetid://102770853506860"
+mesh.TextureId="rbxassetid://117341189541689"
+mesh.Parent=handle
+handle.CFrame=head.CFrame*CFrame.new(hatoff)*CFrame.Angles(math.rad(hatrot.X),math.rad(hatrot.Y),math.rad(hatrot.Z))
+
+local weld=Instance.new("WeldConstraint")
+weld.Part0=head
+weld.Part1=handle
+weld.Parent=handle
+
+local torso=ch:FindFirstChild("Torso")or ch:FindFirstChild("UpperTorso")
+if not torso then return end
+
+local toff=Vector3.new(0,-.34,0)
+local trot=Vector3.new(0,-90,0)
+local tacc=Instance.new("Accessory")
+tacc.Name="CustomTorso"
+tacc.Parent=ch
+
+local th=Instance.new("Part")
+th.Name="Handle"
+th.Size=Vector3.new(2,2,1)
+th.CanCollide=false
+th.Anchored=false
+th.Parent=tacc
+
+local tmesh=Instance.new("SpecialMesh")
+tmesh.MeshId="rbxassetid://122893327645752"
+tmesh.TextureId="rbxassetid://104104537744071"
+tmesh.Parent=th
+th.CFrame=torso.CFrame*CFrame.new(toff)*CFrame.Angles(math.rad(trot.X),math.rad(trot.Y),math.rad(trot.Z))
+
+local tw=Instance.new("WeldConstraint")
+tw.Part0=torso
+tw.Part1=th
+tw.Parent=th
+
+local decs={
+	"http://www.roblox.com/asset/?id=17364186013",
+	"http://www.roblox.com/asset/?id=17364186013"
+}
+local cols={
+	Color3.fromRGB(255,0,255),
+	Color3.fromRGB(56,56,255),
+	Color3.fromRGB(255,30,30),
+	Color3.fromRGB(255,255,40),
+	Color3.fromRGB(30,255,30)
+}
+
+local function pick(a)return a[math.random(1,#a)]end
+local t=0
+local waitt=4
+rs.Heartbeat:Connect(function(dt)
+	if not ch.Parent then return end
+	t=t+dt
+	if t<waitt then return end
+	t=0
+	local lf=ch:FindFirstChild("LeftFoot")or ch:FindFirstChild("Left Leg")
+	local rf=ch:FindFirstChild("RightFoot")or ch:FindFirstChild("Right Leg")
+	if not lf or not rf then return end
+	local foot=math.random()<.5 and lf or rf
+	local pos=foot.Position-Vector3.new(0,foot.Size.Y/2+.05,0)
+	local spl=Instance.new("Part")
+	spl.Size=Vector3.new(6,.05,6)
+	spl.Anchored=true
+	spl.CanCollide=false
+	spl.Position=pos
+	spl.Parent=workspace
+	spl.Transparency=1
+	local d=Instance.new("Decal")
+	d.Face=Enum.NormalId.Top
+	d.Texture=pick(decs)
+	d.Color3=pick(cols)
+	d.Parent=spl
+	local goal={Transparency=1,Size=Vector3.new(.2,.05,.2)}
+	local info=TweenInfo.new(1,Enum.EasingStyle.Linear)
+	local tw=tws:Create(spl,info,goal)
+	tw:Play()
+	db:AddItem(spl,1.1)
+end)
+
+local stopid=116618003477002
+local playid=77448521277146
+ch.Humanoid.AnimationPlayed:Connect(function(a)
+	if a.Animation.AnimationId=="rbxassetid://"..stopid then
+		a:Stop()
+		local newa=Instance.new("Animation")
+		newa.AnimationId="rbxassetid://"..playid
+		local play=ch.Humanoid:LoadAnimation(newa)
+		play:Play()
+	end
+end)
+
+local icon=lp.PlayerGui:WaitForChild("TemporaryUI"):WaitForChild("PlayerInfo"):WaitForChild("CurrentSurvivors"):WaitForChild("Shedletsky")
+if icon and icon:FindFirstChild("Icon")and icon:FindFirstChild("Username")then
+	local txt=icon.Username.Text
+	if txt==lp.Name.." (You)"then
+		icon.Icon.Image="rbxassetid://110965459998666"
+	end
+end
+----------------------------------------------------------------------------
+--   ArtistShedletsky button /\
+----------------------------------------------------------------------------
+   -- The function that takes place when the button is pressed
+   end,
+})
+----------------------------------------------------------------------------
+local Button = Tab:CreateButton({
+   Name = "flyLoop",
+   Callback = function()
+     local Players=game:GetService("Players")
+local UserInputService=game:GetService("UserInputService")
+local isFlying=false
+local flyLoop
+local maxSpeed=50
+local currentSpeed=0
+local ctrl={f=0,b=0,l=0,r=0}
+local localPlayer=Players.LocalPlayer
+local character=localPlayer.Character or localPlayer.CharacterAdded:Wait()
+local torso=character:WaitForChild("HumanoidRootPart")
+local humanoid=character:WaitForChild("Humanoid")
+local function StartFlyLoop()
+    if not torso or not humanoid then return end
+    local bodyGyro=Instance.new("BodyGyro",torso)
+    bodyGyro.P,bodyGyro.MaxTorque,bodyGyro.CFrame=9e4,Vector3.new(9e9,9e9,9e9),torso.CFrame
+    local bodyVelocity=Instance.new("BodyVelocity",torso)
+    bodyVelocity.Velocity,bodyVelocity.MaxForce=Vector3.new(0,0.1,0),Vector3.new(9e9,9e9,9e9)
+    flyLoop=task.spawn(function()
+        while isFlying and torso.Parent do
+            humanoid.PlatformStand=true
+            local moving=(ctrl.l+ctrl.r)~=0 or (ctrl.f+ctrl.b)~=0
+            if moving then
+                currentSpeed=math.min(currentSpeed+0.5+(currentSpeed/maxSpeed),maxSpeed)
+            elseif currentSpeed>0 then
+                currentSpeed=math.max(currentSpeed-1,0)
+            end
+            if moving or currentSpeed>0 then
+                local cameraCFrame=workspace.CurrentCamera.CFrame
+                local direction=(cameraCFrame.LookVector*(ctrl.f+ctrl.b))+(cameraCFrame.RightVector*(ctrl.r+ctrl.l))
+                bodyVelocity.Velocity=direction*currentSpeed
+            else
+                bodyVelocity.Velocity=Vector3.new(0,0.1,0)
+            end
+            bodyGyro.CFrame=workspace.CurrentCamera.CFrame
+            task.wait()
+        end
+        ctrl={f=0,b=0,l=0,r=0}
+        currentSpeed=0
+        if bodyGyro then bodyGyro:Destroy() end
+        if bodyVelocity then bodyVelocity:Destroy() end
+        if humanoid then humanoid.PlatformStand=false end
+    end)
+end
+UserInputService.InputBegan:Connect(function(input,gameProcessedEvent)
+    if gameProcessedEvent or not isFlying then return end
+    local key=input.KeyCode
+    if key==Enum.KeyCode.W then ctrl.f=1
+    elseif key==Enum.KeyCode.S then ctrl.b=-1
+    elseif key==Enum.KeyCode.A then ctrl.l=-1
+    elseif key==Enum.KeyCode.D then ctrl.r=1
+    end
+end)
+UserInputService.InputEnded:Connect(function(input)
+    if not isFlying then return end
+    local key=input.KeyCode
+    if key==Enum.KeyCode.W then ctrl.f=0
+    elseif key==Enum.KeyCode.S then ctrl.b=0
+    elseif key==Enum.KeyCode.A then ctrl.l=0
+    elseif key==Enum.KeyCode.D then ctrl.r=0
+    end
+end)
+----------------------------------------------------------------------------
+--Window stuff that might bug for fly
+----------------------------------------------------------------------------
+local MainTab = Window:CreateTab("1purpose-duh","jetpack")
+local MainSection = PTab:CreateSection("Fly Controls")
+MainTab:CreateToggle({
+    Name="Enable Fly",CurrentValue=isFlying,Flag="SelfContainedFlyToggle",
+    Callback=function(Value)
+        isFlying=Value
+        if Value then
+            StartFlyLoop()
+            Rayfield:Notify({
+                Title="Fly Enabled",Content="Use W, A, S, D and your mouse to fly!",
+                Duration=3,Image="rocket",
+            })
+        else
+            if flyLoop then task.cancel(flyLoop) end
+            Rayfield:Notify({
+                Title="Fly Disabled",Content="Grounded!",
+                Duration=3,Image="ground-plane",
+            })
+        end
+    end,
+})
+PTab:CreateSlider({
+    Name="Max Fly Speed",CurrentValue=maxSpeed,Min=10,Max=150,Rounding=0,
+    Flag="MaxFlySpeedSlider",
+    Callback=function(Value)
+        maxSpeed=Value
+        Rayfield:Notify({
+            Title="Speed Changed",Content="Max speed set to "..math.floor(Value),
+            Duration=2,Image="speed-check",
+        })
+    end,
+})     -- The function that takes place when the button is pressed \/ end
+   end,
+})
+----------------------------------------------------------------------------
+--Fly button /\
+----------------------------------------------------------------------------
+local Button = Tab:CreateButton({
+   Name = "Lag challange",
+   Callback = function()
+   -- The function that takes place when the button is pressed    
+     -- FRVR LOOP IF THIS THEN THAT
+while true do
+    print("GET LAGGED")
+    task.wait(0.02)
+end
+   -- The function that takes place when the button is pressed
+   end,
+})
+----------------------------------------------------------------------------
+--Lag challange user is agreeing to let their device get laggy! /\
+----------------------------------------------------------------------------
+
+local Button = Tab:CreateButton({
+   Name = "Lag challange",
+   Callback = function()
+   -- The function that takes place when the button is pressed    
+     print ("Spoofed for Console")
+local UserInputService = game:GetService("UserInputService")
+local Network = require(game.ReplicatedStorage.Modules.Network)
+
+local DeviceSpoof = {}
+local ForcedDevice = "Console" -- change to "Mobile", "Console" or "PC"
+
+DeviceSpoof.Changed = Instance.new("BindableEvent").Event
+DeviceSpoof.Value = ForcedDevice
+
+local function ApplySpoof()
+    DeviceSpoof.Value = ForcedDevice
+    Network:FireServerConnection("SetDevice", "REMOTE_EVENT", ForcedDevice)
+end
+
+ApplySpoof()
+
+UserInputService.LastInputTypeChanged:Connect(ApplySpoof)
+
+while wait() do
+    ApplySpoof()
+end
+
+return DeviceSpoof
+   -- The function that takes place when the button is pressed
+   end,
+})
+
+----------------------------------------------------------------------------
+-- Spoof device /\ to console
+----------------------------------------------------------------------------
+-- Create Tab and Section for FakeBlock functionality
+local PTab = MainWindow:CreateTab("Fake Block Animations", "animation")
+local Section = PTab:CreateSection("Fake Block Controls")
+
+-- Function to play the Fake Block Animations
+local function playFakeBlockAnimation(animId)
+    local char = localPlayer.Character
+    if char then
+        local humanoid = char:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            local anim = Instance.new("Animation")
+            anim.AnimationId = "rbxassetid://" .. animId
+            local track = humanoid:LoadAnimation(anim)
+            track:Play()
+        end
+    end
+end
+
+-- Buttons for each animation mode
+PTab:CreateButton({
+    Name = "Fake Block (Normal)",
+    Callback = function()
+        playFakeBlockAnimation("72722244508749") -- Normal animation ID
+    end
+})
+
+PTab:CreateButton({
+    Name = "Fake Block (M3&4)",
+    Callback = function()
+        playFakeBlockAnimation("96959123077498") -- M3&4 animation ID
+    end
+})
+
+PTab:CreateButton({
+    Name = "Toggle Fake Block GUI",
+    Callback = function()
+        -- This will toggle the visibility of the Rayfield UI
+        Rayfield:ToggleUI()
+    end
+})
+----------------------------------------------------------------------------
+--FAKE BLOCKS /\
+----------------------------------------------------------------------------
