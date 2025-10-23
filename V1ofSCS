@@ -35,26 +35,39 @@ end)
 --Player greeter /\
 ---------------------------------------------------------------------------------------------------------------
 local MainWindow            = Rayfield:CreateWindow({
+  
    Name                     = "ShockCatStudio",
+   
    Icon                     = "paw-print", -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
+   
    LoadingTitle             = "Welcome, " .. localPlayer.DisplayName .. "!",
+   
    LoadingSubtitle          = "by IamSkitten",
+   
    ShowText                 = " ".. localPlayer.DisplayName .."'s UI!", -- for mobile users to unhide rayfield, change if you'd like
+   
    Theme                    = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
+   
    ToggleUIKeybind          = "K", -- The keybind to toggle the UI visibility (string like "K" or Enum.KeyCode)
-   DisableRayfieldPrompts   = false,
+   
+   DisableRayfieldPrompts   = true,
+   
    DisableBuildWarnings     = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
+   
    ConfigurationSaving      = {
       Enabled               = true,
       FolderName            = "ShockCatStudiosIamSkittenFolderFile", -- Create a custom folder for your hub/game
       FileName              = "ShockCatStudiosIamSkittenFolder"
    },
+ 
    Discord                  = {
       Enabled               = false, -- Prompt the user to join your Discord server if their executor supports it
       Invite                = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ ABCD would be ABCD
       RememberJoins         = true -- Set this to false to make them join the discord every time they load it up
    }, 
+ 
    KeySystem                = true, -- Set this to true to use our key system
+   
    KeySettings              = {
       Title                 = "Welcome, " .. localPlayer.DisplayName .. "! It's so great to see you!! (≧∇≦)/",
       Subtitle              = "Your Key for ".. localPlayer.DisplayName .." is 1234",
@@ -99,8 +112,6 @@ local DevTab                      =   nil
 ---------------------------------------------------------------------------------------------------------------
 --ALL THE LOCALS
 ---------------------------------------------------------------------------------------------------------------
-local SpoofDeviceSelection              = "PC" -- Default selection
-local SpoofEnabled                      = false -- Controls the persistent loop
 local Players = game:GetService("Players")
 local TextChatService = game:GetService("TextChatService")
 -- Define the LocalPlayer right away so we can use their name
@@ -139,107 +150,91 @@ local Section = DevTab:CreateSection("Spoofer v1")
 ---------------------------------------------------------------------------------------------------------------
 --Lagmachine \/
 ---------------------------------------------------------------------------------------------------------------
-local Section                     = DevTab:CreateSection("Lag Challange! (EXTREME)")
-local Button                      = DevTab:CreateButton({
-   Name                           = "Lag Challange",
-   Callback                       = function()
-   -- The function that takes place when the button is pressed
-   -- FRVR LOOP IF THIS THEN THAT
-   local count = 0  -- Initialize a counter variable
+local Section = DevTab:CreateSection("Lag Challange! (EXTREME)")
+local lagEnabled = false -- New control variable
+local lagThread = nil   -- New thread reference
 
-   while true do
-       count = count + 1  -- Increment the counter by 1
-       print("Count: " .. count .. " - curious? Well that's what killed the cat!")
-       -- Wait for 0.02 seconds between each print to prevent instant thread crash
-       task.wait(0.02)
-   end
-   end,
+local Toggle = DevTab:CreateToggle({
+    Name = "Lag Challange (Toggle to Stop)",
+    CurrentValue = false,
+    Flag = "LagChallengeToggle", -- Unique flag
+    Callback = function(Value)
+        lagEnabled = Value -- Update the control variable based on the toggle state
+
+        if lagEnabled then
+            -- START the loop in a new thread
+            lagThread = task.spawn(function()
+                local count = 0
+                while lagEnabled do -- The loop now checks the control variable
+                    count = count + 1
+                    print("Count: " .. count .. " - curious? Well that's what killed the cat!")
+                    task.wait(0.02)
+                end
+            end)
+        elseif lagThread then
+            -- STOP the loop by cancelling the running thread
+            task.cancel(lagThread)
+            lagThread = nil -- Clear the thread reference
+            print("Lag Challange Stopped.")
+        end
+    end,
 })
-
-
-
 ---------------------------------------------------------------------------------------------------------------
 -- THEME CHOOSER \/
 ---------------------------------------------------------------------------------------------------------------
 local Section = MTab:CreateSection("Themes")
 local Dropdown = MTab:CreateDropdown({
-   Name = "THEMEz",
-   Options = {
-       "Default",     
-       "AntiPhotosensitivity",
-       "AshLand",
-       "BLACK",
-       "BLUE",
-       "DARK_BLUE_WHITE",
-       "Default",
-       "FIRE",
-       "GLITCHED",
-       "OldFilm",
-       "PINK",
-       "RED",
-       "STONE",
-       "TOXIC",
-       "WHITE",
-       "CRIMSON",
-       "Amethyst",
-       "AmberGlow",
-       "Ashlands",
-       "Ashlands_Desaturated",
-       "BlueDark",
-       "BlueDark_Desaturated",
-       "Green",
-       "GreenDark",
-       "GreenDark_Desaturated",
-       "Light",
-       "Matrix",
-       "NeonBlue",
-       "NeonBlue_Desaturated",
-       "Ocean",
-       "Photosensitivity",
-       "Photosensitivity_Desaturated",
-       "Purple",
-       "Purple_Desaturated",
-       "Purpur",
-       "Purpur_Desaturated",
-       "RedDark",
-       "RedDark_Desaturated",
-       "Toxic",
-       "Toxic_Desaturated",
-       "USA",
-       "USA_Desaturated",
-       "FIRE",
-       "STONE",
-       "RED",
-       "BLUE",
-       "WHITE",
-       "DARK_BLUE_WHITE",
-       "BLACK",
-       "PINK",
-       "OldFilm",
-       "AntiPhotosensitivity",
-       "GLITCHED",
-       "TOXIC",
-       "AshLand",
-       "CRIMSON_Desaturated"
-   },
-   CurrentOption = {"Default"},  -- Set the default theme (can be any of the theme names)
-   MultipleOptions = false,
-   Flag = "Dropdown1issocoolandamazinglikeskiiten",
-   Callback = function(Options)
-       -- Get the selected theme name
-       local selectedTheme = Options[1]
-       
-       -- Apply the selected theme to Rayfield
-       Rayfield:ApplyTheme(selectedTheme)
-
-       -- Optional: Notify the user that the theme has been applied
-       Rayfield:Notify({
-           Title = "Theme Applied",
-           Content = "You have selected the " .. selectedTheme .. " theme!",
-           Duration = 1,  -- Show the notification for 2 seconds
-           Image = "map-pin",
-       })
-   end,
+    Name = "THEMEz",
+    Options = {
+        "BLUE",
+        "RED",
+        "USA",
+        "PINK",
+        "FIRE",
+        "BLACK",
+        "STONE",
+        "WHITE",
+        "Light",
+        "Ocean",
+        "Matrix",
+        "OldFilm",
+        "Purple",
+        "Purpur",
+        "Toxic",
+        "Green",
+        "RedDark",
+        "NeonBlue",
+        "AshLand",
+        "CRIMSON",
+        "GreenDark",
+        "Ashlands",
+        "Purpur_Desaturated",
+        "RedDark_Desaturated",
+        "BlueDark",
+        "NeonBlue_Desaturated",
+        "GreenDark_Desaturated",
+        "CRIMSON_Desaturated",
+        "AntiPhotosensitivity",
+        "Photosensitivity",
+        "Photosensitivity_Desaturated",
+        "DARK_BLUE_WHITE",
+        "AmberGlow",
+        "GLITCHED",
+        "Amethyst"
+    },
+    CurrentOption = {"Default"},
+    MultipleOptions = false,
+    Flag = "Dropdown1issocoolandamazinglikeskiiten",
+    Callback = function(Options)
+        local selectedTheme = Options[1]
+        Rayfield:ApplyTheme(selectedTheme)
+        Rayfield:Notify({
+            Title = "Theme Applied",
+            Content = "You have selected the " .. selectedTheme .. " theme!",
+            Duration = 1,
+            Image = "map-pin",
+        })
+    end,
 })
 
 ---------------------------------------------------------------------------------------------------------------
