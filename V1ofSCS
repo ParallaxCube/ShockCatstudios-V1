@@ -22,18 +22,6 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 --Rayfield top /\
 ---------------------------------------------------------------------------------------------------------------
 
-
-
-
-
-
-
-
-
-
-
-
-
 ---------------------------------------------------------------------------------------------------------------
 --Theme theme above 
 
@@ -123,14 +111,7 @@ local DevTab                      =   nil
 ---------------------------------------------------------------------------------------------------------------
 -- Theme Loader Setup
 ---------------------------------------------------------------------------------------------------------------
-
--- Create section + dropdown
-local Section = Tab:CreateSection("theme")
-
-local Dropdown = Tab:CreateDropdown({
-    Name = "THEMEz",
-    Options = {
-        -- // 🟩 THEME PACK SECTION 🟩
+-- // 🟩 THEME PACK SECTION 🟩
 -- Paste your huge theme pack table right below this line ↓
 -- Example:
 -- Themes = {
@@ -1169,10 +1150,14 @@ Amethyst = {
 
 }
 
-    },
+
+local Section = DevTab:CreateSection("Theme Selector")
+local Dropdown = DevTab:CreateDropdown({
+    Name = "Select Theme",
+    Options = {"Default", "BLUE", "RED", "USA", "PINK", "FIRE", "BLACK", "STONE", "WHITE", "Light", "Ocean", "Matrix", "OldFilm", "Purple", "Purpur", "Toxic", "Green", "RedDark", "NeonBlue", "AshLand", "CRIMSON", "GreenDark", "Ashlands", "Purpur_Desaturated", "RedDark_Desaturated", "BlueDark", "NeonBlue_Desaturated", "GreenDark_Desaturated", "CRIMSON_Desaturated", "AntiPhotosensitivity", "Photosensitivity", "Photosensitivity_Desaturated", "DARK_BLUE_WHITE", "AmberGlow", "GLITCHED", "Amethyst"},
     CurrentOption = {"Default"},
     MultipleOptions = false,
-    Flag = "Dropdown1issocoolandamazinglikeskitten",
+    Flag = "ThemeDropdown",
     Callback = function(Options)
         local selectedTheme = Options[1]
         Rayfield:ApplyTheme(selectedTheme)
@@ -1185,17 +1170,14 @@ Amethyst = {
     end,
 })
 
----------------------------------------------------------------------------------------------------------------
--- CUSTOM THEMES AREA
----------------------------------------------------------------------------------------------------------------
--- Paste all your theme tables between the “START” and “END” comments below!
--- Example:
--- Rayfield.Themes["Ocean"] = { TextColor = Color3.fromRGB(240,240,240), ... }
 
--- ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
----------------------------------------------------------------------------------------------------------------
---Gen
----------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
 
 
 
