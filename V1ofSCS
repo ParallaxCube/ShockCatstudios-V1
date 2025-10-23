@@ -127,7 +127,7 @@ local DevTab                      =   nil
 -- Create section + dropdown
 local Section = Tab:CreateSection("theme")
 
-local Dropdown = DevTab:CreateDropdown({
+local Dropdown = Tab:CreateDropdown({
     Name = "THEMEz",
     Options = {
         -- // 🟩 THEME PACK SECTION 🟩
