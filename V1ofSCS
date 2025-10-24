@@ -558,12 +558,12 @@ YTab:CreateButton({
 ----------------------------------------------------------------------------
 --FAKE BLOCK /\
 ----------------------------------------------------------------------------
-local Section = EsYTab:CreateSection("ESP Options")
+local Section = YTab:CreateSection("ESP Options")
 -- Color Pickers for Outline and Fill
 local espOutlineColor = Color3.fromRGB(255, 0, 0) -- Default Outline Color
 local espFillColor = Color3.fromRGB(0, 255, 0) -- Default Fill Color
 
-EsYTab:CreateColorPicker({
+YTab:CreateColorPicker({
     Name = "Outline Color",
     CurrentColor = espOutlineColor,
     Callback = function(Color)
@@ -571,7 +571,7 @@ EsYTab:CreateColorPicker({
     end
 })
 
-EsYTab:CreateColorPicker({
+YTab:CreateColorPicker({
     Name = "Fill Color",
     CurrentColor = espFillColor,
     Callback = function(Color)
@@ -584,7 +584,7 @@ local espEnabled = false
 local outlineEnabled = false
 local fillEnabled = false
 
-EsYTab:CreateToggle({
+YTab:CreateToggle({
     Name = "Enable ESP",
     CurrentValue = espEnabled,
     Callback = function(Value)
@@ -595,7 +595,7 @@ EsYTab:CreateToggle({
     end
 })
 
-EsYTab:CreateToggle({
+YTab:CreateToggle({
     Name = "Enable Outline",
     CurrentValue = outlineEnabled,
     Callback = function(Value)
@@ -606,7 +606,7 @@ EsYTab:CreateToggle({
     end
 })
 
-EsYTab:CreateToggle({
+YTab:CreateToggle({
     Name = "Enable Fill",
     CurrentValue = fillEnabled,
     Callback = function(Value)
