@@ -9,20 +9,6 @@ if not success then
 else
     print("Script executed successfully!")
 end
-                       
-                       
-                       
-                       
-function showLoadingMessages()
-  local messages = {"Ⓞ ▀ ▀", "▀ Ⓞ ▀", "▀ ▀ Ⓞ"}
- local messages = {"Ⓞ ▀ ▀", "▀ Ⓞ ▀", "▀ ▀ Ⓞ"}
-local messages = {"Ⓞ ▀ ▀", "▀ Ⓞ ▀", "▀ ▀ Ⓞ"}
-    for _, msg in ipairs(messages) do
-        print(msg)
-        task.wait(0.5)
-    end
-end
-showLoadingMessages()
 
 
 
