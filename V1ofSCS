@@ -66,7 +66,7 @@ local MainWindow = Rayfield:CreateWindow({
 --Window Maker 
 ----------------------------------------------------------------------------
 local LTab          =    MainWindow:CreateTab  ("f"                                  , "app-window-mac") -- Title, Image
-local 1Tab          =    MainWindow:CreateTab  (" "..  localPlayer.DisplayName .. "!",        "annoyed") -- Title, Image
+local YTab          =    MainWindow:CreateTab  (" "..  localPlayer.DisplayName .. "!",        "annoyed") -- Title, Image
 
 local MainTab       =    MainWindow:CreateTab  ("Main",                                           "box")
 local STab          =    MainWindow:CreateTab  ("Stamina",                             'chevrons-right')
@@ -85,8 +85,8 @@ local StupidTab     =    MainWindow:CreateTab  ("Stupid",                       
 ----------------------------------------------------------------------------
 --Tabs /\ 10+
 ----------------------------------------------------------------------------
-local Section                 = 1Tab:CreateSection("meow")
-local Button                  = 1Tab:CreateButton({
+local Section                 = YTab:CreateSection("meow")
+local Button                  = YTab:CreateButton({
    Name = "Gen Toggle",
    Callback = function()
      ----------------------------------------------------------------------------
@@ -176,7 +176,7 @@ end,
 ----------------------------------------------------------------------------
 --Auto Gen Btn /\
 ----------------------------------------------------------------------------
-local Button = 1Tab:CreateButton({
+local Button = YTab:CreateButton({
    Name = "ArtistShedletsky",
    Callback = function()
      
@@ -427,9 +427,9 @@ end)
 ----------------------------------------------------------------------------
 --Window stuff that might bug for fly
 ----------------------------------------------------------------------------
-local 1Tab = MainWindow:CreateTab("1purpose-duh","jetpack")
-local Section = 1Tab:CreateSection("Fly Controls")
-1Tab:CreateToggle({
+local YTab = MainWindow:CreateTab("1purpose-duh","jetpack")
+local Section = YTab:CreateSection("Fly Controls")
+YTab:CreateToggle({
     Name="Enable Fly",CurrentValue=isFlying,Flag="SelfContainedFlyToggle",
     Callback=function(Value)
         isFlying=Value
@@ -448,7 +448,7 @@ local Section = 1Tab:CreateSection("Fly Controls")
         end
     end,
 })
-1Tab:CreateSlider({
+YTab:CreateSlider({
     Name="Max Fly Speed",CurrentValue=maxSpeed,Min=10,Max=150,Rounding=0,
     Flag="MaxFlySpeedSlider",
     Callback=function(Value)
@@ -516,8 +516,8 @@ return DeviceSpoof
 -- Spoof device /\ to console
 ----------------------------------------------------------------------------
 -- Create Tab and Section for FakeBlock functionality
-local 1Tab = MainWindow:CreateTab("Fake Block Animations", "animation")
-local Section = 1Tab:CreateSection("Fake Block Controls")
+local YTab = MainWindow:CreateTab("Fake Block Animations", "animation")
+local Section = YTab:CreateSection("Fake Block Controls")
 
 -- Function to play the Fake Block Animations
 local function playFakeBlockAnimation(animId)
@@ -534,21 +534,21 @@ local function playFakeBlockAnimation(animId)
 end
 
 -- Buttons for each animation mode
-1Tab:CreateButton({
+YTab:CreateButton({
     Name = "Fake Block (Normal)",
     Callback = function()
         playFakeBlockAnimation("72722244508749") -- Normal animation ID
     end
 })
 
-1Tab:CreateButton({
+YTab:CreateButton({
     Name = "Fake Block (M3&4)",
     Callback = function()
         playFakeBlockAnimation("96959123077498") -- M3&4 animation ID
     end
 })
 
-1Tab:CreateButton({
+YTab:CreateButton({
     Name = "Toggle Fake Block GUI",
     Callback = function()
         -- This will toggle the visibility of the Rayfield UI
@@ -558,12 +558,12 @@ end
 ----------------------------------------------------------------------------
 --FAKE BLOCK /\
 ----------------------------------------------------------------------------
-local Section = Es1Tab:CreateSection("ESP Options")
+local Section = EsYTab:CreateSection("ESP Options")
 -- Color Pickers for Outline and Fill
 local espOutlineColor = Color3.fromRGB(255, 0, 0) -- Default Outline Color
 local espFillColor = Color3.fromRGB(0, 255, 0) -- Default Fill Color
 
-Es1Tab:CreateColorPicker({
+EsYTab:CreateColorPicker({
     Name = "Outline Color",
     CurrentColor = espOutlineColor,
     Callback = function(Color)
@@ -571,7 +571,7 @@ Es1Tab:CreateColorPicker({
     end
 })
 
-Es1Tab:CreateColorPicker({
+EsYTab:CreateColorPicker({
     Name = "Fill Color",
     CurrentColor = espFillColor,
     Callback = function(Color)
@@ -584,7 +584,7 @@ local espEnabled = false
 local outlineEnabled = false
 local fillEnabled = false
 
-Es1Tab:CreateToggle({
+EsYTab:CreateToggle({
     Name = "Enable ESP",
     CurrentValue = espEnabled,
     Callback = function(Value)
@@ -595,7 +595,7 @@ Es1Tab:CreateToggle({
     end
 })
 
-Es1Tab:CreateToggle({
+EsYTab:CreateToggle({
     Name = "Enable Outline",
     CurrentValue = outlineEnabled,
     Callback = function(Value)
@@ -606,7 +606,7 @@ Es1Tab:CreateToggle({
     end
 })
 
-Es1Tab:CreateToggle({
+EsYTab:CreateToggle({
     Name = "Enable Fill",
     CurrentValue = fillEnabled,
     Callback = function(Value)
@@ -729,11 +729,3 @@ end)
 ----------------------------------------------------------------------------
 ---Esp stuff /\
 ----------------------------------------------------------------------------
-
-
-
-
-
-
-
-
