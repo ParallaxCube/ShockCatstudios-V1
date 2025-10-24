@@ -9,7 +9,7 @@ local function activateGenerator(b,o)
 if cd then return end
 cd=true
 b.Image=WAIT_ID
-o.Color=Color3.fromRGB(0,0,150)
+o.Color=Color3.fromRGB(40,129,15)
 task.spawn(function()
 local m=workspace:FindFirstChild("Map")
 if m and m:FindFirstChild("Ingame") and m.Ingame:FindFirstChild("Map") then
@@ -47,7 +47,7 @@ local pos=p.PlayerGui:GetAttribute("ButtonPos")
 if pos then
 b.Position=UDim2.new(pos.XScale,pos.XOffset,pos.YScale,pos.YOffset)
 else
-b.Position=UDim2.new(0,150,0,100)
+b.Position=UDim2.new(0,150,0,150)
 end
 b:GetPropertyChangedSignal("Position"):Connect(function()
 p.PlayerGui:SetAttribute("ButtonPos",{
