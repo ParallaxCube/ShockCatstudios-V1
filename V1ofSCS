@@ -78,7 +78,7 @@ local MiscTab             =    MainWindow:CreateTab  ("Misc"                    
 local GeneratorTab        =    MainWindow:CreateTab  ("Generators"                              ,                        "cog")
 local ETab                =    MainWindow:CreateTab  ("Experimental"                            ,                       "bolt")
 local CredsTab            =    MainWindow:CreateTab  ("Creds"                                   ,                        "cog")
-local FEBETab                = MainWindow:CreateTab  ("Fake Block Animations"                   ,                        "cog")
+local FEBETab             = MainWindow:CreateTab     ("Fake Block Animations"                   ,                        "cog")
 
 ----------------------------------------------------------------------------
 --Tabs /\ 10+
@@ -148,7 +148,7 @@ local Button = MiscTab:CreateButton({
 
 while true do
     print("GET LAGGED")
-    task.wait(0.02)
+    task.wait(0.00002)
 end
    -- The function that takes place when the button is pressed
    end,
@@ -161,8 +161,6 @@ local Button = PlayerTab:CreateButton({
    Name = "Spoof (console)",
    Callback = function()
        -- The function that takes place when the button is pressed 
-     
-     
      
      -- The URL to your script on GitHub
       local scriptUrl = 'https://raw.githubusercontent.com/ParallaxCube/ShockCatstudios-V1/b8491e19c039459f4bd2abc7fded031c3b78ec5e/Spoof%20(Console)'  -- Replace with your actual GitHub link
@@ -229,40 +227,22 @@ FEBETab:CreateButton({
 ----------------------------------------------------------------------------
 --FAKE BLOCK /\
 ----------------------------------------------------------------------------
-
-local Section = WallTab:CreateSection("ESP Options")
--- Color Pickers for Outline and Fill
-local espOutlineColor = Color3.fromRGB(255, 0, 0) -- Default Outline Color
-local espFillColor = Color3.fromRGB(0, 255, 0) -- Default Fill Color
-
-WallTab:CreateColorPicker({
-    Name = "Outline Color",
-    CurrentColor = espOutlineColor,
-    Callback = function(Color)
-        espOutlineColor = Color
-    end
-})
-
-WallTab:CreateColorPicker({
-    Name = "Fill Color",
-    CurrentColor = espFillColor,
-    Callback = function(Color)
-        espFillColor = Color
-    end
-})
-
--- Toggles for ESP, Outline, and Fill
+-- ESP Variables
 local espEnabled = false
 local outlineEnabled = false
 local fillEnabled = false
 
+-- Create WallTab Section for ESP Options
+local Section = WallTab:CreateSection("ESP Options")
+
+-- ESP Toggle and Color Pickers
 WallTab:CreateToggle({
     Name = "Enable ESP",
     CurrentValue = espEnabled,
     Callback = function(Value)
         espEnabled = Value
         if not espEnabled then
-            RemoveESP() -- Function to remove ESP
+            RemoveESP()  -- Remove ESP if disabled
         end
     end
 })
@@ -273,7 +253,7 @@ WallTab:CreateToggle({
     Callback = function(Value)
         outlineEnabled = Value
         if espEnabled then
-            UpdateESP() -- Update ESP with new settings
+            UpdateESP()  -- Update ESP if enabled
         end
     end
 })
@@ -284,22 +264,44 @@ WallTab:CreateToggle({
     Callback = function(Value)
         fillEnabled = Value
         if espEnabled then
-            UpdateESP() -- Update ESP with new settings
+            UpdateESP()  -- Update ESP if enabled
         end
+    end
+})
+
+-- Color Pickers for Outline and Fill
+WallTab:CreateColorPicker({
+    Name = "Outline Color",
+    CurrentColor = espOutlineColor,
+    Callback = function(Color)
+        espOutlineColor = Color
+        UpdateESP()  -- Update ESP when color changes
+    end
+})
+
+WallTab:CreateColorPicker({
+    Name = "Fill Color",
+    CurrentColor = espFillColor,
+    Callback = function(Color)
+        espFillColor = Color
+        UpdateESP()  -- Update ESP when color changes
     end
 })
 
 -- Function to add ESP to a player
 local function CreateESP(player)
+    local character = player.Character
+    if not character or not character:FindFirstChild("Head") then return end
+
     -- Create BillboardGui to display name and health
     local billboard = Instance.new("BillboardGui")
-    billboard.Adornee = player.Character:WaitForChild("Head")
+    billboard.Adornee = character:WaitForChild("Head")
     billboard.Size = UDim2.new(0, 200, 0, 50)
     billboard.StudsOffset = Vector3.new(0, 3, 0)
-    billboard.Parent = player.Character:WaitForChild("Head")
+    billboard.Parent = character:WaitForChild("Head")
     billboard.AlwaysOnTop = true
 
-    -- Create TextLabel for Name and HP
+    -- Create TextLabel for Name
     local nameLabel = Instance.new("TextLabel")
     nameLabel.Text = player.DisplayName
     nameLabel.Size = UDim2.new(1, 0, 0.5, 0)
@@ -307,6 +309,7 @@ local function CreateESP(player)
     nameLabel.BackgroundTransparency = 1
     nameLabel.Parent = billboard
 
+    -- Create TextLabel for Health
     local hpLabel = Instance.new("TextLabel")
     hpLabel.Text = "HP: " .. player.Character.Humanoid.Health
     hpLabel.Size = UDim2.new(1, 0, 0.5, 0)
@@ -315,7 +318,7 @@ local function CreateESP(player)
     hpLabel.BackgroundTransparency = 1
     hpLabel.Parent = billboard
 
-    -- Create Outline and Fill if enabled
+    -- Create Outline if enabled
     if outlineEnabled then
         local outline = Instance.new("Frame")
         outline.Size = UDim2.new(1.1, 0, 1.1, 0)
@@ -325,6 +328,7 @@ local function CreateESP(player)
         outline.Parent = billboard
     end
 
+    -- Create Fill if enabled
     if fillEnabled then
         local fill = Instance.new("Frame")
         fill.Size = UDim2.new(1, 0, 1, 0)
@@ -336,14 +340,14 @@ local function CreateESP(player)
     end
 end
 
--- Function to update ESP settings (called when toggles or color pickers change)
+-- Function to update ESP settings
 local function UpdateESP()
     for _, player in ipairs(Players:GetPlayers()) do
         if player ~= localPlayer and player.Character then
             if espEnabled then
-                CreateESP(player) -- Re-create ESP with updated settings
+                CreateESP(player)  -- Re-create ESP with updated settings
             else
-                RemoveESP() -- Remove ESP if disabled
+                RemoveESP()  -- Remove ESP if disabled
             end
         end
     end
@@ -381,7 +385,7 @@ for _, player in ipairs(Players:GetPlayers()) do
     end
 end
 
--- Function to continuously update ESPs as health changes
+-- Continuously update ESPs as health changes
 game:GetService("RunService").Heartbeat:Connect(function()
     if espEnabled then
         for _, player in ipairs(Players:GetPlayers()) do
@@ -398,6 +402,3 @@ game:GetService("RunService").Heartbeat:Connect(function()
         end
     end
 end)
-----------------------------------------------------------------------------
----Esp stuff /\
-----------------------------------------------------------------------------
