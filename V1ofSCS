@@ -1,17 +1,3 @@
-local success, message = pcall(function()
-    if not game then
-        error("Not Roblox, please execute inside of the Roblox app.")
-    end
-end)
-
-if not success then
-    print("Error: " .. message)  -- This will print the error message if it occurs
-else
-    print("Script executed successfully!")
-end
-
-
-
 
 -- Define the required services
   ---------------------------------------------------------------------------------------------------------------
@@ -23,9 +9,6 @@ end
 
   -- Color for the ESP (adjustable)
   local espColor = Color3.fromRGB(255, 0, 0)  -- Default red
-  
-  ---------------------------------------------------------------------------------------------------------------
-
 ---------------------------------------------------------------------------------------------------------------
 -- Greet the local player
   local Players = game:GetService("Players")
@@ -72,7 +55,7 @@ local MainWindow = Rayfield:CreateWindow({
    KeySettings = {
       Title = "Untitled",
       Subtitle = "Key System for "..  localPlayer.DisplayName .. "!",
-      Note = "No method of obtaining the key is provided for "..  localPlayer.DisplayName .. "!", -- Use this to tell the user how to get a key
+      Note = "the key is provided for "..  localPlayer.DisplayName .. " is '1234' !", -- Use this to tell the user how to get a key
       FileName = "Key41For"..  localPlayer.DisplayName .. "!", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
       SaveKey = false, -- The user's key will be saved, but if you change the key, they will be unable to use your script
       GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
@@ -87,24 +70,23 @@ local PTab          =    MainWindow:CreateTab  (" "..  localPlayer.DisplayName .
 
 local MainTab       =    MainWindow:CreateTab  ("Main",                                           "box")
 local STab          =    MainWindow:CreateTab  ("Stamina",                             'chevrons-right')
-local EspTab        =    MainWindow:CreateTab  ("Visuals",                                   "scan-eye")
+local EsTab        =    MainWindow:CreateTab  ("Visuals",                                   "scan-eye")
 local ACTab         =    MainWindow:CreateTab  ("Automation",                                'workflow')
 local DeviceTab     =    MainWindow:CreateTab  ("Device",                              'laptop-minimal')
 local StunTab       =    MainWindow:CreateTab  ("Stun(s)",                               'shield-alert')
 local SavefileTab   =    MainWindow:CreateTab  ("Savefile!",                   'gallery-horizontal-end')
 local StatsTab      =    MainWindow:CreateTab  ("Status",                                  'settings-2')
 local MTab          =    MainWindow:CreateTab  ("Misc",                                           'cog')
-local GenTab        =    MainWindow:CreateTab  ("Generators",                               "microchip")
+local GenTab        =    MainWindow:CreateTab  ("Generators",                               "cog")
 local ExTab         =    MainWindow:CreateTab  ("Experimental",                                  "bolt")
-local StupidTab     =    MainWindow:CreateTab  ("Stupid",                                   "microchip")
+local StupidTab     =    MainWindow:CreateTab  ("Stupid",                                   "cog")
 
 
 ----------------------------------------------------------------------------
 --Tabs /\ 10+
 ----------------------------------------------------------------------------
-local Section                 = LTab:CreateSection("meow")
-local Divider                 = LTab:CreateDivider()
-local Button                  = LTab:CreateButton({
+local Section                 = PTab:CreateSection("meow")
+local Button                  = PTab:CreateButton({
    Name = "Gen Toggle",
    Callback = function()
      ----------------------------------------------------------------------------
@@ -445,9 +427,9 @@ end)
 ----------------------------------------------------------------------------
 --Window stuff that might bug for fly
 ----------------------------------------------------------------------------
-local MainTab = MainWindow:CreateTab("1purpose-duh","jetpack")
+local PTab = MainWindow:CreateTab("1purpose-duh","jetpack")
 local Section = PTab:CreateSection("Fly Controls")
-MainTab:CreateToggle({
+PTab:CreateToggle({
     Name="Enable Fly",CurrentValue=isFlying,Flag="SelfContainedFlyToggle",
     Callback=function(Value)
         isFlying=Value
