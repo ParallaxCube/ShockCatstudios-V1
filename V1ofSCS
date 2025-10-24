@@ -311,15 +311,48 @@ FEBETab:CreateButton({
 --------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------
--- ESP Variables
+-- Define the required services
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+local localPlayer = Players.LocalPlayer
+local camera = Workspace.CurrentCamera
+local TextChatService = game:GetService("TextChatService")
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+-- ESP Color variables
+local espOutlineColor = Color3.fromRGB(255, 0, 0)  -- Default Outline Color (Red)
+local espFillColor = Color3.fromRGB(0, 255, 0) -- Default Fill Color (Green)
+local tracerColor = Color3.fromRGB(0, 255, 255) -- Default Tracer Color (Light Blue)
+
+-- ESP Flags
 local espEnabled = false
 local outlineEnabled = false
 local fillEnabled = false
+local tracersEnabled = false
 
--- Create WallTab Section for ESP Options
+-- Create Rayfield UI Window
+local MainWindow = Rayfield:CreateWindow({
+    Name = "ShockCatStudio v1 Welcomes " .. localPlayer.DisplayName .. "! ᕕ( ᐕ )ᕗ",
+    Icon = "paw-print",
+    LoadingTitle = "Welcome " .. localPlayer.DisplayName .. "!",
+    LoadingSubtitle = "by IamSkitten",
+    ShowText = " ".. localPlayer.DisplayName .."'s UI",
+    Theme = "Default",
+    ToggleUIKeybind = "K",
+    ConfigurationSaving = {
+        Enabled = true,
+        FolderName = "Iamskittenconfigfilenameforfile".. localPlayer.DisplayName .. "!",
+        FileName = "Iamskittenconfigfilename".. localPlayer.DisplayName .. "!"
+    },
+})
+
+-- Create ESP Tab
+local WallTab = MainWindow:CreateTab("Visuals", "scan-eye")
+
+-- Create Section for ESP options
 local Section = WallTab:CreateSection("ESP Options")
 
--- ESP Toggle and Color Pickers
+-- ESP Toggles
 WallTab:CreateToggle({
     Name = "Enable ESP",
     CurrentValue = espEnabled,
@@ -353,14 +386,28 @@ WallTab:CreateToggle({
     end
 })
 
--- Color Pickers for Outline and Fill
+WallTab:CreateToggle({
+    Name = "Enable Tracers",
+    CurrentValue = tracersEnabled,
+    Callback = function(Value)
+        tracersEnabled = Value
+        if tracersEnabled then
+            UpdateESP()  -- Update ESP with tracers if enabled
+        else
+            RemoveTracers()  -- Remove tracers if disabled
+        end
+    end
+})
+
+-- Color Pickers with Scroll-to-Adjust functionality
 WallTab:CreateColorPicker({
     Name = "Outline Color",
     CurrentColor = espOutlineColor,
     Callback = function(Color)
         espOutlineColor = Color
         UpdateESP()  -- Update ESP when color changes
-    end
+    end,
+    Slider = true  -- This enables smooth slider adjustments on the color picker
 })
 
 WallTab:CreateColorPicker({
@@ -369,10 +416,21 @@ WallTab:CreateColorPicker({
     Callback = function(Color)
         espFillColor = Color
         UpdateESP()  -- Update ESP when color changes
-    end
+    end,
+    Slider = true  -- This enables smooth slider adjustments on the color picker
 })
 
--- Function to add ESP to a player
+WallTab:CreateColorPicker({
+    Name = "Tracer Color",
+    CurrentColor = tracerColor,
+    Callback = function(Color)
+        tracerColor = Color
+        UpdateESP()  -- Update tracers when color changes
+    end,
+    Slider = true  -- This enables smooth slider adjustments on the color picker
+})
+
+-- Function to create ESP for each player
 local function CreateESP(player)
     local character = player.Character
     if not character or not character:FindFirstChild("Head") then return end
@@ -422,9 +480,36 @@ local function CreateESP(player)
         fill.BorderSizePixel = 0
         fill.Parent = billboard
     end
+
+    -- Create Tracers if enabled
+    if tracersEnabled then
+        CreateTracer(player)
+    end
 end
 
--- Function to update ESP settings
+-- Function to create tracers
+local function CreateTracer(player)
+    local character = player.Character
+    if not character or not character:FindFirstChild("Head") then return end
+
+    local head = character:WaitForChild("Head")
+    local tracer = Instance.new("Part")
+    tracer.Size = Vector3.new(0.2, 0.2, (camera.CFrame.Position - head.Position).Magnitude)
+    tracer.Position = (camera.CFrame.Position + head.Position) / 2
+    tracer.Anchored = true
+    tracer.CanCollide = false
+    tracer.Transparency = 0.5
+    tracer.BackgroundColor3 = tracerColor
+    tracer.Parent = workspace
+
+    -- Orient the tracer part towards the target player's head
+    tracer.CFrame = CFrame.lookAt(tracer.Position, head.Position)
+
+    -- Destroy the tracer after 0.1 seconds
+    game:GetService("Debris"):AddItem(tracer, 0.1)
+end
+
+-- Function to update ESP for all players
 local function UpdateESP()
     for _, player in ipairs(Players:GetPlayers()) do
         if player ~= localPlayer and player.Character then
@@ -437,7 +522,7 @@ local function UpdateESP()
     end
 end
 
--- Function to remove all ESPs (when toggled off)
+-- Function to remove ESP for all players
 local function RemoveESP()
     for _, player in ipairs(Players:GetPlayers()) do
         if player.Character and player.Character:FindFirstChild("Head") then
@@ -449,7 +534,23 @@ local function RemoveESP()
     end
 end
 
--- Listen for new players (when they join)
+-- Function to remove tracers
+local function RemoveTracers()
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player.Character and player.Character:FindFirstChild("Head") then
+            local head = player.Character:FindFirstChild("Head")
+            if head then
+                for _, obj in ipairs(workspace:GetChildren()) do
+                    if obj:IsA("Part") and obj.Position == head.Position then
+                        obj:Destroy()
+                    end
+                end
+            end
+        end
+    end
+end
+
+-- Listen for new players joining the game
 Players.PlayerAdded:Connect(function(player)
     if espEnabled then
         player.CharacterAdded:Connect(function()
@@ -458,7 +559,7 @@ Players.PlayerAdded:Connect(function(player)
     end
 end)
 
--- Initialize the ESP for existing players
+-- Initialize ESP for existing players
 for _, player in ipairs(Players:GetPlayers()) do
     if player ~= localPlayer then
         player.CharacterAdded:Connect(function()
@@ -469,7 +570,7 @@ for _, player in ipairs(Players:GetPlayers()) do
     end
 end
 
--- Continuously update ESPs as health changes
+-- Continuously update ESP as health changes
 game:GetService("RunService").Heartbeat:Connect(function()
     if espEnabled then
         for _, player in ipairs(Players:GetPlayers()) do
