@@ -24,7 +24,7 @@ end)
 task.wait(cdT)
 cd=false
 b.Image=CLICK_ID
-o.Color=Color3.new(1,0,0)
+o.Color=Color3.new(80,0,0)
 end
 
 local function make()
@@ -34,7 +34,7 @@ g.Name="GeneratorGUI"
 g.ResetOnSpawn=false
 local b=Instance.new("ImageButton",g)
 b.Image=CLICK_ID
-b.Size=UDim2.new(0,60,0,60)
+b.Size=UDim2.new(0,20,0,20)
 b.BackgroundColor3=Color3.new(0,50,0)
 b.Active=true
 b.Draggable=true
@@ -47,7 +47,7 @@ local pos=p.PlayerGui:GetAttribute("ButtonPos")
 if pos then
 b.Position=UDim2.new(pos.XScale,pos.XOffset,pos.YScale,pos.YOffset)
 else
-b.Position=UDim2.new(0,100,0,100)
+b.Position=UDim2.new(0,150,0,100)
 end
 b:GetPropertyChangedSignal("Position"):Connect(function()
 p.PlayerGui:SetAttribute("ButtonPos",{
