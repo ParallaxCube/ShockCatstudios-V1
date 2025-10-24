@@ -9,7 +9,7 @@ local function activateGenerator(b,o)
 if cd then return end
 cd=true
 b.Image=WAIT_ID
-o.Color=Color3.fromRGB(40,129,15)
+o.Color=Color3.fromRGB(0,0,0)
 task.spawn(function()
 local m=workspace:FindFirstChild("Map")
 if m and m:FindFirstChild("Ingame") and m.Ingame:FindFirstChild("Map") then
