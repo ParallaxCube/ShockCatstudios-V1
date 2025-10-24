@@ -1,28 +1,41 @@
+-- Define the required services
+function GetServicesneeded()
+  ---------------------------------------------------------------------------------------------------------------
+  -- Required services
+  local Players = game:GetService("Players")
+  local Workspace = game:GetService("Workspace")
+  local localPlayer = Players.LocalPlayer
+  local camera = Workspace.CurrentCamera
+
+  -- Color for the ESP (adjustable)
+  local espColor = Color3.fromRGB(255, 0, 0)  -- Default red
+  ---------------------------------------------------------------------------------------------------------------
+end
+
+---------------------------------------------------------------------------------------------------------------
+-- Greet the local player
+function GUS()
+  local Players = game:GetService("Players")
+  local TextChatService = game:GetService("TextChatService")
+  -- Define the LocalPlayer right away so we can use their name
+  local localPlayer = Players.LocalPlayer 
+  local RBXGeneral = TextChatService:WaitForChild("TextChannels"):WaitForChild("RBXGeneral")
+  
+  -- 1. Greet the local player who is running the script
+  if localPlayer then
+    RBXGeneral:DisplaySystemMessage(string.format("Heyyy!!, %s! Your ShockCatStudio UI is Ready", localPlayer.DisplayName))
+  end
+end
+---------------------------------------------------------------------------------------------------------------
+-- Call functions
+GUS()
+GetServicesneeded()
+---------------------------------------------------------------------------------------------------------------
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 ----------------------------------------------------------------------------
 --rayfield /\
 ----------------------------------------------------------------------------
-local Players = game:GetService("Players")
-local TextChatService = game:GetService("TextChatService")
--- Define the LocalPlayer right away so we can use their name
-local localPlayer = Players.LocalPlayer 
-local RBXGeneral = TextChatService:WaitForChild("TextChannels"):WaitForChild("RBXGeneral")
--- 1. Greet the local player who is running the script
-if localPlayer then
-    RBXGeneral:DisplaySystemMessage(string.format("Heyyy!!, %s! Your ShockCatStudio UI is Ready ", localPlayer.DisplayName "!"))
-end
 
---[[disabled until i can make it useful 
--- Existing logic to greet other players when they join
-Players.PlayerAdded:Connect(function(player)
--- Display a system message in the general chat channel
-RBXGeneral:DisplaySystemMessage(string.format("Welcome, %s, to the game!", player.DisplayName))
-end)
-
-]]--
----------------------------------------------------------------------------------------------------------------
---Player greeter /\
----------------------------------------------------------------------------------------------------------------
 local MainWindow = Rayfield:CreateWindow({
    Name = "ShockCatStudio v1 Welcomes "..  localPlayer.DisplayName .. "!",
    Icon = "paw-print", -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
@@ -62,10 +75,24 @@ local MainWindow = Rayfield:CreateWindow({
 ----------------------------------------------------------------------------
 --Window Maker 
 ----------------------------------------------------------------------------
-local LTab     = MainWindow:CreateTab("f"                                  , "app-window-mac") -- Title, Image
-local PTab     = MainWindow:CreateTab(" "..  localPlayer.DisplayName .. "!",        "annoyed") -- Title, Image
+local LTab          =    MainWindow:CreateTab  ("f"                                  , "app-window-mac") -- Title, Image
+local PTab          =    MainWindow:CreateTab  (" "..  localPlayer.DisplayName .. "!",        "annoyed") -- Title, Image
+local MainTab       =    MainWindow:CreateTab  ("Main",                                           "box")
+local STab          =    MainWindow:CreateTab  ("Stamina",                             'chevrons-right')
+local EspTab        =    MainWindow:CreateTab  ("Visuals",                                   "scan-eye")
+local ACTab         =    MainWindow:CreateTab  ("Automation",                                'workflow')
+local DeviceTab     =    MainWindow:CreateTab  ("Device",                              'laptop-minimal')
+local StunTab       =    MainWindow:CreateTab  ("Stun(s)",                               'shield-alert')
+local SavefileTab   =    MainWindow:CreateTab  ("Savefile!",                   'gallery-horizontal-end')
+local StatsTab      =    MainWindow:CreateTab  ("Status",                                  'settings-2')
+local MTab          =    MainWindow:CreateTab  ("Misc",                                           'cog')
+local GenTab        =    MainWindow:CreateTab  ("Generators",                               "microchip")
+local ExTab         =    MainWindow:CreateTab  ("Experimental",                                  "bolt")
+local StupidTab     =    MainWindow:CreateTab  ("Stupid",                                   "microchip")
+
+
 ----------------------------------------------------------------------------
---Tabs /\ 1
+--Tabs /\ 10+
 ----------------------------------------------------------------------------
 local Section                 = LTab:CreateSection("meow")
 local Divider                 = LTab:CreateDivider()
@@ -410,8 +437,8 @@ end)
 ----------------------------------------------------------------------------
 --Window stuff that might bug for fly
 ----------------------------------------------------------------------------
-local MainTab = Window:CreateTab("1purpose-duh","jetpack")
-local MainSection = PTab:CreateSection("Fly Controls")
+local MainTab = MainWindow:CreateTab("1purpose-duh","jetpack")
+local Section = PTab:CreateSection("Fly Controls")
 MainTab:CreateToggle({
     Name="Enable Fly",CurrentValue=isFlying,Flag="SelfContainedFlyToggle",
     Callback=function(Value)
@@ -539,5 +566,184 @@ PTab:CreateButton({
     end
 })
 ----------------------------------------------------------------------------
---FAKE BLOCKS /\
+--FAKE BLOCK /\
 ----------------------------------------------------------------------------
+local Section = EspTab:CreateSection("ESP Options")
+-- Color Pickers for Outline and Fill
+local espOutlineColor = Color3.fromRGB(255, 0, 0) -- Default Outline Color
+local espFillColor = Color3.fromRGB(0, 255, 0) -- Default Fill Color
+
+EspTab:CreateColorPicker({
+    Name = "Outline Color",
+    CurrentColor = espOutlineColor,
+    Callback = function(Color)
+        espOutlineColor = Color
+    end
+})
+
+EspTab:CreateColorPicker({
+    Name = "Fill Color",
+    CurrentColor = espFillColor,
+    Callback = function(Color)
+        espFillColor = Color
+    end
+})
+
+-- Toggles for ESP, Outline, and Fill
+local espEnabled = false
+local outlineEnabled = false
+local fillEnabled = false
+
+EspTab:CreateToggle({
+    Name = "Enable ESP",
+    CurrentValue = espEnabled,
+    Callback = function(Value)
+        espEnabled = Value
+        if not espEnabled then
+            RemoveESP() -- Function to remove ESP
+        end
+    end
+})
+
+EspTab:CreateToggle({
+    Name = "Enable Outline",
+    CurrentValue = outlineEnabled,
+    Callback = function(Value)
+        outlineEnabled = Value
+        if espEnabled then
+            UpdateESP() -- Update ESP with new settings
+        end
+    end
+})
+
+EspTab:CreateToggle({
+    Name = "Enable Fill",
+    CurrentValue = fillEnabled,
+    Callback = function(Value)
+        fillEnabled = Value
+        if espEnabled then
+            UpdateESP() -- Update ESP with new settings
+        end
+    end
+})
+
+-- Function to add ESP to a player
+local function CreateESP(player)
+    -- Create BillboardGui to display name and health
+    local billboard = Instance.new("BillboardGui")
+    billboard.Adornee = player.Character:WaitForChild("Head")
+    billboard.Size = UDim2.new(0, 200, 0, 50)
+    billboard.StudsOffset = Vector3.new(0, 3, 0)
+    billboard.Parent = player.Character:WaitForChild("Head")
+    billboard.AlwaysOnTop = true
+
+    -- Create TextLabel for Name and HP
+    local nameLabel = Instance.new("TextLabel")
+    nameLabel.Text = player.DisplayName
+    nameLabel.Size = UDim2.new(1, 0, 0.5, 0)
+    nameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    nameLabel.BackgroundTransparency = 1
+    nameLabel.Parent = billboard
+
+    local hpLabel = Instance.new("TextLabel")
+    hpLabel.Text = "HP: " .. player.Character.Humanoid.Health
+    hpLabel.Size = UDim2.new(1, 0, 0.5, 0)
+    hpLabel.Position = UDim2.new(0, 0, 0.5, 0)
+    hpLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    hpLabel.BackgroundTransparency = 1
+    hpLabel.Parent = billboard
+
+    -- Create Outline and Fill if enabled
+    if outlineEnabled then
+        local outline = Instance.new("Frame")
+        outline.Size = UDim2.new(1.1, 0, 1.1, 0)
+        outline.Position = UDim2.new(0, -5, 0, -5)
+        outline.BackgroundColor3 = espOutlineColor
+        outline.BorderSizePixel = 0
+        outline.Parent = billboard
+    end
+
+    if fillEnabled then
+        local fill = Instance.new("Frame")
+        fill.Size = UDim2.new(1, 0, 1, 0)
+        fill.Position = UDim2.new(0, 0, 0, 0)
+        fill.BackgroundColor3 = espFillColor
+        fill.BackgroundTransparency = 0.5
+        fill.BorderSizePixel = 0
+        fill.Parent = billboard
+    end
+end
+
+-- Function to update ESP settings (called when toggles or color pickers change)
+local function UpdateESP()
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= localPlayer and player.Character then
+            if espEnabled then
+                CreateESP(player) -- Re-create ESP with updated settings
+            else
+                RemoveESP() -- Remove ESP if disabled
+            end
+        end
+    end
+end
+
+-- Function to remove all ESPs (when toggled off)
+local function RemoveESP()
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player.Character and player.Character:FindFirstChild("Head") then
+            local billboard = player.Character.Head:FindFirstChildOfClass("BillboardGui")
+            if billboard then
+                billboard:Destroy()
+            end
+        end
+    end
+end
+
+-- Listen for new players (when they join)
+Players.PlayerAdded:Connect(function(player)
+    if espEnabled then
+        player.CharacterAdded:Connect(function()
+            CreateESP(player)
+        end)
+    end
+end)
+
+-- Initialize the ESP for existing players
+for _, player in ipairs(Players:GetPlayers()) do
+    if player ~= localPlayer then
+        player.CharacterAdded:Connect(function()
+            if espEnabled then
+                CreateESP(player)
+            end
+        end)
+    end
+end
+
+-- Function to continuously update ESPs as health changes
+game:GetService("RunService").Heartbeat:Connect(function()
+    if espEnabled then
+        for _, player in ipairs(Players:GetPlayers()) do
+            if player.Character and player.Character:FindFirstChild("Humanoid") then
+                local humanoid = player.Character:FindFirstChild("Humanoid")
+                local billboard = player.Character:FindFirstChild("Head"):FindFirstChildOfClass("BillboardGui")
+                if billboard then
+                    local hpLabel = billboard:FindFirstChild("HPLabel")
+                    if hpLabel then
+                        hpLabel.Text = "HP: " .. humanoid.Health
+                    end
+                end
+            end
+        end
+    end
+end)
+----------------------------------------------------------------------------
+---Esp stuff /\
+----------------------------------------------------------------------------
+
+
+
+
+
+
+
+
