@@ -67,7 +67,7 @@ local MainWindow = Rayfield:CreateWindow({
 ----------------------------------------------------------------------------
 local LTab          =    MainWindow:CreateTab  ("f"                                  , "app-window-mac") -- Title, Image
 local YTab          =    MainWindow:CreateTab  (" "..  localPlayer.DisplayName .. "!",        "annoyed") -- Title, Image
-
+local Tab           =    YTab
 local MainTab       =    MainWindow:CreateTab  ("Main",                                           "box")
 local STab          =    MainWindow:CreateTab  ("Stamina",                             'chevrons-right')
 local EsTab        =    MainWindow:CreateTab  ("Visuals",                                   "scan-eye")
@@ -360,7 +360,7 @@ end
    end,
 })
 ----------------------------------------------------------------------------
-local Button = Tab:CreateButton({
+local Button = YTab:CreateButton({
    Name = "flyLoop",
    Callback = function()
      local Players=game:GetService("Players")
