@@ -9,7 +9,7 @@ local function activateGenerator(b,o)
 if cd then return end
 cd=true
 b.Image=WAIT_ID
-o.Color=Color3.fromRGB(40,129,15)
+o.Color=Color3.fromRGB(0,0,0)
 task.spawn(function()
 local m=workspace:FindFirstChild("Map")
 if m and m:FindFirstChild("Ingame") and m.Ingame:FindFirstChild("Map") then
@@ -35,7 +35,7 @@ g.ResetOnSpawn=false
 local b=Instance.new("ImageButton",g)
 b.Image=CLICK_ID
 b.Size=UDim2.new(0,20,0,20)
-b.BackgroundColor3=Color3.new(0,50,0)
+b.BackgroundColor3=Color3.new(0,0,230)
 b.Active=true
 b.Draggable=true
 local corner=Instance.new("UICorner",b)
