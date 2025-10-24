@@ -1,0 +1,79 @@
+print("Auto Gen Executed")
+local p=game.Players.LocalPlayer
+local cd=false
+local cdT=0.5
+local CLICK_ID="rbxassetid://0"
+local WAIT_ID="rbxassetid://10620016085"
+
+local function activateGenerator(b,o)
+if cd then return end
+cd=true
+b.Image=WAIT_ID
+o.Color=Color3.fromRGB(0,0,150)
+task.spawn(function()
+local m=workspace:FindFirstChild("Map")
+if m and m:FindFirstChild("Ingame") and m.Ingame:FindFirstChild("Map") then
+for _,v in pairs(m.Ingame.Map:GetChildren()) do
+if v:IsA("Model") and v.Name=="Generator" then
+local r=v:FindFirstChild("Remotes") and v.Remotes:FindFirstChild("RE")
+if r then r:FireServer() end
+end
+end
+end
+end)
+task.wait(cdT)
+cd=false
+b.Image=CLICK_ID
+o.Color=Color3.new(1,0,0)
+end
+
+local function make()
+if p.PlayerGui:FindFirstChild("GeneratorGUI") then return end
+local g=Instance.new("ScreenGui",p:WaitForChild("PlayerGui"))
+g.Name="GeneratorGUI"
+g.ResetOnSpawn=false
+local b=Instance.new("ImageButton",g)
+b.Image=CLICK_ID
+b.Size=UDim2.new(0,40,0,40)
+b.BackgroundColor3=Color3.new(0,0,0)
+b.Active=true
+b.Draggable=true
+local corner=Instance.new("UICorner",b)
+corner.CornerRadius=UDim.new(0,20)
+local o=Instance.new("UIStroke",b)
+o.Color=Color3.new(1,0,0)
+o.Thickness=3
+local pos=p.PlayerGui:GetAttribute("ButtonPos")
+if pos then
+b.Position=UDim2.new(pos.XScale,pos.XOffset,pos.YScale,pos.YOffset)
+else
+b.Position=UDim2.new(0,100,0,100)
+end
+b:GetPropertyChangedSignal("Position"):Connect(function()
+p.PlayerGui:SetAttribute("ButtonPos",{
+XScale=b.Position.X.Scale,
+XOffset=b.Position.X.Offset,
+YScale=b.Position.Y.Scale,
+YOffset=b.Position.Y.Offset
+})
+end)
+b.MouseButton1Click:Connect(function()
+activateGenerator(b,o)
+end)
+game:GetService("UserInputService").InputBegan:Connect(function(input,processed)
+if processed then return end
+if input.KeyCode==Enum.KeyCode.Z then
+activateGenerator(b,o)
+end
+end)
+end
+
+p.CharacterAdded:Connect(function()
+task.wait(1)
+make()
+end)
+
+if p.Character then
+task.wait(1)
+make()
+end
