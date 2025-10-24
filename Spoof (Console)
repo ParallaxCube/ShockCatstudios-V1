@@ -1,0 +1,24 @@
+     print ("Spoofed for Console")
+local UserInputService = game:GetService("UserInputService")
+local Network = require(game.ReplicatedStorage.Modules.Network)
+
+local DeviceSpoof = {}
+local ForcedDevice = "Console" -- change to "Mobile", "Console" or "PC"
+
+DeviceSpoof.Changed = Instance.new("BindableEvent").Event
+DeviceSpoof.Value = ForcedDevice
+
+local function ApplySpoof()
+    DeviceSpoof.Value = ForcedDevice
+    Network:FireServerConnection("SetDevice", "REMOTE_EVENT", ForcedDevice)
+end
+
+ApplySpoof()
+
+UserInputService.LastInputTypeChanged:Connect(ApplySpoof)
+
+while wait() do
+    ApplySpoof()
+end
+
+return DeviceSpoof
