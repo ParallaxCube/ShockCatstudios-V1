@@ -1,14 +1,21 @@
-
 -- Define the required services
-  ---------------------------------------------------------------------------------------------------------------
-  -- Required services
-  local Players = game:GetService("Players")
-  local Workspace = game:GetService("Workspace")
-  local localPlayer = Players.LocalPlayer
-  local camera = Workspace.CurrentCamera
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+local localPlayer = Players.LocalPlayer
+local camera = Workspace.CurrentCamera
+local TextChatService = game:GetService("TextChatService")
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
-  -- Color for the ESP (adjustable)
-  local espColor = Color3.fromRGB(255, 0, 0)  -- Default red
+-- Color for the ESP (adjustable)
+local espOutlineColor = Color3.fromRGB(255, 0, 0)  -- Default red
+local espFillColor = Color3.fromRGB(0, 255, 0) -- Default green
+local tracerColor = Color3.fromRGB(0, 255, 255) -- Default tracer color (light blue)
+
+-- ESP Variables
+local espEnabled = false
+local outlineEnabled = false
+local fillEnabled = false
+local tracersEnabled = false
 ---------------------------------------------------------------------------------------------------------------
 -- Greet the local player
   local Players = game:GetService("Players")
@@ -78,18 +85,40 @@ local MiscTab             =    MainWindow:CreateTab  ("Misc"                    
 local GeneratorTab        =    MainWindow:CreateTab  ("Generators"                              ,                        "cog")
 local ETab                =    MainWindow:CreateTab  ("Experimental"                            ,                       "bolt")
 local CredsTab            =    MainWindow:CreateTab  ("Creds"                                   ,                        "cog")
-local FEBETab             = MainWindow:CreateTab     ("Fake Block Animations"                   ,                        "cog")
+local FEBETab             =    MainWindow:CreateTab  ("Fake Block Animations"                   ,                        "cog")
 
 ----------------------------------------------------------------------------
 --Tabs /\ 10+
 ----------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 local Section                 = GeneratorTab:CreateSection("GeneratorGUI")
 local Button                  = GeneratorTab:CreateButton({
    Name = "Gen Toggle",
    Callback = function()
         -- The function that takes place when the button is pressed
      ----------------------------------------------------------------------------
- 
  -- The URL to your script on GitHub
       local scriptUrl = 'https://raw.githubusercontent.com/ParallaxCube/ShockCatstudios-V1/3c3f87630ff0b493b52f23fe875b9f6c0cd38690/Circle%20gen%20button'  -- Replace with your actual GitHub link
       
@@ -104,7 +133,6 @@ local Button                  = GeneratorTab:CreateButton({
       else
          notif({"Success", "Script loaded successfully!", 1})
       end
- 
 ----------------------------------------------------------------------------
 -- The function that takes place when the button is pressed
 end,
@@ -113,6 +141,16 @@ end,
 --Auto Gen Btn /\
 ----------------------------------------------------------------------------
 
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------------
 local Button = PlayerTab:CreateButton({
    Name = "ArtistShedletsky",
    Callback = function()
@@ -141,6 +179,17 @@ local Button = PlayerTab:CreateButton({
    end,
 })
 ----------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------------
 local Button = MiscTab:CreateButton({
    Name = "Lag challange",
    Callback = function()
@@ -157,6 +206,16 @@ end
 --Lag challange user is agreeing to let their device get laggy! /\
 ----------------------------------------------------------------------------
 
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------------
 local Button = PlayerTab:CreateButton({
    Name = "Spoof (console)",
    Callback = function()
@@ -184,6 +243,19 @@ local Button = PlayerTab:CreateButton({
 })
 ----------------------------------------------------------------------------
 -- Spoof device /\ to console
+----------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------------
+
 ----------------------------------------------------------------------------
 -- Create Tab and Section for FakeBlock functionality
 local Section = FEBETab:CreateSection("Fake Block Controls")
@@ -227,6 +299,18 @@ FEBETab:CreateButton({
 ----------------------------------------------------------------------------
 --FAKE BLOCK /\
 ----------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
 -- ESP Variables
 local espEnabled = false
 local outlineEnabled = false
