@@ -1,5 +1,31 @@
+local success, message = pcall(function()
+    if not game then
+        error("Not Roblox, please execute inside of the Roblox app.")
+    end
+end)
+
+if not success then
+    print("Error: " .. message)  -- This will print the error message if it occurs
+else
+    print("Script executed successfully!")
+end
+                       
+                       
+                       
+                       
+function showLoadingMessages()
+    local messages = {"Ⓞ ▀ ▀", "▀ Ⓞ ▀", "▀ ▀ Ⓞ"}
+    for _, msg in ipairs(messages) do
+        print(msg)
+        task.wait(0.5)
+    end
+end
+showLoadingMessages()
+
+
+
+
 -- Define the required services
-function GetServicesneeded()
   ---------------------------------------------------------------------------------------------------------------
   -- Required services
   local Players = game:GetService("Players")
@@ -9,26 +35,22 @@ function GetServicesneeded()
 
   -- Color for the ESP (adjustable)
   local espColor = Color3.fromRGB(255, 0, 0)  -- Default red
+  
   ---------------------------------------------------------------------------------------------------------------
-end
 
 ---------------------------------------------------------------------------------------------------------------
 -- Greet the local player
-function GUS()
   local Players = game:GetService("Players")
-  local TextChatService = game:GetService("TextChatService")
-  -- Define the LocalPlayer right away so we can use their name
-  local localPlayer = Players.LocalPlayer 
-  local RBXGeneral = TextChatService:WaitForChild("TextChannels"):WaitForChild("RBXGeneral")
-  
-  -- 1. Greet the local player who is running the script
-  if localPlayer then
-    RBXGeneral:DisplaySystemMessage(string.format("Heyyy!!, %s! Your ShockCatStudio UI is Ready", localPlayer.DisplayName))
-  end
+local TextChatService = game:GetService("TextChatService")
+-- Define the LocalPlayer right away so we can use their name
+local localPlayer = Players.LocalPlayer 
+local RBXGeneral = TextChatService:WaitForChild("TextChannels"):WaitForChild("RBXGeneral")
+-- 1. Greet the local player who is running the script
+if localPlayer then
+    RBXGeneral:DisplaySystemMessage(string.format("Heyyy!!, %s! Your ShockCatStudio v1 UI is Ready!! ^^", localPlayer.DisplayName))
 end
 ---------------------------------------------------------------------------------------------------------------
 -- Call functions
-GUS()
 GetServicesneeded()
 ---------------------------------------------------------------------------------------------------------------
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
@@ -77,6 +99,7 @@ local MainWindow = Rayfield:CreateWindow({
 ----------------------------------------------------------------------------
 local LTab          =    MainWindow:CreateTab  ("f"                                  , "app-window-mac") -- Title, Image
 local PTab          =    MainWindow:CreateTab  (" "..  localPlayer.DisplayName .. "!",        "annoyed") -- Title, Image
+
 local MainTab       =    MainWindow:CreateTab  ("Main",                                           "box")
 local STab          =    MainWindow:CreateTab  ("Stamina",                             'chevrons-right')
 local EspTab        =    MainWindow:CreateTab  ("Visuals",                                   "scan-eye")
