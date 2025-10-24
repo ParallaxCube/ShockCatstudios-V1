@@ -14,7 +14,9 @@ end
                        
                        
 function showLoadingMessages()
-    local messages = {"Ⓞ ▀ ▀", "▀ Ⓞ ▀", "▀ ▀ Ⓞ"}
+  local messages = {"Ⓞ ▀ ▀", "▀ Ⓞ ▀", "▀ ▀ Ⓞ"}
+ local messages = {"Ⓞ ▀ ▀", "▀ Ⓞ ▀", "▀ ▀ Ⓞ"}
+local messages = {"Ⓞ ▀ ▀", "▀ Ⓞ ▀", "▀ ▀ Ⓞ"}
     for _, msg in ipairs(messages) do
         print(msg)
         task.wait(0.5)
@@ -49,9 +51,6 @@ local RBXGeneral = TextChatService:WaitForChild("TextChannels"):WaitForChild("RB
 if localPlayer then
     RBXGeneral:DisplaySystemMessage(string.format("Heyyy!!, %s! Your ShockCatStudio v1 UI is Ready!! ^^", localPlayer.DisplayName))
 end
----------------------------------------------------------------------------------------------------------------
--- Call functions
-GetServicesneeded()
 ---------------------------------------------------------------------------------------------------------------
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 ----------------------------------------------------------------------------
