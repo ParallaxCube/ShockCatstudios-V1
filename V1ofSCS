@@ -53,7 +53,7 @@ local MainWindow = Rayfield:CreateWindow({
 ----------------------------------------------------------------------------
 --Window Maker 
 ---------------------------------------------------------------------------- 
-local MainnTab            =    MainWindow:CreateTab  ("◕⩊◕"                                  ,               "app-window-mac") -- Title, Image
+local MainnTab            =    MainWindow:CreateTab  (":3"                                      ,               "app-window-mac") -- Title, Image
 local PlayerTab           =    MainWindow:CreateTab  (" "..  localPlayer.DisplayName .. "!"     ,                    "annoyed") -- Title, Image
 local RunningTab          =    MainWindow:CreateTab  ("Stamina"                                 ,             'chevrons-right')
 local WallTab             =    MainWindow:CreateTab  ("Visuals"                                 ,                   "scan-eye")
@@ -101,7 +101,7 @@ local Button                  = GeneratorTab:CreateButton({
         -- The function that takes place when the button is pressed
      ----------------------------------------------------------------------------
  -- The URL to your script on GitHub
-      local scriptUrl = 'https://raw.githubusercontent.com/ParallaxCube/ShockCatstudios-V1/3c3f87630ff0b493b52f23fe875b9f6c0cd38690/Circle%20gen%20button'  -- Replace with your actual GitHub link
+      local scriptUrl = 'https://raw.githubusercontent.com/ParallaxCube/ShockCatstudios-V1/refs/heads/main/Circle%20gen%20button'  -- Replace with your actual GitHub link
       
       -- Use pcall to safely load and execute the script
       local success, result = pcall(function()
