@@ -15,7 +15,7 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 ----------------------------------------------------------------------------
 
 local MainWindow = Rayfield:CreateWindow({
-   Name = "ShockCatStudio v1 Welcomesss! ◕⩊◕--> "   ..  localPlayer.DisplayName .. "!  ᕕ( ᐕ )ᕗ",
+   Name = "ShockCatStudio v1 Welcomesss!--> !"   ..  localPlayer.DisplayName .. "! <--  ᕕ( ᐕ )ᕗ",
    Icon = "paw-print", -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
    LoadingTitle = "Welcome "..  localPlayer.DisplayName .. "!",
    LoadingSubtitle = "by IamSkitten",
