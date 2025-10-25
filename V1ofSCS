@@ -364,7 +364,7 @@ end)
 
 
 local Button = WallTab:CreateButton({
-   Name = "Button Example",
+   Name = "esp teams",
    Callback = function()
    -- The function that takes place when the button is pressed
 
@@ -419,6 +419,7 @@ end)
 
 -- Continuously check if any existing players need ESP updates
 game:GetService("RunService").Heartbeat:Connect(function()
+task.wait(0.7)
     trackPlayers()
 end)
 
@@ -426,6 +427,78 @@ end)
    -- The function that takes place when the button is pressed
    end,
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+local Button = WallTab:CreateButton({
+   Name = "ESP For All Players",
+   Callback = function()
+   -- The function that takes place when the button is pressed
+
+   local Players = game:GetService("Players")
+   local Workspace = game:GetService("Workspace")
+   local player = Players.LocalPlayer
+   local camera = game.Workspace.CurrentCamera
+
+   -- Helper function to create a Billboard GUI for ESP
+   local function createESP(character)
+       if not character or not character:FindFirstChild("Head") then return end
+       
+       local billboardGui = Instance.new("BillboardGui")
+       billboardGui.Parent = character
+       billboardGui.Adornee = character.Head
+       billboardGui.Size = UDim2.new(0, 150, 0, 150)
+       billboardGui.StudsOffset = Vector3.new(0, 2, 0) -- Position it above the character's head
+       
+       local frame = Instance.new("Frame")
+       frame.Parent = billboardGui
+       frame.Size = UDim2.new(1, 0, 1, 0)
+       frame.BackgroundColor3 = Color3.fromRGB(0, 255, 255) -- Cyan for all players (can be customized)
+       frame.BackgroundTransparency = 0.5
+   end
+
+   -- Monitor for all players and add ESP
+   local function trackPlayers()
+       for _, targetPlayer in ipairs(Players:GetPlayers()) do
+           if targetPlayer.Character and targetPlayer.Character:FindFirstChild("Head") then
+               createESP(targetPlayer.Character)
+           end
+       end
+   end
+
+   -- Update ESP when a new player enters the game
+   Players.PlayerAdded:Connect(function(player)
+       player.CharacterAdded:Connect(function(character)
+           wait(3) -- Wait for the character to load
+           trackPlayers()
+       end)
+   end)
+
+   -- Continuously check if any existing players need ESP updates
+   game:GetService("RunService").Heartbeat:Connect(function()
+       task.wait(0.5) -- Adjusted delay for better performance
+       trackPlayers()
+   end)
+
+   -- The function that takes place when the button is pressed
+   end,
+})
+
+
+
 
 
 
