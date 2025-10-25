@@ -24,7 +24,7 @@ end)
 task.wait(cdT)
 cd=false
 b.Image=CLICK_ID
-o.Color=Color3.new(80,50,30)
+o.Color=Color3.new(60,30,10)
 end
 
 local function make()
@@ -34,15 +34,15 @@ g.Name="GeneratorGUI"
 g.ResetOnSpawn=false
 local b=Instance.new("ImageButton",g)
 b.Image=CLICK_ID
-b.Size=UDim2.new(0,5,0,5)
-b.BackgroundColor3=Color3.new(0,50,50)
+b.Size=UDim2.new(0,5,0,20)
+b.BackgroundColor3=Color3.new(10,5,5)
 b.Active=true
 b.Draggable=true
 local corner=Instance.new("UICorner",b)
 corner.CornerRadius=UDim.new(0,25)
 local o=Instance.new("UIStroke",b)
 o.Color=Color3.new(50,70,0)
-o.Thickness=3
+o.Thickness= 0.3
 local pos=p.PlayerGui:GetAttribute("ButtonPos")
 if pos then
 b.Position=UDim2.new(pos.XScale,pos.XOffset,pos.YScale,pos.YOffset)
