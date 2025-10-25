@@ -24,7 +24,7 @@ end)
 task.wait(cdT)
 cd=false
 b.Image=CLICK_ID
-o.Color=Color3.new(80,0,0)
+o.Color=Color3.new(80,50,30)
 end
 
 local function make()
@@ -39,15 +39,15 @@ b.BackgroundColor3=Color3.new(0,50,50)
 b.Active=true
 b.Draggable=true
 local corner=Instance.new("UICorner",b)
-corner.CornerRadius=UDim.new(0,20)
+corner.CornerRadius=UDim.new(0,25)
 local o=Instance.new("UIStroke",b)
-o.Color=Color3.new(50,0,0)
+o.Color=Color3.new(50,70,0)
 o.Thickness=3
 local pos=p.PlayerGui:GetAttribute("ButtonPos")
 if pos then
 b.Position=UDim2.new(pos.XScale,pos.XOffset,pos.YScale,pos.YOffset)
 else
-b.Position=UDim2.new(0,150,0,150)
+b.Position=UDim2.new(0,150,0,-150)
 end
 b:GetPropertyChangedSignal("Position"):Connect(function()
 p.PlayerGui:SetAttribute("ButtonPos",{
