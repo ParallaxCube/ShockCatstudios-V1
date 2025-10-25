@@ -1,7 +1,7 @@
-print("Auto Gen Executed")
+print("Auto Gen Executed v1.6")
 local p=game.Players.LocalPlayer
 local cd=false
-local cdT=1.5
+local cdT = 0.5
 local CLICK_ID="rbxassetid://0"
 local WAIT_ID="rbxassetid://10620016085"
 
@@ -14,7 +14,7 @@ task.spawn(function()
 local m=workspace:FindFirstChild("Map")
 if m and m:FindFirstChild("Ingame") and m.Ingame:FindFirstChild("Map") then
 for _,v in pairs(m.Ingame.Map:GetChildren()) do
-if v:IsA("Model") and v.Name=="Generator" then
+if v:IsA("Model") and v.Name== "Generator" then
 local r=v:FindFirstChild("Remotes") and v.Remotes:FindFirstChild("RE")
 if r then r:FireServer() end
 end
@@ -34,8 +34,8 @@ g.Name="GeneratorGUI"
 g.ResetOnSpawn=false
 local b=Instance.new("ImageButton",g)
 b.Image=CLICK_ID
-b.Size=UDim2.new(0,20,0,20)
-b.BackgroundColor3=Color3.new(0,0,230)
+b.Size=UDim2.new(0,5,0,5)
+b.BackgroundColor3=Color3.new(0,50,50)
 b.Active=true
 b.Draggable=true
 local corner=Instance.new("UICorner",b)
