@@ -1,3 +1,8 @@
+-- https://raw.githubusercontent.com/ParallaxCube/ShockCatstudios-V1/refs/heads/main/V1ofSCS
+--loadstring(game:HttpGet('https://raw.githubusercontent.com/ParallaxCube/ShockCatstudios-V1/refs/heads/main/V1ofSCS'))()
+-- https://raw.githubusercontent.com/ParallaxCube/d/d1ab99819238a2fcc4cd2252a891a26163dbf35f/df
+-- loadstring(game:HttpGet('https://raw.githubusercontent.com/ParallaxCube/d/d1ab99819238a2fcc4cd2252a891a26163dbf35f/df'))()
+
 -- Greet the local player
   local Players = game:GetService("Players")
 local TextChatService = game:GetService("TextChatService")
