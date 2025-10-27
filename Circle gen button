@@ -1,7 +1,7 @@
 print("Auto Gen Executed v1.6")
 local p=game.Players.LocalPlayer
 local cd=false
-local cdT = 0.5
+local cdT = 0.8
 local CLICK_ID="rbxassetid://0"
 local WAIT_ID="rbxassetid://10620016085"
 
@@ -47,7 +47,7 @@ local pos=p.PlayerGui:GetAttribute("ButtonPos")
 if pos then
 b.Position=UDim2.new(pos.XScale,pos.XOffset,pos.YScale,pos.YOffset)
 else
-b.Position=UDim2.new(0,150,0,-150)
+b.Position=UDim2.new(0,150,0,120)
 end
 b:GetPropertyChangedSignal("Position"):Connect(function()
 p.PlayerGui:SetAttribute("ButtonPos",{
