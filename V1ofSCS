@@ -9,7 +9,7 @@ if localPlayer then
     RBXGeneral:DisplaySystemMessage(string.format("Heyyy!!, %s! Your ShockCatStudio v1.034 UI is Ready!!", localPlayer.DisplayName))
 end
 ---------------------------------------------------------------------------------------------------------------
-local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/ParallaxCube/v1scs/6b806f0fa79db34379bd1f3c0fcfeb0086459350/v1scs'))()
+local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/ParallaxCube/v1scs/refs/heads/main/ShockCatRay'))()
 ----------------------------------------------------------------------------
 --rayfield /\
 ----------------------------------------------------------------------------
