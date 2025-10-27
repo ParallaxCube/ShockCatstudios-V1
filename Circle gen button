@@ -1,7 +1,7 @@
 print("Auto Gen Executed v1.6")
 local p=game.Players.LocalPlayer
 local cd=false
-local cdT = 0.8
+local cdT = 1.7
 local CLICK_ID="rbxassetid://0"
 local WAIT_ID="rbxassetid://10620016085"
 
@@ -34,20 +34,20 @@ g.Name="GeneratorGUI"
 g.ResetOnSpawn=false
 local b=Instance.new("ImageButton",g)
 b.Image=CLICK_ID
-b.Size=UDim2.new(0,5,0,20)
-b.BackgroundColor3=Color3.new(10,5,5)
+b.Size=UDim2.new(0,23,0,23)
+b.BackgroundColor3=Color3.new(60,5,5)
 b.Active=true
 b.Draggable=true
 local corner=Instance.new("UICorner",b)
 corner.CornerRadius=UDim.new(0,25)
 local o=Instance.new("UIStroke",b)
-o.Color=Color3.new(50,70,0)
+o.Color=Color3.new(30,60,30)
 o.Thickness= 0.3
 local pos=p.PlayerGui:GetAttribute("ButtonPos")
 if pos then
 b.Position=UDim2.new(pos.XScale,pos.XOffset,pos.YScale,pos.YOffset)
 else
-b.Position=UDim2.new(0,150,0,120)
+b.Position=UDim2.new(0,150,0,150)
 end
 b:GetPropertyChangedSignal("Position"):Connect(function()
 p.PlayerGui:SetAttribute("ButtonPos",{
