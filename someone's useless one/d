@@ -1,0 +1,475 @@
+local MacLib = loadstring(game:HttpGet("https://github.com/biggaboy212/Maclib/releases/latest/download/maclib.txt"))()
+local pass = "lets go"
+local plr = game.Players.LocalPlayer
+local itemesp1 = false
+local sprintfake = false
+local isMoving = false  -- Tracks whether the player is moving
+local sprinting = false  -- Tracks whether the player is currently sprinting
+local currentTrack = nil  -- Keeps track of the current animation track being played
+
+------------------------------------------
+
+local function GetPlayer()
+    local groups = {game.Workspace.Players.Survivors, game.Workspace.Players.Killers}
+
+    for _, group in ipairs(groups) do
+        for _, v in ipairs(group:GetChildren()) do
+            if v:GetAttribute("Username") == plr.Name then
+                print("Found player in", group.Name)
+                return v
+            end
+        end
+    end
+
+    print("Player not found!")
+    return nil
+end
+
+------------------------------------------
+
+local function spoofanimation()
+    local foundplayer1 = GetPlayer()
+    if not foundplayer1 then return end
+    
+    local gamecharacter = foundplayer1.Name
+    local character = plr.Character or plr.CharacterAdded:Wait()
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if not humanoid then return end
+
+    local animator = humanoid:FindFirstChildOfClass("Animator") or Instance.new("Animator", humanoid)
+    
+
+    -- Define animations
+    local blockedAnimation = Instance.new("Animation")
+    blockedAnimation.AnimationId = "rbxassetid://108018357044094"  -- Normal walk animation
+
+    local replacementAnimation = Instance.new("Animation")
+    replacementAnimation.AnimationId = "rbxassetid://136252471123500"  -- Sprint animation
+
+    if gamecharacter == "Dusekkar" then
+        blockedAnimation.AnimationId = "rbxassetid://102812745115149"
+        replacementAnimation.AnimationId = "rbxassetid://125869734469543"
+    end
+    
+    if gamecharacter == "c00lkidd" then
+        blockedAnimation.AnimationId = "rbxassetid://18885906143"
+        replacementAnimation.AnimationId = "rbxassetid://96571077893813"
+    end
+    
+    -- Function to toggle sprinting
+    local function toggleReplacement()
+        sprintfake = not sprintfake
+        --print("Animation replacement is now:", sprintfake)
+
+        if sprintfake then
+            foundplayer1.SpeedMultipliers.Sprinting.Value = 2.167
+            if currentTrack then
+                currentTrack:Stop()  -- Stop any existing animation
+            end
+            currentTrack = animator:LoadAnimation(replacementAnimation)
+            currentTrack.Priority = Enum.AnimationPriority.Action  -- Ensure sprint animation has higher priority
+            currentTrack:Play()
+        else
+            foundplayer1.SpeedMultipliers.Sprinting.Value = 1
+            if currentTrack then
+                currentTrack:Stop()  -- Stop any existing animation
+            end
+            currentTrack = animator:LoadAnimation(blockedAnimation)
+            currentTrack.Priority = Enum.AnimationPriority.Idle  -- Walking animation with lower priority
+            currentTrack:Play()
+        end
+    end
+
+    -- Keybind toggle for sprinting
+    game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
+        if not gameProcessed and input.KeyCode == Enum.KeyCode.LeftShift then
+            toggleReplacement()
+        end
+    end)
+    
+
+    -- Movement detection
+    humanoid:GetPropertyChangedSignal("MoveDirection"):Connect(function()
+        local velocity = humanoid.MoveDirection.Magnitude
+
+        if velocity > 0 then  -- Player is moving
+            if not isMoving then
+                isMoving = true
+                print("Player started moving")
+
+                -- Set correct speed based on sprint toggle
+                if sprinting then
+                    foundplayer1.SpeedMultipliers.Sprinting.Value = 2.167
+                    if currentTrack then
+                        currentTrack:Stop()  -- Stop any existing animation
+                    end
+                    currentTrack = animator:LoadAnimation(replacementAnimation)
+                    currentTrack.Priority = Enum.AnimationPriority.Action  -- Ensure sprint animation has higher priority
+                    currentTrack:Play()
+                else
+                    foundplayer1.SpeedMultipliers.Sprinting.Value = 1
+                    if currentTrack then
+                        currentTrack:Stop()  -- Stop any existing animation
+                    end
+                    currentTrack = animator:LoadAnimation(blockedAnimation)
+                    currentTrack.Priority = Enum.AnimationPriority.Idle  -- Walking animation with lower priority
+                    currentTrack:Play()
+                end
+            end
+        else  -- Player stopped moving
+            if isMoving then
+                isMoving = false
+                --print("Player stopped moving")
+
+                -- Reset sprinting value to normal speed when stopping
+                if not sprinting then
+                    foundplayer1.SpeedMultipliers.Sprinting.Value = 1
+                end
+
+                -- Stop animations if not moving
+                if currentTrack then
+                    currentTrack:Stop()
+                end
+            end
+        end
+    end)
+
+    -- Update sprinting status on key press
+    game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
+        if not gameProcessed and input.KeyCode == Enum.KeyCode.LeftShift then
+            sprinting = not sprinting
+           -- print("Sprinting now: ", sprinting)
+
+            -- If sprinting, make sure sprinting animation is played
+            if sprinting then
+                foundplayer1.SpeedMultipliers.Sprinting.Value = 2.167
+                if currentTrack then
+                    currentTrack:Stop()  -- Stop walking animation if any
+                end
+                currentTrack = animator:LoadAnimation(replacementAnimation)
+                currentTrack.Priority = Enum.AnimationPriority.Action
+                currentTrack:Play()
+                task.wait(.03)
+                currentTrack:Play()
+            else
+                foundplayer1.SpeedMultipliers.Sprinting.Value = 1
+                if currentTrack then
+                    currentTrack:Stop()  -- Stop sprint animation if any
+                end
+                currentTrack = animator:LoadAnimation(blockedAnimation)
+                currentTrack.Priority = Enum.AnimationPriority.Idle
+                currentTrack:Play()
+            end
+        end
+    end)
+end
+
+
+    local respawnConnection
+    respawnConnection = plr.CharacterAdded:Connect(function()
+        -- Disconnect old connections
+        if inputConnection then inputConnection:Disconnect() end
+        if moveConnection then moveConnection:Disconnect() end
+        if respawnConnection then respawnConnection:Disconnect() end
+
+        -- Reset variables
+        sprinting = false
+        sprintfake = false
+        isMoving = false
+        currentTrack = nil 
+        
+        spoofanimation()  -- Restart function
+        
+    end)
+------------------------------------------
+
+--local function esp()
+   --local killerhighlight = Instance.new("Highlight"):Clone()
+    
+    
+    --local groups = {game.Workspace.Players.Survivors, game.Workspace.Players.Killers}
+    
+    --for _,v in ipairs(groups) do
+        --for _,v in ipairs(groups:GetChildren()) do
+            --if v:IsA("Model") then
+                --killerhighlight.Parent = v
+            --end
+        --end
+   -- end
+
+------------------------------------------
+
+local function itemesp()
+    print(itemesp1)
+    if itemesp1 then
+        -- Add highlights if they don't already exist
+        for _, v in ipairs(workspace.Map.Ingame:GetChildren()) do
+            if v:IsA("Tool") and not v:FindFirstChildOfClass("Highlight") then
+                local highlight = Instance.new("Highlight")
+                highlight.Parent = v
+                
+                if v.Name == "BloxyCola" then
+                    highlight.FillColor = Color3.fromRGB(255, 100, 0)
+                elseif v.Name == "Medkit" then
+                    highlight.FillColor = Color3.fromRGB(255, 194, 194)
+                end
+            end
+        end
+
+        -- Ensure new tools are highlighted when added
+        workspace.Map.Ingame.ChildAdded:Connect(function(v)
+            if v:IsA("Tool") and not v:FindFirstChildOfClass("Highlight") then
+                local highlight = Instance.new("Highlight")
+                highlight.Parent = v
+
+                if v.Name == "BloxyCola" then
+                    highlight.FillColor = Color3.fromRGB(255, 100, 0)
+                elseif v.Name == "Medkit" then
+                    highlight.FillColor = Color3.fromRGB(255, 194, 194)
+                end
+            end
+        end)
+    else
+        -- Remove all highlights if itemesp is false
+        for _, v in ipairs(workspace.Map.Ingame:GetChildren()) do
+            if v:IsA("Tool") then
+                local highlight = v:FindFirstChildOfClass("Highlight")
+                if highlight then
+                    highlight:Destroy()
+                end
+            end
+        end
+    end
+end
+
+-------------------------------------------
+
+local function teleportspawn()
+    local spawnPoints = workspace.Map.Ingame.Map.SpawnPoints.Survivors:GetChildren()
+    local amount = #spawnPoints  -- Get the total number of spawn points
+    
+    if amount > 0 then
+        local randomIndex = math.random(1, amount)  -- Select a random spawn point index
+        local chosenSpawn = spawnPoints[randomIndex]  -- Get the chosen spawn point
+        
+        local character = game.Players.LocalPlayer.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            character.HumanoidRootPart.CFrame = chosenSpawn.CFrame  -- Teleport the player
+        end
+    else
+        warn("No spawn points available!")
+    end
+end
+
+
+-------------------------------------------
+
+-- Window Configs
+local Window = MacLib:Window({
+    Title = "Trotman Hub",
+    Subtitle = "Roman Trotman Approves",
+    Size = UDim2.fromOffset(868, 650),
+    DragStyle = 2,
+    DisabledWindowControls = {},
+    ShowUserInfo = true,
+    Keybind = Enum.KeyCode.RightControl,
+    AcrylicBlur = false,
+})
+
+-----------------------------------------
+
+-- Welcome Notification
+Window:Notify({
+    Title = "Welcome To Trotman Hub",
+    Description = "BETA",
+    Lifetime = 5
+})
+
+-----------------------------------------
+
+local tabGroups = {
+    Main = Window:TabGroup(),
+    ESP = Window:TabGroup(),
+    Misc = Window:TabGroup()
+}
+
+-----------------------------------------
+
+local tabs = {
+    Main = tabGroups.Main:Tab({ Name = "Main", Image = "rbxassetid://125500743878117" }),
+    ESP = tabGroups.ESP:Tab({ Name = "ESP", Image = "rbxassetid://10723343537"}),
+    Misc = tabGroups.Misc:Tab({ Name = "Misc", Image = "rbxassetid://71732494649961" }),
+}
+
+-------------------------------------------
+
+local sections = {
+    MainS1 = tabs.Main:Section({ Side = "Left" }),
+    MiscS1 = tabs.Misc:Section({ Side = "Left" }),
+    MainS2 = tabs.Main:Section({ Side = "Right" }),
+    MiscS2 = tabs.Misc:Section({ Side = "Right" }),
+    ESPS1 = tabs.ESP:Section({ Side = "Left" })
+}
+
+-------------------------------------------
+
+sections.MainS1:Slider({
+    Name = "BaseSpeed",
+    Default = 12,
+    Minimum = 0,
+    Maximum = 100,
+    DisplayMethod = "Value",
+    Precision = 1,
+    Callback = function(Value)
+        local foundplayer = GetPlayer()
+        if foundplayer and foundplayer:FindFirstChild("Humanoid") and foundplayer.Humanoid.Health ~= 0 then
+            if tonumber(Value) then
+                foundplayer.Humanoid:SetAttribute("BaseSpeed", Value)
+            end
+        end
+    end
+})
+
+-------------------------------------------
+
+sections.MainS1:Slider({
+    Name = "JumpPower",
+    Default = 0,
+    Minimum = 0,
+    Maximum = 200,
+    DisplayMethod = "Value",
+    Precision = 1,
+    Callback = function(Value)
+        local foundplayer = GetPlayer()
+        if foundplayer and foundplayer:FindFirstChild("Humanoid") and foundplayer.Humanoid.Health ~= 0 then
+            if tonumber(Value) then
+                foundplayer.Humanoid.JumpPower = Value
+            end
+        end
+    end
+})
+
+-------------------------------------------
+
+sections.MiscS1:Button({
+    Name = "Clear Fog",
+    Callback = function()
+        game.Lighting.Atmosphere.Density = 0
+        Window:Notify({
+            Title = "Trotman Hub",
+            Description = "Cleared Fog!",
+            Lifetime = 4.5
+        })
+    end
+})
+
+-------------------------------------------
+
+sections.MainS2:Button({
+    Name = "Infinite Stamina",
+    Callback = function(Value)
+        local foundplayer1 = GetPlayer()
+        if foundplayer1 and foundplayer1:FindFirstChild("Humanoid") and foundplayer1.Humanoid.Health ~= 0 then
+            spoofanimation()
+        end
+    end
+})
+
+-------------------------------------------
+
+sections.MainS2:Paragraph({
+  Header = "INSTRUCTIONS FOR INFINITE STAMINA.",
+  Body = "First Bind your sprint key to anything other than Left Shift. After you can use it in game only once or it will break. Once you die and then go on to the next round feel free to repeat and turn it on again. (BaseSpeed affects your sprinting speed.)",
+})
+
+-------------------------------------------
+
+sections.MiscS1:Slider({
+    Name = "Max Camera Zoom",
+    Default = 12,
+    Minimum = 0.5,
+    Maximum = 200,
+    DisplayMethod = "Value",
+    Callback = function(Value)
+        plr.CameraMaxZoomDistance = Value
+    end
+})
+
+-------------------------------------------
+
+sections.MiscS2:Slider({
+    Name = "Gravity",
+    Default = 196.2,
+    Minimum = 0,
+    Maximum = 1000,
+    DisplayMethod = "Value",
+    Precision = 1,
+    Callback = function(Value)
+        workspace.Gravity = Value
+    end
+})
+
+-------------------------------------------
+
+sections.ESPS1:Toggle({
+    Name = "Item Esp",
+    Default = false,
+    Callback = function(Value)
+        itemesp1 = Value
+        itemesp()
+    end
+})
+
+sections.MiscS2:Button({
+    Name = "Teleport to random Spawn",
+    Callback = function()
+        teleportspawn()
+    end
+})
+
+-------------------------------------------
+
+sections.MiscS2:Input({
+    Name = "Bind Teleport Spawn",
+    Placeholder = "B",
+    AcceptedCharacters = "All",
+    Callback = function(input)
+        Window:Notify({
+            Title = "Set Teleport Spawn bind to "..input,
+            Description = "Set",
+            Lifetime = 4.5
+        })
+        
+        local keyCode = Enum.KeyCode[input]  -- Convert input string to KeyCode
+        if keyCode then
+            game:GetService("UserInputService").InputBegan:Connect(function(key, gameProcessed)
+                if not gameProcessed and key.KeyCode == keyCode then
+                    print("Teleporting to spawn...")
+                    teleportspawn()
+                end
+            end)
+        else
+            warn("Invalid key input: " .. tostring(input))
+        end
+    end
+})
+
+
+-------------------------------------------
+
+sections.MainS2:Button({
+    Name = "Anti Fall Slowness",
+    Callback = function()
+        local chare = GetPlayer()
+        if chare and chare:FindFirstChild("SpeedMultipliers") then
+            local speedmult = chare.SpeedMultipliers
+            speedmult.ChildAdded:Connect(function(v)
+                if v.Name == "FallSlowness" then
+                    v.Value = 1
+                end
+            end)
+        else
+            warn("SpeedMultipliers not found!")
+        end
+    end
+})
