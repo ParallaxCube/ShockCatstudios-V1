@@ -1,0 +1,479 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+   Name = "By Robanik [ForSaken]",
+   Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
+   LoadingTitle = "ForSaken",
+   LoadingSubtitle = "by robanik",
+   ShowText = "Open/close", -- for mobile users to unhide rayfield, change if you'd like
+   Theme = "Ocean", -- Check https://docs.sirius.menu/rayfield/configuration/themes
+
+   ToggleUIKeybind = "K", -- The keybind to toggle the UI visibility (string like "K" or Enum.KeyCode)
+
+   DisableRayfieldPrompts = true,
+   DisableBuildWarnings = true, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
+
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = "RRFold", -- Create a custom folder for your hub/game
+      FileName = "RRcheatforsaken"
+   },
+
+   Discord = {
+      Enabled = true, -- Prompt the user to join your Discord server if their executor supports it
+      Invite = "https://discord.gg/j6dEFJuu", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ ABCD would be ABCD
+      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+   },
+
+   KeySystem = true, -- Set this to true to use our key system
+   KeySettings = {
+      Title = "ForSaken Script By Robanik",
+      Subtitle = "KEY?",
+      Note = "key in discord", -- Use this to tell the user how to get a key
+      FileName = "Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key = {"SOMRR"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+   }
+})
+
+local Tab = Window:CreateTab("player", "rewind")
+local Section = Tab:CreateSection("player")
+
+local Button = Tab:CreateButton({
+   Name = "invisible (beta)",
+   Callback = function()
+   local Players = game:GetService("Players")
+
+local function setInvisible(player)
+    local character = player.Character
+    if not character then return end
+
+    for _, part in pairs(character:GetChildren()) do
+        if part:IsA("BasePart") then
+            part.Transparency = 1  -- Полностью прозрачный
+            part.CanCollide = false -- Нет столкновений
+        elseif part:IsA("Decal") or part:IsA("Texture") then
+            part.Transparency = 1
+        end
+    end
+end
+
+local function setVisible(player)
+    local character = player.Character
+    if not character then return end
+
+    for _, part in pairs(character:GetChildren()) do
+        if part:IsA("BasePart") then
+            part.Transparency = 0
+            part.CanCollide = true
+        elseif part:IsA("Decal") or part:IsA("Texture") then
+            part.Transparency = 0
+        end
+    end
+end
+
+-- Пример вызова:
+local player = Players.LocalPlayer  -- Для локального скрипта
+setInvisible(player)
+
+-- Чтобы вернуть видимость, вызови:
+-- setVisible(player)
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "god mode (beta)",
+   Callback = function()
+   local Players = game:GetService("Players")
+
+local function enableGodMode(player)
+    local character = player.Character
+    if not character then return end
+
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        -- Отключаем урон через событие HealthChanged
+        humanoid.HealthChanged:Connect(function(health)
+            if health < humanoid.MaxHealth then
+                humanoid.Health = humanoid.MaxHealth
+            end
+        end)
+    end
+end
+
+-- Пример вызова:
+local player = Players.LocalPlayer  -- Для локального скрипта
+enableGodMode(player)
+   end,
+})
+
+local Tab = Window:CreateTab("Esp", "rewind")
+local Section = Tab:CreateSection("Esp killers, Esp players")
+
+local Button = Tab:CreateButton({
+   Name = "Esp killer",
+   Callback = function()
+   -- Список целей
+local killers = {
+    "c00lkidd",
+    "JohnDoe",
+    "Jason",
+    "1x1x1x1",
+    "Noli"
+}
+
+-- Функция добавления ESP
+local function addESP(part)
+    if part:FindFirstChild("Highlight") then return end -- уже есть ESP
+
+    local highlight = Instance.new("Highlight")
+    highlight.FillColor = Color3.fromRGB(255, 0, 0) -- цвет заливки
+    highlight.OutlineColor = Color3.fromRGB(255, 255, 255) -- цвет контура
+    highlight.FillTransparency = 0.5
+    highlight.OutlineTransparency = 0
+    highlight.Adornee = part
+    highlight.Parent = part
+end
+
+-- Авто-обновление каждые 0.5 сек
+while task.wait(0.5) do
+    for _, killerName in ipairs(killers) do
+        local path = game:GetService("Workspace"):FindFirstChild("Players")
+        if path and path:FindFirstChild("Killers") then
+            local killer = path.Killers:FindFirstChild(killerName)
+            if killer and killer:FindFirstChild("QueryHitbox") then
+                addESP(killer.QueryHitbox)
+            end
+        end
+    end
+end
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Esp Players",
+   Callback = function()
+   -- Цвет ESP
+local ESP_COLOR = Color3.fromRGB(0, 170, 255) -- голубой
+
+-- Функция для подсветки
+local function addHighlight(part)
+    if not part:FindFirstChild("Highlight") then
+        local hl = Instance.new("Highlight")
+        hl.FillColor = ESP_COLOR
+        hl.OutlineColor = Color3.fromRGB(255, 255, 255)
+        hl.FillTransparency = 0.5
+        hl.OutlineTransparency = 0
+        hl.Adornee = part
+        hl.Parent = part
+    end
+end
+
+-- Функция для имени и дистанции
+local function addBillboard(part, name)
+    if not part:FindFirstChild("ESPName") then
+        local billboard = Instance.new("BillboardGui")
+        billboard.Name = "ESPName"
+        billboard.Size = UDim2.new(0, 200, 0, 50)
+        billboard.AlwaysOnTop = true
+        billboard.StudsOffset = Vector3.new(0, 2, 0)
+        billboard.Parent = part
+
+        local textLabel = Instance.new("TextLabel")
+        textLabel.Size = UDim2.new(1, 0, 1, 0)
+        textLabel.BackgroundTransparency = 1
+        textLabel.TextColor3 = Color3.fromRGB(0, 255, 255)
+        textLabel.TextStrokeTransparency = 0
+        textLabel.Font = Enum.Font.GothamBold
+        textLabel.TextSize = 14
+        textLabel.Parent = billboard
+
+        -- Обновление дистанции
+        task.spawn(function()
+            while billboard.Parent do
+                local distance = math.floor((workspace.CurrentCamera.CFrame.Position - part.Position).Magnitude)
+                textLabel.Text = name .. " [" .. distance .. "m]"
+                task.wait(0.2)
+            end
+        end)
+    end
+end
+
+-- Главный цикл ESP
+task.spawn(function()
+    while task.wait(0.5) do
+        for _, plr in ipairs(game.Players:GetPlayers()) do
+            if plr ~= game.Players.LocalPlayer and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
+                addHighlight(plr.Character.HumanoidRootPart)
+                addBillboard(plr.Character.HumanoidRootPart, plr.Name)
+            end
+        end
+    end
+end)
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Esp generators",
+   Callback = function()
+   local player = game.Players.LocalPlayer
+local runService = game:GetService("RunService")
+
+local mapFolder = workspace.Map.Ingame.Map
+
+-- Создаем ESP для каждого объекта в папке
+for _, obj in pairs(mapFolder:GetChildren()) do
+    if obj:IsA("BasePart") then
+        local billboard = Instance.new("BillboardGui")
+        billboard.Size = UDim2.new(0, 200, 0, 50)
+        billboard.AlwaysOnTop = true
+        billboard.Adornee = obj
+        billboard.Parent = obj
+
+        local textLabel = Instance.new("TextLabel")
+        textLabel.Size = UDim2.new(1, 0, 1, 0)
+        textLabel.BackgroundTransparency = 1
+        textLabel.TextColor3 = Color3.new(1, 0, 0)
+        textLabel.TextScaled = true
+        textLabel.Font = Enum.Font.SourceSansBold
+        textLabel.Parent = billboard
+
+        runService.RenderStepped:Connect(function()
+            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                local distance = (player.Character.HumanoidRootPart.Position - obj.Position).Magnitude
+                textLabel.Text = string.format("Generator / %d m", math.floor(distance))
+            end
+        end)
+    end
+end
+   end,
+})
+
+local Tab = Window:CreateTab("Afk", "rewind")
+local Section = Tab:CreateSection("Afk teleport, afk platform")
+
+local Button = Tab:CreateButton({
+   Name = "Afk Teleport",
+   Callback = function()
+   -- Список имён киллеров
+local killers = {
+    "c00lkidd",
+    "JohnDoe",
+    "Jason",
+    "1x1x1x1",
+    "Noli"
+}
+
+-- Порог срабатывания в студсах
+local TRIGGER_DISTANCE = 15
+
+-- Куда телепортировать (примерная безопасная позиция)
+local SAFE_POSITION = Vector3.new(1000, 100, 1000) -- поменяй на свою
+
+-- Функция проверки
+local function checkKillers()
+    local lp = game.Players.LocalPlayer
+    if not (lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")) then return end
+    local myPos = lp.Character.HumanoidRootPart.Position
+
+    local killersFolder = workspace:FindFirstChild("Players") and workspace.Players:FindFirstChild("Killers")
+    if killersFolder then
+        for _, name in ipairs(killers) do
+            local killer = killersFolder:FindFirstChild(name)
+            if killer and killer:FindFirstChild("QueryHitbox") then
+                local distance = (killer.QueryHitbox.Position - myPos).Magnitude
+                if distance <= TRIGGER_DISTANCE then
+                    -- Телепортируем игрока
+                    lp.Character.HumanoidRootPart.CFrame = CFrame.new(SAFE_POSITION)
+                    print("Телепорт из-за близости киллера:", name)
+                    break
+                end
+            end
+        end
+    end
+end
+
+-- Запуск цикла проверки
+task.spawn(function()
+    while task.wait(0.1) do
+        checkKillers()
+    end
+end)
+   end,
+})
+
+local Tab = Window:CreateTab("hitbox", "rewind")
+local Section = Tab:CreateSection("hitbox players, hitbox killer")
+
+local Button = Tab:CreateButton({
+   Name = "hitbox players",
+   Callback = function()
+   -- Множитель размера
+local SIZE_MULTIPLIER = 5
+
+-- Функция увеличения хитбоксов
+local function enlargeHitbox(character)
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        local hrp = character.HumanoidRootPart
+        hrp.Size = Vector3.new(2, 2, 1) * SIZE_MULTIPLIER
+        hrp.Transparency = 0.7 -- чтобы видеть размер (можно убрать)
+        hrp.BrickColor = BrickColor.new("Really red") -- цвет для наглядности
+        hrp.Material = Enum.Material.Neon
+        hrp.CanCollide = false
+    end
+end
+
+-- Автообновление
+task.spawn(function()
+    while task.wait(0.5) do
+        for _, plr in ipairs(game.Players:GetPlayers()) do
+            if plr ~= game.Players.LocalPlayer and plr.Character then
+                enlargeHitbox(plr.Character)
+            end
+        end
+    end
+end)
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "hitbox killer",
+   Callback = function()
+   -- Список имён киллеров
+local killers = {
+    "c00lkidd",
+    "JohnDoe",
+    "Jason",
+    "1x1x1x1",
+    "Noli"
+}
+
+-- Множитель размера
+local SIZE_MULTIPLIER = 5
+
+-- Функция увеличения хитбоксов
+local function enlargeHitbox(model)
+    if model and model:FindFirstChild("HumanoidRootPart") then
+        local hrp = model.HumanoidRootPart
+        hrp.Size = Vector3.new(2, 2, 1) * SIZE_MULTIPLIER
+        hrp.Transparency = 0.7 -- для наглядности, можно убрать
+        hrp.BrickColor = BrickColor.new("Really red")
+        hrp.Material = Enum.Material.Neon
+        hrp.CanCollide = false
+    end
+end
+
+-- Автообновление
+task.spawn(function()
+    while task.wait(0.5) do
+        local killersFolder = workspace:FindFirstChild("Players") and workspace.Players:FindFirstChild("Killers")
+        if killersFolder then
+            for _, name in ipairs(killers) do
+                local killer = killersFolder:FindFirstChild(name)
+                if killer then
+                    enlargeHitbox(killer)
+                end
+            end
+        end
+    end
+end)
+   end,
+})
+
+local Tab = Window:CreateTab("teleport", "rewind")
+local Section = Tab:CreateSection("teleport")
+
+local Button = Tab:CreateButton({
+   Name = "teleport to player",
+   Callback = function()
+   local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- Создание GUI
+local screenGui = Instance.new("ScreenGui", LocalPlayer:WaitForChild("PlayerGui"))
+screenGui.Name = "TPMenu"
+
+local frame = Instance.new("Frame", screenGui)
+frame.Size = UDim2.new(0, 300, 0, 200)
+frame.Position = UDim2.new(0.5, -150, 0.5, -100)
+frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+frame.BorderSizePixel = 0
+
+-- Выбранный игрок
+local selectedPlayer = nil
+
+-- Список игроков
+local uiList = Instance.new("UIListLayout", frame)
+uiList.SortOrder = Enum.SortOrder.LayoutOrder
+
+-- Заголовок
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.new(1, 0, 0, 30)
+title.Text = "Выбери игрока:"
+title.TextColor3 = Color3.new(1, 1, 1)
+title.BackgroundTransparency = 1
+title.Font = Enum.Font.SourceSansBold
+title.TextSize = 20
+
+-- Кнопки игроков
+for _, player in pairs(Players:GetPlayers()) do
+    if player ~= LocalPlayer then
+        local btn = Instance.new("TextButton", frame)
+        btn.Size = UDim2.new(1, 0, 0, 30)
+        btn.Text = player.Name
+        btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+        btn.TextColor3 = Color3.new(1, 1, 1)
+        btn.Font = Enum.Font.SourceSans
+        btn.TextSize = 18
+
+        btn.MouseButton1Click:Connect(function()
+            selectedPlayer = player
+            -- Подсветка выбора
+            for _, otherBtn in pairs(frame:GetChildren()) do
+                if otherBtn:IsA("TextButton") then
+                    otherBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+                end
+            end
+            btn.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+        end)
+    end
+end
+
+-- Кнопка "ТП"
+local tpButton = Instance.new("TextButton", frame)
+tpButton.Size = UDim2.new(1, 0, 0, 30)
+tpButton.Text = "Телепортироваться"
+tpButton.BackgroundColor3 = Color3.fromRGB(70, 120, 70)
+tpButton.TextColor3 = Color3.new(1, 1, 1)
+tpButton.Font = Enum.Font.SourceSansBold
+tpButton.TextSize = 18
+
+tpButton.MouseButton1Click:Connect(function()
+    if selectedPlayer and selectedPlayer.Character and selectedPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        local char = LocalPlayer.Character
+        if char and char:FindFirstChild("HumanoidRootPart") then
+            char.HumanoidRootPart.CFrame = selectedPlayer.Character.HumanoidRootPart.CFrame + Vector3.new(2, 0, 0)
+        end
+    end
+    screenGui:Destroy() -- Удалить меню после ТП
+end)
+   end,
+})
+
+local Tab = Window:CreateTab("Credits", "rewind")
+local Section = Tab:CreateSection("Credits")
+
+local Button = Tab:CreateButton({
+   Name = "gogslo2111 = Robanik = создатель",
+   Callback = function()
+   -- The function that takes place when the button is pressed
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "random_beast5 = Sombrita_games = тестер",
+   Callback = function()
+   -- The function that takes place when the button is pressed
+   end,
+})
