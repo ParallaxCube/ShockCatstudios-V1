@@ -1,0 +1,30 @@
+-- Forsaken Auto-Repair Script
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local root = character:WaitForChild("HumanoidRootPart")
+
+local enabled = false
+local delay = 3
+
+local function repair()
+    while enabled do task.wait()
+        for _,v in pairs(workspace:GetDescendants()) do
+            if not enabled then break end
+            if v:FindFirstChild("RepairProgress") and v.RepairProgress.Value < 1 then
+                root.CFrame = v.CFrame * CFrame.new(0,2,0)
+                for i=1,3 do
+                    game:GetService("ReplicatedStorage").Events.RepairGenerator:FireServer(v)
+                    task.wait(0.3)
+                end
+                task.wait(delay)
+            end
+        end
+    end
+end
+
+-- Simple GUI
+local gui = Instance.new("ScreenGui", game.CoreGui)
+local btn = Instance.new("TextButton")
+btn.Size = UDim2.new(0,200,0,40)
+btn.Position = UDim2.new(0.5,-100,0,10)
+btn.Text = "Auto-Rep
