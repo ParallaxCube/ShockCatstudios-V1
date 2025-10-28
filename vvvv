@@ -1,0 +1,305 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+
+local player = Players.LocalPlayer
+local playerGui = player.PlayerGui
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = playerGui
+screenGui.Name = "MinimalistUI"
+
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0, 200, 0, 280)
+mainFrame.Position = UDim2.new(0, 10, 0, 10)
+mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+mainFrame.BorderSizePixel = 0
+mainFrame.Parent = screenGui
+
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 10)
+corner.Parent = mainFrame
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 30)
+title.Position = UDim2.new(0, 0, 0, 5)
+title.BackgroundTransparency = 1
+title.Text = "Control Panel"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Font = Enum.Font.SourceSansBold
+title.TextSize = 18
+title.Parent = mainFrame
+
+local minimizeButton = Instance.new("TextButton")
+minimizeButton.Size = UDim2.new(0, 20, 0, 20)
+minimizeButton.Position = UDim2.new(1, -25, 0, 5)
+minimizeButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+minimizeButton.Text = "-"
+minimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+minimizeButton.Font = Enum.Font.SourceSansBold
+minimizeButton.TextSize = 16
+minimizeButton.Parent = mainFrame
+local isMinimized = false
+
+minimizeButton.MouseButton1Click:Connect(function()
+    isMinimized = not isMinimized
+    mainFrame.Size = isMinimized and UDim2.new(0, 200, 0, 30) or UDim2.new(0, 200, 0, 280)
+    minimizeButton.Text = isMinimized and "+" or "-"
+end)
+
+local speedLabel = Instance.new("TextLabel")
+speedLabel.Size = UDim2.new(1, -20, 0, 20)
+speedLabel.Position = UDim2.new(0, 10, 0, 40)
+speedLabel.BackgroundTransparency = 1
+speedLabel.Text = "Speed: 16"
+speedLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+speedLabel.Font = Enum.Font.SourceSans
+speedLabel.TextSize = 14
+speedLabel.Parent = mainFrame
+
+local speedBox = Instance.new("TextBox")
+speedBox.Size = UDim2.new(1, -20, 0, 30)
+speedBox.Position = UDim2.new(0, 10, 0, 60)
+speedBox.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+speedBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+speedBox.Text = "16"
+speedBox.Font = Enum.Font.SourceSans
+speedBox.TextSize = 14
+speedBox.Parent = mainFrame
+
+speedBox.FocusLost:Connect(function()
+    local speed = tonumber(speedBox.Text)
+    if speed and speed >= 1 and speed <= 100 then
+        local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
+        if humanoid then
+            humanoid.WalkSpeed = speed
+            speedLabel.Text = "Speed: " .. speed
+        end
+    else
+        speedBox.Text = "16"
+    end
+end)
+
+
+local staminaButton = Instance.new("TextButton")
+staminaButton.Size = UDim2.new(1, -20, 0, 30)
+staminaButton.Position = UDim2.new(0, 10, 0, 100)
+staminaButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+staminaButton.Text = "Infinite Stamina: OFF"
+staminaButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+staminaButton.Font = Enum.Font.SourceSans
+staminaButton.TextSize = 14
+staminaButton.Parent = mainFrame
+local staminaEnabled = false
+
+staminaButton.MouseButton1Click:Connect(function()
+    staminaEnabled = not staminaEnabled
+    staminaButton.Text = "Infinite Stamina: " .. (staminaEnabled and "ON" or "OFF")
+    local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
+    if humanoid then
+        humanoid.Stamina = staminaEnabled and 100 or 50 -- Имитация
+    end
+end)
+
+local espButton = Instance.new("TextButton")
+espButton.Size = UDim2.new(1, -20, 0, 30)
+espButton.Position =有可能
+
+System: UDim2.new(0, 10, 0, 140)
+espButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+espButton.Text = "ESP: OFF"
+espButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+espButton.Font = Enum.Font.SourceSans
+espButton.TextSize = 14
+espButton.Parent = mainFrame
+local espEnabled = false
+local espObjects = {}
+
+local function addESP(character, color, name)
+    local billboard = Instance.new("BillboardGui")
+    billboard.Parent = character
+    billboard.Adornee = character
+    billboard.Size = UDim2.new(0, 100,  CURSOR
+    billboard.StudsOffset = Vector3.new(0, 2, 0)
+    local text = Instance.new("TextLabel", billboard)
+    text.Size = UDim2.new(1, 0, 1, 0)
+    text.BackgroundTransparency = 1
+    text.TextColor3 = color
+    text.Font = Enum.Font.SourceSans
+    text.TextSize = 14
+    
+    local humanoid = character:FindFirstChild("Humanoid")
+    if humanoid then
+        RunService.RenderStepped:Connect(function()
+            if not espEnabled or not character.Parent then
+                billboard:Destroy()
+                return
+            end
+            local healthPercent = math.floor((humanoid.Health / humanoid.MaxHealth) * 100)
+            text.Text = name .. " (" .. healthPercent .. "%)"
+        end)
+    end
+    table.insert(espObjects, billboard)
+end
+
+local function addObjectESP(object, color, name)
+    local billboard = Instance.new("BillboardGui")
+    billboard.Parent = object
+    billboard.Adornee = object
+    billboard.Size = UDim2.new(0, 100, 0, 50)
+    billboard.StudsOffset = Vector3.new(0, 2, 0)
+    local text = Instance.new("TextLabel", billboard)
+    text.Size = UDim2.new(1, 0, 1, 0)
+    text.BackgroundTransparency = 1
+    text.TextColor3 = color
+    text.Text = name
+    text.Font = Enum.Font.SourceSans
+    text.TextSize = 14
+    table.insert(espObjects, billboard)
+end
+
+espButton.MouseButton1Click:Connect(function()
+    espEnabled = not espEnabled
+    espButton.Text = "ESP: " .. (espEnabled and "ON" or "OFF")
+    
+    if espEnabled then
+        for _, p in pairs(Players:GetPlayers()) do
+            if p.Character and p ~= player then
+                addESP(p.Character, Color3.fromRGB(255, 0, 0), p.Name) -- Красный для других
+            end
+        end
+        if player.Character then
+            addESP(player.Character, Color3.fromRGB(0, 255, 0), player.Name) -- Зелёный для игрока
+        end
+        
+        for _, obj in pairs(workspace:GetChildren()) do
+            if obj.Name == "Generator" then
+                addObjectESP(obj, Color3.fromRGB(255, 255, 0), "Generator") -- Жёлтый
+            elseif obj.Name == "Item" then
+                addObjectESP(obj, Color3.fromRGB(255, 0, 255), "Item") -- Розовый
+            end
+        end
+        
+        Players.PlayerAdded:Connect(function(p)
+            p.CharacterAdded:Connect(function(char)
+                if espEnabled then
+                    addESP(char, Color3.fromRGB(255, 0, 0), p.Name)
+                end
+            end)
+        end)
+    else
+        for _, esp in pairs(espObjects) do
+            esp:Destroy()
+        end
+        espObjects = {}
+    end
+end)
+
+local repairButton = Instance.new("TextButton")
+repairButton.Size = UDim2.new(1, -20, 0, 30)
+repairButton.Position = UDim2.new(0, 10, 0, 180)
+repairButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+repairButton.Text = "Auto Repair: OFF"
+repairButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+repairButton.Font = Enum.Font.SourceSans
+repairButton.TextSize = 14
+repairButton.Parent = mainFrame
+local autoRepairEnabled = false
+
+local function createTestGenerator(position, name)
+    local generator = Instance.new("Part")
+    generator.Name = "Generator"
+    generator.Size = Vector3.new(2, 2, 2)
+    generator.Position = position
+    generator.BrickColor = BrickColor.new("Yellow")
+    generator.Anchored = true
+    generator.Parent = workspace
+    
+    local progress = Instance.new("NumberValue")
+    progress.Name = "RepairProgress"
+    progress.Value = 0
+    progress.Parent = generator
+    
+    local prompt = Instance.new("ProximityPrompt")
+    prompt.ActionText = "Repair"
+    prompt.Parent = generator
+    prompt.Triggered:Connect(function(player)
+        if player == Players.LocalPlayer then
+            while prompt.Enabled and progress.Value < 100 do
+                progress.Value = math.min(progress.Value + 10, 100)
+                wait(0.5)
+            end
+            if progress.Value >= 100 then
+                prompt.Enabled = false
+                generator.BrickColor = BrickColor.new("Lime green")
+            end
+        end
+    end)
+end
+
+
+for i = 1, 3 do
+    createTestGenerator(Vector3.new(i * 10, 1, 0), "Generator" .. i)
+end
+
+
+repairButton.MouseButton1Click:Connect(function()
+    autoRepairEnabled = not autoRepairEnabled
+    repairButton.Text = "Auto Repair: " .. (autoRepairEnabled and "ON" or "OFF")
+    
+    if autoRepairEnabled then
+        spawn(function()
+            while autoRepairEnabled do
+                for _, generator in pairs(workspace:GetChildren()) do
+                    if generator.Name:find("Generator") and generator:FindFirstChild("RepairProgress") then
+                        local progress = generator.RepairProgress
+                        if progress.Value < 100 then
+                            progress.Value = math.min(progress.Value + 5, 100)
+                            if progress.Value >= 100 then
+                                generator.BrickColor = BrickColor.new("Lime green")
+                                if generator:FindFirstChild("ProximityPrompt") then
+                                    generator.ProximityPrompt.Enabled = false
+                                end
+                            end
+                        end
+                    end
+                end
+                wait(0.2)
+            end
+        end)
+    end
+end)
+
+
+local dragging, dragInput, dragStart, startPos
+mainFrame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = mainFrame.Position
+    end
+end)
+
+mainFrame.InputChanged:Connect(function(input)
+    if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+        dragInput = input
+    end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = false
+    end
+end)
+
+RunService.RenderStepped:Connect(function()
+    if dragging and dragInput then
+        local delta = dragInput.Position - dragStart
+        mainFrame.Position = UDim2.new(
+            startPos.X.Scale,
+            startPos.X.Offset + delta.X,
+            startPos.Y.Scale,
+            startPos.Y.Offset + delta.Y
+        )
+    end
+end)
