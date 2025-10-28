@@ -1,0 +1,320 @@
+--// Forsaken Hub by: s1lentcities //--
+
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+    Name = "Forsaken Hub by: s1lentcities",
+    LoadingTitle = "Forsaken Hub",
+    LoadingSubtitle = "Reach + Auto Block + Auto Gen + ESP",
+    ConfigurationSaving = {
+        Enabled = true,
+        FolderName = "ForsakenTesting",
+        FileName = "TestingConfig"
+    }
+})
+
+--// ==========================
+--// Reach Controls Tab
+--// ==========================
+
+local ReachTab = Window:CreateTab("Reach Controls", 4483362458)
+ReachTab:CreateSection("Reach Script Controls")
+
+getgenv().RV = 1000
+local ReachEnabled = false
+
+ReachTab:CreateToggle({
+    Name = "Reach!",
+    CurrentValue = false,
+    Flag = "ReachToggle",
+    Callback = function(Value)
+        ReachEnabled = Value
+        if ReachEnabled then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/broimnothim/gg/refs/heads/main/gg'))()
+        else
+            getgenv().RV = 1
+        end
+    end,
+})
+
+ReachTab:CreateSlider({
+    Name = "Adjust Reach",
+    Range = {1,120},
+    Increment = 1,
+    Suffix = " studs",
+    CurrentValue = 1,
+    Flag = "ReachSlider",
+    Callback = function(Value)
+        getgenv().RV = Value
+    end,
+})
+
+--// ==========================
+--// Auto Block Tab
+--// ==========================
+
+local AutoBlockTab = Window:CreateTab("Auto Block", 4483362458)
+AutoBlockTab:CreateSection("Animation + Sound Detection + Combat")
+
+local lp = game.Players.LocalPlayer
+
+-- function to create range spheres
+local function makeRangePart(name, color)
+    local part = Instance.new("Part")
+    part.Name = name
+    part.Shape = Enum.PartType.Ball
+    part.Material = Enum.Material.Neon
+    part.Color = color
+    part.Anchored = false
+    part.CanCollide = false
+    part.Transparency = 0.5
+    part.Parent = workspace
+
+    local weld = Instance.new("WeldConstraint")
+    weld.Part0 = part
+    weld.Part1 = lp.Character:WaitForChild("HumanoidRootPart")
+    weld.Parent = part
+
+    return part
+end
+
+-- Range visuals
+local AnimRangePart = makeRangePart("AnimRange", Color3.fromRGB(0,255,0))
+local SoundRangePart = makeRangePart("SoundRange", Color3.fromRGB(255,0,0))
+AnimRangePart.Size = Vector3.new(30,30,30)
+SoundRangePart.Size = Vector3.new(30,30,30)
+
+--==============================
+-- Animation Auto Block
+--==============================
+local AnimBlockEnabled = false
+local AnimDetectionRange = 15
+local BlockAnimations = {"Slash","Attack","HeavyAttack"}
+
+local function shouldBlockAnim(track, enemyPos)
+    for _,trigger in ipairs(BlockAnimations) do
+        if tostring(track.AnimationId):find(trigger) or track.Name:lower():find(trigger:lower()) then
+            if lp.Character and lp.Character:FindFirstChild("HumanoidRootPart") then
+                local myPos = lp.Character.HumanoidRootPart.Position
+                if (myPos - enemyPos).Magnitude <= AnimDetectionRange then
+                    return true
+                end
+            end
+        end
+    end
+    return false
+end
+
+local function hookAnimations()
+    local humanoid = lp.Character and lp.Character:FindFirstChildOfClass("Humanoid")
+    if not humanoid then return end
+    humanoid.AnimationPlayed:Connect(function(track)
+        if AnimBlockEnabled and track and track.Parent then
+            local char = track.Parent
+            if char:FindFirstChild("HumanoidRootPart") and shouldBlockAnim(track, char.HumanoidRootPart.Position) then
+                print("⚔️ Blocking (animation):", track.AnimationId)
+                -- block input here
+            end
+        end
+    end)
+end
+
+AutoBlockTab:CreateToggle({
+    Name = "Animation Auto Block",
+    CurrentValue = false,
+    Callback = function(v)
+        AnimBlockEnabled = v
+        if v then
+            hookAnimations()
+            Rayfield:Notify({Title="Animation Auto Block", Content="Enabled ✅", Duration=3})
+        else
+            Rayfield:Notify({Title="Animation Auto Block", Content="Disabled ❌", Duration=3})
+        end
+    end
+})
+
+AutoBlockTab:CreateSlider({
+    Name = "Animation Detection Range",
+    Range = {10, 30},
+    Increment = 1,
+    CurrentValue = AnimDetectionRange,
+    Callback = function(v)
+        AnimDetectionRange = v
+        AnimRangePart.Size = Vector3.new(v*2, v*2, v*2)
+    end
+})
+
+--==============================
+-- Sound Auto Block
+--==============================
+local SoundBlockEnabled = false
+local SoundDetectionRange = 15
+local BlockSounds = {"slash","behead","stab","swing"}
+
+local function shouldBlockSound(sound, enemyPos)
+    for _,trigger in ipairs(BlockSounds) do
+        if sound.Name:lower():find(trigger) then
+            if lp.Character and lp.Character:FindFirstChild("HumanoidRootPart") then
+                local myPos = lp.Character.HumanoidRootPart.Position
+                if (myPos - enemyPos).Magnitude <= SoundDetectionRange then
+                    return true
+                end
+            end
+        end
+    end
+    return false
+end
+
+local function detectSounds()
+    while SoundBlockEnabled do
+        for _,snd in ipairs(workspace:GetDescendants()) do
+            if snd:IsA("Sound") and snd.IsPlaying then
+                local parent = snd.Parent
+                if parent and parent:IsA("Model") and parent:FindFirstChild("HumanoidRootPart") then
+                    if shouldBlockSound(snd, parent.HumanoidRootPart.Position) then
+                        print("🎵 Blocking (sound):", snd.Name)
+                        -- block input here
+                    end
+                end
+            end
+        end
+        task.wait(0.2)
+    end
+end
+
+AutoBlockTab:CreateToggle({
+    Name = "Sound Auto Block",
+    CurrentValue = false,
+    Callback = function(v)
+        SoundBlockEnabled = v
+        if v then
+            task.spawn(detectSounds)
+            Rayfield:Notify({Title="Sound Auto Block", Content="Enabled ✅", Duration=3})
+        else
+            Rayfield:Notify({Title="Sound Auto Block", Content="Disabled ❌", Duration=3})
+        end
+    end
+})
+
+AutoBlockTab:CreateSlider({
+    Name = "Sound Detection Range",
+    Range = {10, 30},
+    Increment = 1,
+    CurrentValue = SoundDetectionRange,
+    Callback = function(v)
+        SoundDetectionRange = v
+        SoundRangePart.Size = Vector3.new(v*2, v*2, v*2)
+    end
+})
+
+--==============================
+-- Transparency Control
+--==============================
+AutoBlockTab:CreateSlider({
+    Name = "Range Visual Transparency",
+    Range = {0,100},
+    Increment = 1,
+    CurrentValue = 50,
+    Suffix = "%",
+    Callback = function(v)
+        local t = v/100
+        AnimRangePart.Transparency = t
+        SoundRangePart.Transparency = t
+    end
+})
+
+--==============================
+-- Auto Punch
+--==============================
+local AutoPunchEnabled = false
+local PunchDelay = 0.3
+
+local function autoPunchLoop()
+    while AutoPunchEnabled do
+        local tool = lp.Character and lp.Character:FindFirstChildOfClass("Tool")
+        if tool then
+            pcall(function() tool:Activate() end)
+        end
+        task.wait(PunchDelay)
+    end
+end
+
+AutoBlockTab:CreateToggle({
+    Name = "Auto Punch",
+    CurrentValue = false,
+    Callback = function(v)
+        AutoPunchEnabled = v
+        if v then task.spawn(autoPunchLoop) end
+    end
+})
+
+AutoBlockTab:CreateSlider({
+    Name = "Punch Delay",
+    Range = {0.1, 1},
+    Increment = 0.1,
+    Suffix = " sec",
+    CurrentValue = PunchDelay,
+    Callback = function(v)
+        PunchDelay = v
+    end
+})
+
+--==============================
+-- Aimbot
+--==============================
+local AimbotEnabled = false
+local AimbotRange = 50
+local AimAtSurvivors = false
+
+local function getClosestTarget()
+    local char = lp.Character
+    if not char or not char:FindFirstChild("HumanoidRootPart") then return nil end
+    local myPos = char.HumanoidRootPart.Position
+
+    local candidates = {}
+    if AimAtSurvivors and workspace:FindFirstChild("Survivors") then
+        candidates = workspace.Survivors:GetChildren()
+    elseif workspace:FindFirstChild("Killers") then
+        candidates = workspace.Killers:GetChildren()
+    end
+
+    local closest, dist = nil, AimbotRange
+    for _, c in ipairs(candidates) do
+        if c:FindFirstChild("HumanoidRootPart") then
+            local d = (myPos - c.HumanoidRootPart.Position).Magnitude
+            if d < dist then
+                dist = d
+                closest = c
+            end
+        end
+    end
+    return closest
+end
+
+local function aimbotLoop()
+    local cam = workspace.CurrentCamera
+    while AimbotEnabled do
+        local target = getClosestTarget()
+        if target and target:FindFirstChild("HumanoidRootPart") then
+            cam.CFrame = CFrame.new(cam.CFrame.Position, target.HumanoidRootPart.Position)
+        end
+        task.wait()
+    end
+end
+
+AutoBlockTab:CreateToggle({
+    Name = "Aimbot",
+    CurrentValue = false,
+    Callback = function(v)
+        AimbotEnabled = v
+        if v then task.spawn(aimbotLoop) end
+    end
+})
+
+AutoBlockTab:CreateSlider({
+    Name = "Aimbot Range",
+    Range = {10, 150},
+    Increment = 5,
+    Suffix = " studs",
+    CurrentValue = AimbotRange,
+    Callback = function(v)
