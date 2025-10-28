@@ -1,0 +1,79 @@
+if not KavoUI then
+    local KavoSuccess, KavoError = pcall(function()
+        KavoUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+    end)
+    if not KavoSuccess then return end
+end
+
+local Window = KavoUI.CreateLib("Forsaken Cheat","DarkTheme")
+
+local Settings = {
+    Stamina = {Enabled = false, Value = 100},
+    Speed = {Enabled = false, Value = 16},
+    ESP = {Players = false, Killers = true, Generators = true, Items = false},
+    AutoRepair = {Enabled = false, Speed = 5, Instant = false}
+}
+
+local function ManageStamina()
+    while Settings.Stamina.Enabled do
+        task.wait(0.5)
+        local char = game.Players.LocalPlayer.Character
+        if char and char:FindFirstChild("Stamina") then
+            char.Stamina.Value = Settings.Stamina.Value
+        end
+    end
+end
+
+local function UpdateSpeed()
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Settings.Speed.Enabled and Settings.Speed.Value or 16
+end
+
+local MainTab = Window:NewTab("Main")
+local MainSection = MainTab:NewSection("Character")
+
+MainSection:NewToggle("Infinite Stamina", "", function(state)
+    Settings.Stamina.Enabled = state
+    ManageStamina()
+end)
+
+MainSection:NewSlider("Speed", "", 50, 16, function(value)
+    Settings.Speed.Value = value
+    UpdateSpeed()
+end)
+
+MainSection:NewToggle("Enable Speed", "", function(state)
+    Settings.Speed.Enabled = state
+    UpdateSpeed()
+end)
+
+local ESPTab = Window:NewTab("ESP")
+local ESPSection = ESPTab:NewSection("Settings")
+
+ESPSection:NewToggle("Players", "", function(state)
+    Settings.ESP.Players = state
+end)
+
+ESPSection:NewToggle("Killers", "", function(state)
+    Settings.ESP.Killers = state
+end)
+
+local AutoTab = Window:NewTab("Automation")
+local AutoSection = AutoTab:NewSection("Generators")
+
+AutoSection:NewToggle("Auto-Repair", "", function(state)
+    Settings.AutoRepair.Enabled = state
+end)
+
+AutoSection:NewSlider("Repair Speed", "", 20, 3, function(value)
+    Settings.AutoRepair.Speed = value
+end)
+
+AutoSection:NewToggle("Instant Repair", "", function(state)
+    Settings.AutoRepair.Instant = state
+end)
+
+game:GetService("StarterGui"):SetCore("SendNotification",{
+    Title = "Loader",
+    Text = "Ready",
+    Duration = 3
+})
